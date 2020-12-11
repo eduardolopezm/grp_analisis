@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_resguardo" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="add6bea0-e509-479e-a304-a157ed44d68a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="folioresguardo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select distinct        @rownum := @rownum + 1 AS rank, a.assetid, folio, fecha, b.barcode, cabm, c.realname, b.marca, b.model as modelo, b.serialno, b.cost, description, longdescription from  fixedasset_Resguardos a left outer join
+fixedassets b on a.assetid = b.assetid
+join www_users c on c.userid = a.userid
+,
+       (SELECT @rownum := 0) r
+where folio = $P{folioresguardo}
+order by rank, assetid]]>
+	</queryString>
+	<field name="assetid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="folio" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="barcode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cabm" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="realname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="marca" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="modelo" class="java.lang.String"/>
+	<field name="serialno" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cost" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="description" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="longdescription" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rank" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement uuid="621cd540-95d1-4973-a102-9cab6149fe9f" x="3" y="0" width="140" height="70"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="79" splitType="Stretch">
+			<line>
+				<reportElement uuid="a4b02749-1141-4985-87b1-235343130d29" x="0" y="13" width="752" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="4a362ed8-557d-44ce-9be1-ec904de109e5" x="0" y="0" width="752" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="84d9bf96-2fcc-40d1-a56c-22b9ec7746b5" x="3" y="1" width="100" height="13"/>
+				<textElement/>
+				<text><![CDATA[FECHA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="11241e21-a5ac-4503-be56-027d980761d4" x="258" y="1" width="199" height="13"/>
+				<textElement/>
+				<text><![CDATA[RESGUARDO DE MOBILIARIO Y EQUIPO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b3fa6256-cbfa-4bfd-b2f4-43ac434655ef" x="505" y="1" width="38" height="13"/>
+				<textElement/>
+				<text><![CDATA[FOLIO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5433b9a8-8714-4203-90c9-bd2dcf0fb2b1" x="3" y="14" width="131" height="13"/>
+				<textElement/>
+				<text><![CDATA[ÁREA DE ADSCRIPCIÓN:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="83b7cc6d-af2b-420b-b57d-518a6c09f7bb" x="3" y="36" width="131" height="13"/>
+				<textElement/>
+				<text><![CDATA[NOMBRE DEL EMPLEADO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="702c69ab-6b33-476f-9688-8420b8bc180d" x="3" y="58" width="131" height="13"/>
+				<textElement/>
+				<text><![CDATA[PUESTO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="cdf8e7dc-180d-4053-b0c8-279365e3895b" x="567" y="27" width="62" height="13"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[R.F.C.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="410bfa16-9b6c-46dc-a81c-74fc3ea25b71" x="480" y="49" width="149" height="13"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[NÚMERO DE EMPLEADO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="e65cd1b6-f931-4750-91dd-2c9443164683" x="581" y="0" width="90" height="13"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["HOJA "+$V{PAGE_NUMBER}+" DE"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="fab109bb-7ee2-4ef9-9886-2bed055c81af" x="671" y="0" width="58" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="fb44e63b-9104-4e01-bd86-e79d36252e0a" x="143" y="36" width="314" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{realname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9beda3e0-a378-4ce8-b296-996639850217" x="540" y="1" width="73" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="fa4bf10f-19e8-4615-b165-0069156d14b9" x="7" y="7" width="21" height="13"/>
+				<textElement/>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a3b8d209-39b5-4143-b193-136f11c04e97" x="32" y="2" width="81" height="24"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NUMERO DE AVISO DE ALTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3f6aa1de-d0a5-43da-abd3-f70ad1865618" x="125" y="7" width="37" height="13"/>
+				<textElement/>
+				<text><![CDATA[CABMS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0bf481fa-e3a5-4feb-bccc-67ed5dc1e34b" x="167" y="2" width="69" height="24"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[No. DE INVENTARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0fae8365-d9c5-4443-846d-e02a8a539653" x="274" y="7" width="85" height="13"/>
+				<textElement/>
+				<text><![CDATA[DESCRIPCIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d1fd0146-14aa-4846-a4f6-764e8dcf3a77" x="385" y="7" width="42" height="13"/>
+				<textElement/>
+				<text><![CDATA[MARCA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2a81350d-a98e-4cd1-8df7-aaef6d073de7" x="431" y="7" width="45" height="13"/>
+				<textElement/>
+				<text><![CDATA[MODELO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e71140fd-7f64-493a-9eca-df87520e65bb" x="481" y="2" width="64" height="24"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NUMERO DE SERIE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2f8356d3-b9ba-4133-8807-0f8aa39595a9" x="543" y="2" width="60" height="24"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[UNIDAD DE MEDIDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c31915be-ca72-4533-bff2-c98c520cc598" x="603" y="7" width="53" height="13"/>
+				<textElement/>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bdaba4d-c02a-469b-ba5b-0d2f20a7e97d" x="662" y="7" width="86" height="13"/>
+				<textElement/>
+				<text><![CDATA[COSTO UNITARIO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="43" splitType="Stretch">
+			<textField>
+				<reportElement uuid="e6187778-578a-453a-9cff-f4488c7513a7" x="125" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{cabm}!=null)?$F{cabm}:""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ab4fc743-3bcc-46b8-a62f-bda771043e2b" x="167" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{barcode}!=null)?$F{barcode}:""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="280ed612-4f33-4e11-a21c-df227be2e7ff" x="267" y="0" width="111" height="20"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{description}!=null)?$F{description}:"El resguardo del empleado está vacío"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="a7fd3df3-cad2-4d9f-b21e-4c7eb4574a4c" x="267" y="20" width="111" height="20"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{longdescription}!=null)?$F{longdescription}:""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement uuid="4ab2a002-a450-47b6-be2d-e6964ace9a5c" x="378" y="0" width="49" height="20"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{marca}!=null)?$F{marca}:""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="98c50b6c-aff0-4c06-a790-a3bf43febf5d" x="430" y="0" width="49" height="20"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{modelo}!=null)?$F{modelo}:""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="124e7a7f-b43e-4d0c-87d0-da2da2258a86" x="481" y="0" width="49" height="20"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{serialno}!=null)?$F{serialno}:""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="$ #,##0.00">
+				<reportElement uuid="ba4d110d-71f2-4e39-b9d3-aa1a457e036e" x="662" y="0" width="83" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{cost}!=null)?$F{cost}:""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0e78d57a-f6c3-4b9a-b19a-78603cb323e8" x="3" y="0" width="29" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rank}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="f0614a0b-8efe-45ee-b015-b0c8f28eea65" x="0" y="0" width="752" height="45"/>
+				<textElement/>
+				<text><![CDATA[EL O LA RESPONSABLE QUE FIRME COMO RESGUARDANTE DE LOS BIENES ESTA OBLIGADO(A) A CUIDAR DE LA CONSERVACIÓN DE LOS MISMOS Y SERÁ RESPONSABLE DEL SU USO Y APROVECHAMIENTO RACIONAL Y ADECUADO; EN CASO DE EXTRAVÍO O DESTRUCCIÓN IMPRUDENCIAL, EL RESGUARDANTE RESARCIRÁ EL DAÑO OCASIONADO MEDIANTE LA REPOSICIÓN DEL BIEN POR OTRO DE CAPACIDADES IGUALES O SUPERIORES AL EXTRAVIADO. EN CASO DE QUE LA REPOSICIÓN SEA PROCEDENTE A TRAVÉS DE LA EMPRESA ASEGURADORA DE LOS BIENES, EL RESGUARDANTE DEBERÁ SOLAMENTE PAGAR EL DEDUCIBLE. ASIMISMO EL RESGUARDANTE DEBERÁ CONSERVAR ESTE DOCUMENTO PARA CUALQUIER ACLARACIÓN PERTINENTE Y DARÁ AVISO DE TODO CAMBIO QUE AFECTE LA VERACIDAD DE ESTE DOCUMENTO. ESTE RESGUARDO DEJA SIN EFECTO LOS ANTERIORES.]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d77a67bc-4ee0-470e-a8bb-a414efd45156" x="10" y="10" width="181" height="69"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NOMBRE Y FIRMA DEL LA PERSONA TITULAR DE LA SUBDIRECTOR DE SERVICIOS GENERALES, ALMACENES E INVENTARIOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b1dedb9b-73a7-48c5-96e5-a310a12519a9" x="197" y="10" width="181" height="69"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NOMBRE Y FIRMA DEL LA PERSONA TITULAR DE LA DIRECCIÓN DE ADMINISTRACIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e0615a01-9208-4843-9fde-86d59da42be1" x="386" y="10" width="181" height="69"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NOMBRE Y FIRMA DEL RESPONSABLE DEL RESGUARDO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="86db0106-638b-41a7-89b0-2e934d7e4adc" x="574" y="10" width="181" height="69"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NOMBRE Y FIRMA DEL RESPONSABLE O COORDINADOR ADMINISTRATIVO DESIGNADO POR LA UNIDAD RESPONSABLE QUE RECIBE LOS BIENES]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

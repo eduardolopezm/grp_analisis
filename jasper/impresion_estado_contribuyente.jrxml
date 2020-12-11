@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="formato_entrega_solicitud" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7be21170-4d58-4d46-be66-992c50d4e69a">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="th" mode="Opaque" forecolor="#FFFFFF" backcolor="#727378" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="style1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#F2F2F2" fill="Solid"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="imagenEstado" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="contribuyenteID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[99990002]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaInicio" class="java.lang.String"/>
+	<parameter name="fechaFin" class="java.lang.String"/>
+	<parameter name="dateini" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="datefin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nameConfing" class="java.lang.String"/>
+	<parameter name="contribuyente" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Users/inf/Workspace/ap_grp_demo_de/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="usuario" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+SUBSTRING(debtortransRecibo.trandate,1,10) as fecha,
+salesorders.orderno as orderno,
+debtortransRecibo.transno,
+salesorders.fromstkloc,
+debtortransRecibo.invtext as descripcion,
+(SELECT SUM(salesorderdetails.unitprice * IF(salesorderdetails.discountpercent>0,salesorderdetails.discountpercent,1)) FROM  salesorderdetails  WHERE salesorderdetails.orderno = salesorders.orderno) as importe,
+IF(debtortransRecibo.ovamount != '',debtortransRecibo.ovamount,0) as abono,
+debtortransRecibo.transno as recibo,
+debtortrans.ovamount as cargo,
+debtortrans.invtext as desCargo,
+SUBSTRING(debtortrans.trandate,1,10) as fechaCargo
+FROM salesorders
+LEFT JOIN debtortrans ON debtortrans.order_ = salesorders.orderno
+LEFT JOIN custallocns ON custallocns.transid_allocto = debtortrans.id
+LEFT JOIN debtortrans debtortransRecibo ON debtortransRecibo.id = custallocns.transid_allocfrom AND debtortransRecibo.trandate <= $P{datefin}
+WHERE salesorders.debtorno = $P{contribuyenteID}
+AND salesorders.quotedate <= $P{datefin} AND salesorders.fromstkloc in (SELECT loccode FROM sec_objetoprincipalxuser WHERE sec_objetoprincipalxuser.userid = $P{usuario})
+ORDER BY salesorders.orderno ASC;]]>
+	</queryString>
+	<field name="orderno" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="transno" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fromstkloc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="importe" class="java.lang.Double"/>
+	<field name="abono" class="java.lang.Double"/>
+	<field name="recibo" class="java.lang.String"/>
+	<field name="cargo" class="java.lang.Double"/>
+	<field name="fechaCargo" class="java.lang.String"/>
+	<field name="desCargo" class="java.lang.String"/>
+	<variable name="totalPase" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="total" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{abono}*-1]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="90" splitType="Stretch">
+			<image>
+				<reportElement uuid="c2cb7e1a-a190-49aa-9a1c-cc823af98c17" x="2" y="1" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="8e1118b2-a64e-4d58-a5ce-8696295ca906" x="145" y="1" width="284" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MUNICIPIO DE TAMPICO, TAMAULIPAS"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="416a7afa-fabf-4924-908b-0b15a5e41243" x="144" y="21" width="284" height="34"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ESTADO DE CUENTA DE \n"+$P{nameConfing}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="7952ff0c-50e3-4f17-a6d7-5e5855374cb7" x="429" y="2" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="14db8bf7-899a-4b31-938d-1e587c52deb5" x="145" y="55" width="284" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["AL "+$P{fechaFin}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="33" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="d3440f56-5ffa-40ce-b2a9-b18d328907c0" x="2" y="4" width="537" height="24" isRemoveLineWhenBlank="true" forecolor="#000000"/>
+				<textElement>
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CONTRIBUYENTE: "+$P{contribuyente}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="17" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="f92c9259-88bd-4846-829c-bd8f5d187bb3" style="th" x="0" y="0" width="83" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8632868a-0e88-414b-b399-547be6358696" style="th" x="83" y="0" width="73" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO. DOCTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1efe230-f7b3-405a-89bd-650cfb91b760" style="th" x="324" y="0" width="165" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBJ. PARCIAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="85c31553-0708-442a-b2d5-bef6e09c7098" style="th" x="489" y="0" width="83" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IMPORTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d06c3234-699f-40d1-845d-1fe1b2118aeb" style="th" x="156" y="0" width="105" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c50592c7-1ace-4961-a197-c5887281841c" style="th" x="261" y="0" width="63" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBJ. PRINCIPAL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<subreport>
+				<reportElement uuid="d4827286-38c7-4818-9424-8fbcaef0a728" stretchType="RelativeToBandHeight" x="2" y="0" width="569" height="22"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="datefin">
+					<subreportParameterExpression><![CDATA[$P{datefin}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="orderno">
+					<subreportParameterExpression><![CDATA[$F{orderno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="contribuyenteID">
+					<subreportParameterExpression><![CDATA[$P{contribuyenteID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="dateini">
+					<subreportParameterExpression><![CDATA[$P{dateini}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="total" toVariable="totalPase" calculation="Sum"/>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subrpte_estado_contribuyente.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="37">
+			<line>
+				<reportElement uuid="994c9efb-cc3a-48f3-a618-b4bfef010132" x="13" y="26" width="547" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="a747c7d5-4cde-4133-b80a-7f9375b42223" x="261" y="4" width="63" height="14">
+					<printWhenExpression><![CDATA[$F{transno} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fromstkloc}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="1f105cab-85b2-467f-a9e0-82dea503487c" x="490" y="5" width="82" height="13">
+					<printWhenExpression><![CDATA[$F{transno} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{abono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c76db936-7ea6-4336-afca-e696fb4deb4d" x="156" y="4" width="105" height="14">
+					<printWhenExpression><![CDATA[$F{transno} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="efb4127e-8649-44ff-bcbd-683339126bd0" x="83" y="4" width="73" height="14">
+					<printWhenExpression><![CDATA[$F{transno} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{recibo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2e4c2fe8-39e6-4140-8339-9acd89f0b13e" x="2" y="4" width="81" height="14">
+					<printWhenExpression><![CDATA[$F{transno} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="60" splitType="Immediate">
+			<textField>
+				<reportElement uuid="27286925-f639-44ec-b790-0df27e44aee7" x="376" y="35" width="88" height="20">
+					<printWhenExpression><![CDATA[!$V{REPORT_COUNT}.equals( 0 )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TOTAL:  "]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement uuid="2689c3e6-bcee-459b-9204-2f803859277a" x="464" y="35" width="108" height="20">
+					<printWhenExpression><![CDATA[!$V{REPORT_COUNT}.equals( 0 )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{totalPase} - $V{total} ).round(2)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="17fa393e-0a3a-4468-b706-4697f4deacd7" x="2" y="0" width="569" height="35">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT}.equals( 0 )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[("No se encontro información para las fechas: ").toUpperCase()+"\nDEL "+$P{fechaInicio}+"\n AL "+$P{fechaFin}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

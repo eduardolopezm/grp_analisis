@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="conceptos33" pageWidth="572" pageHeight="792" columnWidth="570" leftMargin="1" rightMargin="1" topMargin="1" bottomMargin="1" uuid="4a5b8a8e-8d40-454a-9d5b-2f9c33df434b">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="comprobante"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="352"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.default.font.size" value="8"/>
+	<property name="net.sf.jasperreports.default.font.name" value="SansSerif"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="TYPE" class="java.lang.Integer"/>
+	<parameter name="NOMBRE" class="java.lang.String"/>
+	<parameter name="facturacliente" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<queryString language="xPath">
+		<![CDATA[/Comprobante/Conceptos/Concepto]]>
+	</queryString>
+	<field name="Cantidad" class="java.lang.String">
+		<fieldDescription><![CDATA[@Cantidad]]></fieldDescription>
+	</field>
+	<field name="ClaveProdServ" class="java.lang.String">
+		<fieldDescription><![CDATA[@ClaveProdServ]]></fieldDescription>
+	</field>
+	<field name="ClaveUnidad" class="java.lang.String">
+		<fieldDescription><![CDATA[@ClaveUnidad]]></fieldDescription>
+	</field>
+	<field name="Descuento" class="java.lang.String">
+		<fieldDescription><![CDATA[@Descuento]]></fieldDescription>
+	</field>
+	<field name="almacen" class="java.lang.String">
+		<fieldDescription><![CDATA[@almacen]]></fieldDescription>
+	</field>
+	<field name="cantidad" class="java.lang.String">
+		<fieldDescription><![CDATA[@cantidad]]></fieldDescription>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[@descripcion]]></fieldDescription>
+	</field>
+	<field name="descuento1" class="java.lang.String">
+		<fieldDescription><![CDATA[@descuento1]]></fieldDescription>
+	</field>
+	<field name="descuento2" class="java.lang.String">
+		<fieldDescription><![CDATA[@descuento2]]></fieldDescription>
+	</field>
+	<field name="descuento3" class="java.lang.String">
+		<fieldDescription><![CDATA[@descuento3]]></fieldDescription>
+	</field>
+	<field name="emision" class="java.lang.String">
+		<fieldDescription><![CDATA[@emision]]></fieldDescription>
+	</field>
+	<field name="importe" class="java.lang.String">
+		<fieldDescription><![CDATA[@importe]]></fieldDescription>
+	</field>
+	<field name="importeAjuste" class="java.lang.String">
+		<fieldDescription><![CDATA[@importeAjuste]]></fieldDescription>
+	</field>
+	<field name="importeDescuentos" class="java.lang.String">
+		<fieldDescription><![CDATA[@importeDescuentos]]></fieldDescription>
+	</field>
+	<field name="noIdentificacion" class="java.lang.String">
+		<fieldDescription><![CDATA[@noIdentificacion]]></fieldDescription>
+	</field>
+	<field name="unidad" class="java.lang.String">
+		<fieldDescription><![CDATA[@unidad]]></fieldDescription>
+	</field>
+	<field name="valorUnitario" class="java.lang.String">
+		<fieldDescription><![CDATA[@ValorUnitario]]></fieldDescription>
+	</field>
+	<field name="showalmacen" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/InfoImpresion/Descripciones[@etiqueta="SHOW_ALMACEN"]/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="HIDE_CONCEPT_NEGATIVE" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/InfoImpresion/Descripciones[@etiqueta="HIDE_CONCEPT_NEGATIVE"]/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="hideListaPrecios" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/InfoImpresion/Descripciones[@etiqueta="HIDE_LISTAPRECIOS"]/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="trabajador" class="java.lang.String"/>
+	<field name="Medidas" class="java.lang.String"/>
+	<field name="AJUSTE_DECIMALES" class="java.lang.String"/>
+	<field name="Impuesto" class="java.lang.String">
+		<fieldDescription><![CDATA[Impuestos/Traslados/Traslado/@Impuesto]]></fieldDescription>
+	</field>
+	<field name="ImpTipoFactor" class="java.lang.String">
+		<fieldDescription><![CDATA[Impuestos/Traslados/Traslado/@TipoFactor]]></fieldDescription>
+	</field>
+	<field name="ImpImporte" class="java.lang.String">
+		<fieldDescription><![CDATA[Impuestos/Traslados/Traslado/@Importe]]></fieldDescription>
+	</field>
+	<columnHeader>
+		<band height="13" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="af316d9a-c932-433a-a211-34adb42eaa44" x="0" y="1" width="25" height="9" forecolor="#062D7C">
+					<property name="net.sf.jasperreports.default.font.size" value="8"/>
+					<property name="net.sf.jasperreports.default.font.name" value="SansSerif"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="6" isBold="true" pdfEncoding=""/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cant."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="b2189761-7ea5-456c-b383-ccd812ef5952" x="27" y="1" width="35" height="10" forecolor="#062D7C">
+					<printWhenExpression><![CDATA[$P{TYPE} != 12]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Codigo"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="afb2b428-6702-465b-9206-3ad4e95f1f51" x="123" y="1" width="151" height="10" forecolor="#062D7C"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{showalmacen}!= null?
+    (Double.parseDouble($F{showalmacen})== 1?
+    "Almacen\t Descripción":"Descripción"):"Descripción")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="5676ed06-ab5b-43fd-98fa-f7f71acda113" x="321" y="1" width="30" height="10" forecolor="#062D7C">
+					<printWhenExpression><![CDATA[$P{TYPE} != 12]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{facturacliente} == 1 && $P{NOMBRE} == "Recibo" ? "" : "Unidad Medida"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="fd1d2335-2bc1-433f-906b-367c7768c8b8" x="351" y="0" width="39" height="10" forecolor="#062D7C"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Precio Unitario "]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="175c4e05-5285-4c36-b2c7-d5d20e07751e" x="507" y="1" width="51" height="10" forecolor="#062D7C"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Importe"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="651a18ed-bff3-4320-99f8-4ea427c989f0" positionType="Float" x="0" y="11" width="572" height="1" forecolor="#999999"/>
+			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="8568bf3d-4f09-4ae9-b0ea-25e45bd7b727" x="69" y="1" width="37" height="10" forecolor="#062D7C"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Clave SAT"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="fb791c36-aaae-4a1e-b9a8-b8ee78a64469" x="293" y="1" width="29" height="10" forecolor="#062D7C"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Clave U. SAT"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="b3f87f27-7e30-4cb9-bc33-d61c90b0a62d" x="427" y="0" width="38" height="10" forecolor="#062D7C"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="ec62289f-b397-40a6-9d4e-c0d8874eda1a" x="467" y="0" width="38" height="10" forecolor="#062D7C"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="a310a758-105f-465c-bf9d-566b59add26f" x="390" y="0" width="37" height="10" forecolor="#062D7C">
+					<printWhenExpression><![CDATA[$F{Descuento} != null && !$F{Descuento}.isEmpty() && $F{Descuento} !="0.0" || Double.parseDouble($F{Descuento})>0.00]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<frame>
+				<reportElement uuid="95908952-0317-4f91-b90d-514226fc1a83" stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="1" width="569" height="9" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<textField isStretchWithOverflow="true" pattern="#,##0.####" isBlankWhenNull="true">
+					<reportElement uuid="21bb83e2-f4dc-4c05-b59c-5de9885c3a45" x="0" y="1" width="25" height="8">
+						<printWhenExpression><![CDATA[($F{HIDE_CONCEPT_NEGATIVE}!="1" ? true : (Double.parseDouble($F{cantidad})>0 ? true : false ))]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font fontName="SansSerif" size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{noIdentificacion}!= "AM" ? Double.parseDouble($F{cantidad}) :""]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement uuid="2fd9b4a3-c358-4d5f-acdb-440f8b89e849" x="25" y="2" width="37" height="8">
+					<printWhenExpression><![CDATA[$P{TYPE} != 12]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{noIdentificacion} != "AM" ? $F{noIdentificacion} : ""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="dac10866-c483-4e91-a816-a361c03a23a2" x="321" y="2" width="30" height="8">
+					<printWhenExpression><![CDATA[$P{TYPE} != 12]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{noIdentificacion} != "AM" ?($P{facturacliente} == 1 && $P{NOMBRE} == "Recibo" ? "" : $F{unidad} == "NO APLICA" || $F{unidad} == "unidad" ? "N/A" : $F{unidad}):""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="9b3dbf06-ab18-4339-924e-88d4d4d7602d" x="65" y="2" width="37" height="8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{noIdentificacion} != "AM" ? $F{ClaveProdServ} : ""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00##" isBlankWhenNull="true">
+				<reportElement uuid="daf79f1f-b52d-45bd-b35b-abdbd6583646" x="507" y="2" width="61" height="8">
+					<printWhenExpression><![CDATA[$F{AJUSTE_DECIMALES}!="1"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{noIdentificacion} != "AM" ? (($F{importe}!=null && $F{importeAjuste}!= null ? Double.parseDouble($F{importeAjuste}) : Double.parseDouble($F{importe}))) : ""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00##" isBlankWhenNull="true">
+				<reportElement uuid="0193ad0a-976f-4310-85ae-2404f86235c5" x="508" y="2" width="60" height="8">
+					<printWhenExpression><![CDATA[$F{AJUSTE_DECIMALES}=="1"]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{noIdentificacion} != "AM" ? (($F{importe}!=null && !$F{importe}.isEmpty() ? Double.parseDouble($F{importe}):Double.parseDouble($F{importe}))) : ""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="787be91a-c5f6-4a0e-b1e6-1055dfbd0da6" x="295" y="2" width="27" height="8"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{noIdentificacion} != "AM" ? $F{ClaveUnidad} : ""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0.0000;-###0.0000" isBlankWhenNull="true">
+				<reportElement uuid="b0b3d2ab-e8dd-4534-9a56-e858837318b9" x="427" y="2" width="38" height="8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="ac4c6117-b53f-489b-b849-fd906de3f1ab" x="467" y="2" width="38" height="8"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="efd40b68-2155-4825-a1b6-fcd3bc9516a2" x="351" y="2" width="39" height="8">
+					<printWhenExpression><![CDATA[($F{HIDE_CONCEPT_NEGATIVE}!="1" ? true : (Double.parseDouble($F{valorUnitario})>0.0 ? true : false ))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Double.parseDouble($F{valorUnitario})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="bb5a5469-55a5-4c32-b9ba-1b418dbb478f" x="392" y="2" width="33" height="8">
+					<printWhenExpression><![CDATA[$F{Descuento} != null && !$F{Descuento}.isEmpty() || Double.parseDouble($F{Descuento})>0.00]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="beb67785-76de-498f-8e2c-3a86ef35855f" x="102" y="2" width="189" height="8" isPrintWhenDetailOverflows="true"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{noIdentificacion} != "AM" ?
+( ($F{showalmacen}!= null?
+    (Double.parseDouble($F{showalmacen})== 1?
+    $F{almacen}+"\t":""):"")  + ( $F{hideListaPrecios} != "1" ? $F{descripcion}
+        + ($F{trabajador}== null || $F{trabajador} == "" || $F{trabajador} == "null" || $F{trabajador}.isEmpty() ? "" : " (T: "+ $F{trabajador} + " ) ")
+        + ($F{Medidas}== null || $F{Medidas} == "" || $F{Medidas} == "null" || $F{Medidas}.isEmpty() ? "" : " "+$F{Medidas})
+        : $F{descripcion}.replace("(","\n").replace(")","").replace(" P2","").replace(" P3","").replace(" P4","").replace(" P5","").replace(" PL","").replace(" PM","").replace(" PR","")
+        + ($F{trabajador}== null || $F{trabajador} == "" || $F{trabajador} == "null" || $F{trabajador}.isEmpty() ? "" : " (T: "+ $F{trabajador} + " ) ")
+        +  ($F{Medidas}== null || $F{Medidas} == "" || $F{Medidas} == "null" || $F{Medidas}.isEmpty() ? "" : " "+$F{Medidas})
+
+     )  )
+
+: ""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptestadoanaliticodelactivo_subreport1" language="groovy" pageWidth="570" pageHeight="802" columnWidth="570" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="45fef591-010a-445b-95b5-9421d2d648ab">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="TituloReporte" class="java.lang.String">
+		<defaultValueExpression><![CDATA["nada"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Anio" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2018"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Users/eloypm/ap_grp_desarrollo/ap_grp_de/jasper/conac/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tagref" class="java.lang.String">
+		<defaultValueExpression><![CDATA["I6L"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ue" class="java.lang.String">
+		<defaultValueExpression><![CDATA["09"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechainicialnew" class="java.lang.String"/>
+	<parameter name="fechafinalnew" class="java.lang.String"/>
+	<parameter name="usuario" class="java.lang.String">
+		<defaultValueExpression><![CDATA[desarrollo]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+		config_reportes_.valor as cuenta_mayor,chartmaster1.accountcode,
+		COALESCE(dtSaldoInicial.saldoInicial,'0') as PERIODO1,
+		COALESCE(dtSaldoFinal.saldoFinal, '0') as PERIODO2,
+		0 as PERIODO3
+FROM tb_cat_reportes_conac tb_c
+LEFT JOIN config_reportes_ ON tb_c.ln_reporte= config_reportes_.reporte
+LEFT JOIN chartmaster chartmaster1  on  config_reportes_.valor = chartmaster1.accountcode
+LEFT JOIN (SELECT SUBSTRING_INDEX(gltrans.account, '.', 3) as account,
+			        SUM(gltrans.amount) AS saldoInicial
+                    FROM  gltrans
+                    INNER JOIN sec_unegsxuser ON gltrans.tag = sec_unegsxuser.tagref AND sec_unegsxuser.userid = $P{usuario}
+					INNER JOIN (SELECT chartmaster.accountcode  AS valor
+      					FROM tb_cat_reportes_conac tb_c
+      					INNER JOIN config_reportes_ ON tb_c.ln_reporte= config_reportes_.reporte
+      					INNER JOIN chartmaster on config_reportes_.valor = chartmaster.accountcode  AND chartmaster.nu_nivel=3
+      					WHERE id_nu_reportes_conac = '9'
+      					GROUP BY chartmaster.accountcode
+      					) configReport ON SUBSTRING_INDEX(gltrans.account, '.', '3') = configReport.valor
+                    WHERE YEAR(gltrans.trandate) = year($P{fechafinalnew})
+                    	and gltrans.trandate <= LAST_DAY($P{fechafinalnew})
+                    	AND gltrans.type = 0
+                    	AND CASE WHEN $P{tagref} = '' THEN 1 = 1 ELSE gltrans.tag IN ('$P!{tagref}') END
+                    	AND CASE WHEN $P{ue} = '' THEN 1 = 1 ELSE gltrans.ln_ue IN ('$P!{ue}') END
+                        AND gltrans.account != ''
+                        AND gltrans.posted = 1
+                        AND gltrans.periodno not like '%.5'
+                    group by SUBSTRING_INDEX(account, '.', 3)) AS dtSaldoInicial
+           ON chartmaster1.accountcode = dtSaldoInicial.account
+LEFT JOIN (SELECT SUBSTRING_INDEX(gltrans.account, '.', 3) as account,
+			        SUM(gltrans.amount) AS saldoFinal
+                    FROM  gltrans
+                    INNER JOIN sec_unegsxuser ON gltrans.tag = sec_unegsxuser.tagref AND sec_unegsxuser.userid = $P{usuario}
+					INNER JOIN (SELECT chartmaster.accountcode  AS valor
+      					FROM tb_cat_reportes_conac tb_c
+      					INNER JOIN config_reportes_ ON tb_c.ln_reporte= config_reportes_.reporte
+      					INNER JOIN chartmaster on config_reportes_.valor = chartmaster.accountcode  AND chartmaster.nu_nivel=3
+      					WHERE id_nu_reportes_conac = '9'
+      					GROUP BY chartmaster.accountcode
+      					) configReport ON SUBSTRING_INDEX(gltrans.account, '.', '3') = configReport.valor
+                    WHERE YEAR(gltrans.trandate) = year($P{fechainicialnew})
+                    	and gltrans.trandate <= $P{fechafinalnew}
+                    	AND CASE WHEN $P{tagref} = '' THEN 1 = 1 ELSE gltrans.tag IN ('$P!{tagref}') END
+                    	AND CASE WHEN $P{ue} = '' THEN 1 = 1 ELSE gltrans.ln_ue IN ('$P!{ue}') END
+                        AND gltrans.account != ''
+                        AND gltrans.posted = 1
+                        AND gltrans.periodno not like '%.5'
+                    group by SUBSTRING_INDEX(account, '.', 3)) AS dtSaldoFinal
+              ON chartmaster1.accountcode = dtSaldoFinal.account
+WHERE   tb_c.id_nu_reportes_conac = '9' AND tb_c.ind_activo=1
+GROUP BY
+			tb_c.id_nu_reportes_conac,
+			tb_c.ln_reporte,
+			config_reportes_.valor,
+			chartmaster1.accountname;]]>
+	</queryString>
+	<field name="cuenta_mayor" class="java.lang.String"/>
+	<field name="PERIODO1" class="java.lang.Double"/>
+	<field name="PERIODO2" class="java.lang.Double"/>
+	<field name="PERIODO3" class="java.lang.Double"/>
+	<variable name="totalperiodo1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{PERIODO1}]]></variableExpression>
+	</variable>
+	<variable name="totalperiodo2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{PERIODO2}]]></variableExpression>
+	</variable>
+	<summary>
+		<band height="50">
+			<textField>
+				<reportElement uuid="c0cfeddf-041f-4e32-99c7-2bb8221b9a29" x="0" y="0" width="112" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TituloReporte}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,##0.00">
+				<reportElement uuid="560e0f93-b9b8-4a16-bff4-9bcb58a70f50" x="378" y="0" width="96" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalperiodo1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,##0.00">
+				<reportElement uuid="6f59f181-63dc-4e27-9457-5d2deca45f73" x="474" y="0" width="96" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalperiodo2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2fc91372-1cd1-4d10-acb7-5977d8e0961a" x="0" y="28" width="227" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Total Deuda y Otros Pasivos]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="###,##0.00">
+				<reportElement uuid="40d504ae-2e2f-41ff-8d0a-f1b770602960" stretchType="RelativeToBandHeight" x="378" y="28" width="96" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalperiodo1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###,##0.00">
+				<reportElement uuid="830da563-4a23-4321-b731-11539ae7c585" stretchType="RelativeToBandHeight" x="474" y="28" width="96" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalperiodo2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

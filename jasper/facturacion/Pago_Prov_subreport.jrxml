@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pago_Prov_subreport" language="groovy" pageWidth="752" pageHeight="572" orientation="Landscape" columnWidth="752" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="dd29107b-f4ac-4c56-873c-3e190c1b2ddf">
+	<property name="ireport.zoom" value="8.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="xPath">
+		<![CDATA[/Retenciones]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="50">
+			<rectangle radius="10">
+				<reportElement uuid="2778618e-ff11-419f-b789-8b40f5a334e3" x="0" y="0" width="751" height="50" forecolor="#CCCCCC" backcolor="#05669C"/>
+			</rectangle>
+			<line>
+				<reportElement uuid="ba72baae-21ca-4e30-ac23-c54cf8c18801" x="0" y="37" width="1" height="13" forecolor="#CCCCCC"/>
+			</line>
+			<rectangle>
+				<reportElement uuid="3d878acb-2de4-4455-bf16-59553a265ad4" x="1" y="37" width="750" height="13" forecolor="#05669C" backcolor="#05669C"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="9d04939a-a6d9-42a2-a50d-a48dfb3bbfae" x="751" y="30" width="1" height="20" forecolor="#CCCCCC" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="dd054d67-6055-4bb5-98fe-508a421c669f" x="752" y="30" width="1" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="641108b0-536f-43fd-9ac4-0f075629e2c0" x="-1" y="30" width="1" height="20" forecolor="#CCCCCC" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="06307126-44ab-4bcf-b0e2-d2c02cf452a4" x="-2" y="30" width="1" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</rectangle>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="50"/>
+	</detail>
+</jasperReport>

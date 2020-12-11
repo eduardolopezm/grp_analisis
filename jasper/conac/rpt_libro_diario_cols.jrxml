@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_libro_diario_cols" language="groovy" pageWidth="260" pageHeight="54" orientation="Landscape" columnWidth="260" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="8e40a0a5-1c53-4801-b0d3-7722a6c53f29">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT 1]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="54">
+			<staticText>
+				<reportElement uuid="19d23e63-e486-4ce4-b740-992d0085f35e" mode="Opaque" x="0" y="0" width="260" height="18" forecolor="#FFFFFF" backcolor="#1B693F"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CÓDIGO Y NOMBRE DE LA CUENTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7f8e5c26-918f-4876-bc77-de772cb202c2" mode="Opaque" x="0" y="18" width="130" height="18" forecolor="#FFFFFF" backcolor="#1B693F"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CONTABLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0e1978c5-2fcd-478f-8b9b-e1a7a4ef9795" mode="Opaque" x="0" y="36" width="60" height="18" forecolor="#FFFFFF" backcolor="#1B693F"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CÓDIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e1f77e5e-d850-4855-b66e-cdf5c53e7681" mode="Opaque" x="60" y="36" width="70" height="18" forecolor="#FFFFFF" backcolor="#1B693F"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NOMBRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c01d3090-c51e-418a-ba40-f3962ba8c9ba" mode="Opaque" x="130" y="18" width="130" height="18" forecolor="#FFFFFF" backcolor="#1B693F"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[PRESUPUESTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="138c2c10-4b2e-4444-a33a-6a34489f3dd7" mode="Opaque" x="130" y="36" width="60" height="18" forecolor="#FFFFFF" backcolor="#1B693F"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CÓDIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b26b130f-2b78-4f7b-8d54-1c47f2c83d49" mode="Opaque" x="190" y="36" width="70" height="18" forecolor="#FFFFFF" backcolor="#1B693F"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NOMBRE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+</jasperReport>

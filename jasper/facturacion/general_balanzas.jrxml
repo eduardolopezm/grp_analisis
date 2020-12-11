@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="general_balanzas" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="72957b8e-2701-4ae8-9c93-dd44b1b4be17">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="38"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/eduardoramirez/git/erpdistribucionv2XV/jasper/facturacion/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LOGO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Users/jesusvargas2/git/erpdistribucionv2_03/companies/erpplacacentro_DES/logo.jpg"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="xPath">
+		<![CDATA[/Balanza]]>
+	</queryString>
+	<field name="Anio" class="java.lang.String">
+		<fieldDescription><![CDATA[@Anio]]></fieldDescription>
+	</field>
+	<field name="Mes" class="java.lang.String">
+		<fieldDescription><![CDATA[@Mes]]></fieldDescription>
+	</field>
+	<field name="RFC" class="java.lang.String">
+		<fieldDescription><![CDATA[@RFC]]></fieldDescription>
+	</field>
+	<field name="TipoEnvio" class="java.lang.String">
+		<fieldDescription><![CDATA[@TipoEnvio]]></fieldDescription>
+	</field>
+	<field name="Legalname" class="java.lang.String">
+		<fieldDescription><![CDATA[@Legalname]]></fieldDescription>
+	</field>
+	<pageHeader>
+		<band height="124" splitType="Stretch">
+			<image onErrorType="Blank">
+				<reportElement uuid="1884b8c9-39d8-4942-bb93-25b28f17f384" x="4" y="3" width="121" height="108"/>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="a15f75f7-6dca-4478-92c2-538212efb89e" x="236" y="1" width="191" height="20" forecolor="#666666"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Balanza de Comprobación]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="1d92dbf6-e0ed-40ab-a06f-64ed9d2dabed" x="236" y="21" width="191" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Legalname}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="4a816711-943e-4dcf-9314-29e5242c6524" mode="Opaque" x="156" y="81" width="82" height="15" backcolor="#EEEEEE"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RFC:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c81649a6-1eed-47d6-8f52-dd512101f92d" mode="Opaque" x="156" y="96" width="82" height="13" forecolor="#000000" backcolor="#EEEEEE"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Mes:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6443afbf-6b61-4187-8f8b-8a205cb383ca" mode="Opaque" x="156" y="109" width="82" height="13" backcolor="#EEEEEE"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Año:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="0345ed53-a821-4959-bc25-ae8021999d0a" x="239" y="81" width="152" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RFC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="253efcc2-9884-43f1-8457-354aa524199e" x="239" y="96" width="152" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Mes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8993d4bf-3c7c-41c0-aae4-93c567d6c944" x="239" y="109" width="152" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Anio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ee1027db-01c9-4f17-b356-d82a6e88dccf" x="133" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{SUBREPORT_DIR}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="40">
+			<subreport>
+				<reportElement uuid="c32911d8-ba8b-467c-90ae-4c331ece9c80" x="-12" y="-1" width="571" height="38"/>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)
+$P{REPORT_DATA_SOURCE}).subDataSource("/Balanza/Ctas")]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "conceptos_balanza.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

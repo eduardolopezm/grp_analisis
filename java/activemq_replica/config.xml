@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    
+    <!-- Definir el siguiente tipo: central | satelite -->
+    <type>satelite</type>
+    <server>erpdesarrollo.portalito.com</server>
+    <port>61616</port>
+    <user>admin</user>
+    <pass>admin</pass>
+    <AppId>central</AppId>
+    <SiteId>prueba</SiteId>
+    <SiteName>prueba</SiteName>
+    <!-- satelite -->
+    <!--<unidad>12077</unidad>-->
+    <!-- central -->
+    <unidad>12077</unidad>
+    
+    <log4j>/Users/rubenmeza/git/erpdistribucionv2/java/activemq_replica/log4j.xml</log4j>
+
+	<!-- Nodos de confuguracion para la notificacion de conexion de central con embarcacion -->
+  	<!-- true or false -->
+    <EnableHardBeep>true</EnableHardBeep>
+    <HardBeepQueueCS>HardBeep - REGE CS</HardBeepQueueCS>
+    <HardBeepQueueSC>HardBeep - REGE SC</HardBeepQueueSC>
+    <threadSleepTimeHardBeep>10000</threadSleepTimeHardBeep>
+    
+    <threadSleepTime>2000</threadSleepTime>
+
+    <msgtxtPath>/Users/rubenmeza/Desktop/</msgtxtPath>
+    <onErrorSaveFile>1</onErrorSaveFile>
+    
+    <mailNotifierPage>http://hidalgo.portalito.com/erpgobierno/queueNotifier.php</mailNotifierPage>
+    <consumerMaximumRedeliveries>2</consumerMaximumRedeliveries>
+    <Driver>com.mysql.jdbc.Driver</Driver>
+    <!-- Satelite -->
+    <!--<UrlDriver><![CDATA[jdbc:mysql://52.26.114.230/erpcotemar?zeroDateTimeBehavior=convertToNull&user=desarrollo&password=p0rtali70s]]></UrlDriver>-->
+	<!-- Central -->
+	<UrlDriver><![CDATA[jdbc:mysql://erpdesarrollo.portalito.com/erpcotemar_DES?zeroDateTimeBehavior=convertToNull&user=desarrollo&password=p0rtAli70s]]></UrlDriver> 
+</config>

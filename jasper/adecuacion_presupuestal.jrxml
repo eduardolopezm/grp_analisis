@@ -1,0 +1,1095 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="formato_entrega_solicitud" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7be21170-4d58-4d46-be66-992c50d4e69a">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "estiloTablaJasper.jrtx"]]></template>
+	<style name="style1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#F2F2F2" fill="Solid"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="transno" class="java.lang.String"/>
+	<parameter name="type" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+DISTINCT
+(
+SELECT CASE WHEN ABS(SUM(log.qty)) <> '' THEN ABS(SUM(log.qty)) ELSE 0 END as qty
+FROM chartdetailsbudgetlog log
+JOIN periods ON periods.periodno = log.period
+WHERE
+log.type = chartdetailsbudgetlog.type
+AND log.transno = chartdetailsbudgetlog.transno
+AND log.cvefrom = chartdetailsbudgetlog.cvefrom
+AND log.nu_afectacion IS NOT NULL
+AND CASE WHEN chartdetailsbudgetlog.qty < 0 THEN log.nu_tipo_movimiento = 256 ELSE log.nu_tipo_movimiento = 257 END
+) as 'Total',
+(
+SELECT CASE WHEN ABS(SUM(log.qty)) <> '' THEN ABS(SUM(log.qty)) ELSE 0 END as qty
+FROM chartdetailsbudgetlog log
+JOIN periods ON periods.periodno = log.period
+WHERE
+log.type = chartdetailsbudgetlog.type
+AND log.transno = chartdetailsbudgetlog.transno
+AND log.cvefrom = chartdetailsbudgetlog.cvefrom
+AND log.nu_afectacion IS NOT NULL
+AND MONTH(periods.lastdate_in_period) = 1
+AND CASE WHEN chartdetailsbudgetlog.qty < 0 THEN log.nu_tipo_movimiento = 256 ELSE log.nu_tipo_movimiento = 257 END
+) as 'Enero',
+(
+SELECT CASE WHEN ABS(SUM(log.qty)) <> '' THEN ABS(SUM(log.qty)) ELSE 0 END as qty
+FROM chartdetailsbudgetlog log
+JOIN periods ON periods.periodno = log.period
+WHERE
+log.type = chartdetailsbudgetlog.type
+AND log.transno = chartdetailsbudgetlog.transno
+AND log.cvefrom = chartdetailsbudgetlog.cvefrom
+AND log.nu_afectacion IS NOT NULL
+AND MONTH(periods.lastdate_in_period) = 2
+AND CASE WHEN chartdetailsbudgetlog.qty < 0 THEN log.nu_tipo_movimiento = 256 ELSE log.nu_tipo_movimiento = 257 END
+) as 'Febrero',
+(
+SELECT CASE WHEN ABS(SUM(log.qty)) <> '' THEN ABS(SUM(log.qty)) ELSE 0 END as qty
+FROM chartdetailsbudgetlog log
+JOIN periods ON periods.periodno = log.period
+WHERE
+log.type = chartdetailsbudgetlog.type
+AND log.transno = chartdetailsbudgetlog.transno
+AND log.cvefrom = chartdetailsbudgetlog.cvefrom
+AND log.nu_afectacion IS NOT NULL
+AND MONTH(periods.lastdate_in_period) = 3
+AND CASE WHEN chartdetailsbudgetlog.qty < 0 THEN log.nu_tipo_movimiento = 256 ELSE log.nu_tipo_movimiento = 257 END
+) as 'Marzo',
+(
+SELECT CASE WHEN ABS(SUM(log.qty)) <> '' THEN ABS(SUM(log.qty)) ELSE 0 END as qty
+FROM chartdetailsbudgetlog log
+JOIN periods ON periods.periodno = log.period
+WHERE
+log.type = chartdetailsbudgetlog.type
+AND log.transno = chartdetailsbudgetlog.transno
+AND log.cvefrom = chartdetailsbudgetlog.cvefrom
+AND log.nu_afectacion IS NOT NULL
+AND MONTH(periods.lastdate_in_period) = 4
+AND CASE WHEN chartdetailsbudgetlog.qty < 0 THEN log.nu_tipo_movimiento = 256 ELSE log.nu_tipo_movimiento = 257 END
+) as 'Abril',
+(
+SELECT CASE WHEN ABS(SUM(log.qty)) <> '' THEN ABS(SUM(log.qty)) ELSE 0 END as qty
+FROM chartdetailsbudgetlog log
+JOIN periods ON periods.periodno = log.period
+WHERE
+log.type = chartdetailsbudgetlog.type
+AND log.transno = chartdetailsbudgetlog.transno
+AND log.cvefrom = chartdetailsbudgetlog.cvefrom
+AND log.nu_afectacion IS NOT NULL
+AND MONTH(periods.lastdate_in_period) = 5
+AND CASE WHEN chartdetailsbudgetlog.qty < 0 THEN log.nu_tipo_movimiento = 256 ELSE log.nu_tipo_movimiento = 257 END
+) as 'Mayo',
+(
+SELECT CASE WHEN ABS(SUM(log.qty)) <> '' THEN ABS(SUM(log.qty)) ELSE 0 END as qty
+FROM chartdetailsbudgetlog log
+JOIN periods ON periods.periodno = log.period
+WHERE
+log.type = chartdetailsbudgetlog.type
+AND log.transno = chartdetailsbudgetlog.transno
+AND log.cvefrom = chartdetailsbudgetlog.cvefrom
+AND log.nu_afectacion IS NOT NULL
+AND MONTH(periods.lastdate_in_period) = 6
+AND CASE WHEN chartdetailsbudgetlog.qty < 0 THEN log.nu_tipo_movimiento = 256 ELSE log.nu_tipo_movimiento = 257 END
+) as 'Junio',
+(
+SELECT CASE WHEN ABS(SUM(log.qty)) <> '' THEN ABS(SUM(log.qty)) ELSE 0 END as qty
+FROM chartdetailsbudgetlog log
+JOIN periods ON periods.periodno = log.period
+WHERE
+log.type = chartdetailsbudgetlog.type
+AND log.transno = chartdetailsbudgetlog.transno
+AND log.cvefrom = chartdetailsbudgetlog.cvefrom
+AND log.nu_afectacion IS NOT NULL
+AND MONTH(periods.lastdate_in_period) = 7
+AND CASE WHEN chartdetailsbudgetlog.qty < 0 THEN log.nu_tipo_movimiento = 256 ELSE log.nu_tipo_movimiento = 257 END
+) as 'Julio',
+(
+SELECT CASE WHEN ABS(SUM(log.qty)) <> '' THEN ABS(SUM(log.qty)) ELSE 0 END as qty
+FROM chartdetailsbudgetlog log
+JOIN periods ON periods.periodno = log.period
+WHERE
+log.type = chartdetailsbudgetlog.type
+AND log.transno = chartdetailsbudgetlog.transno
+AND log.cvefrom = chartdetailsbudgetlog.cvefrom
+AND log.nu_afectacion IS NOT NULL
+AND MONTH(periods.lastdate_in_period) = 8
+AND CASE WHEN chartdetailsbudgetlog.qty < 0 THEN log.nu_tipo_movimiento = 256 ELSE log.nu_tipo_movimiento = 257 END
+) as 'Agosto',
+(
+SELECT CASE WHEN ABS(SUM(log.qty)) <> '' THEN ABS(SUM(log.qty)) ELSE 0 END as qty
+FROM chartdetailsbudgetlog log
+JOIN periods ON periods.periodno = log.period
+WHERE
+log.type = chartdetailsbudgetlog.type
+AND log.transno = chartdetailsbudgetlog.transno
+AND log.cvefrom = chartdetailsbudgetlog.cvefrom
+AND log.nu_afectacion IS NOT NULL
+AND MONTH(periods.lastdate_in_period) = 9
+AND CASE WHEN chartdetailsbudgetlog.qty < 0 THEN log.nu_tipo_movimiento = 256 ELSE log.nu_tipo_movimiento = 257 END
+) as 'Septiembre',
+(
+SELECT CASE WHEN ABS(SUM(log.qty)) <> '' THEN ABS(SUM(log.qty)) ELSE 0 END as qty
+FROM chartdetailsbudgetlog log
+JOIN periods ON periods.periodno = log.period
+WHERE
+log.type = chartdetailsbudgetlog.type
+AND log.transno = chartdetailsbudgetlog.transno
+AND log.cvefrom = chartdetailsbudgetlog.cvefrom
+AND log.nu_afectacion IS NOT NULL
+AND MONTH(periods.lastdate_in_period) = 10
+AND CASE WHEN chartdetailsbudgetlog.qty < 0 THEN log.nu_tipo_movimiento = 256 ELSE log.nu_tipo_movimiento = 257 END
+) as 'Octubre',
+(
+SELECT CASE WHEN ABS(SUM(log.qty)) <> '' THEN ABS(SUM(log.qty)) ELSE 0 END as qty
+FROM chartdetailsbudgetlog log
+JOIN periods ON periods.periodno = log.period
+WHERE
+log.type = chartdetailsbudgetlog.type
+AND log.transno = chartdetailsbudgetlog.transno
+AND log.cvefrom = chartdetailsbudgetlog.cvefrom
+AND log.nu_afectacion IS NOT NULL
+AND MONTH(periods.lastdate_in_period) = 11
+AND CASE WHEN chartdetailsbudgetlog.qty < 0 THEN log.nu_tipo_movimiento = 256 ELSE log.nu_tipo_movimiento = 257 END
+) as 'Noviembre',
+(
+SELECT CASE WHEN ABS(SUM(log.qty)) <> '' THEN ABS(SUM(log.qty)) ELSE 0 END as qty
+FROM chartdetailsbudgetlog log
+JOIN periods ON periods.periodno = log.period
+WHERE
+log.type = chartdetailsbudgetlog.type
+AND log.transno = chartdetailsbudgetlog.transno
+AND log.cvefrom = chartdetailsbudgetlog.cvefrom
+AND log.nu_afectacion IS NOT NULL
+AND MONTH(periods.lastdate_in_period) = 12
+AND CASE WHEN chartdetailsbudgetlog.qty < 0 THEN log.nu_tipo_movimiento = 256 ELSE log.nu_tipo_movimiento = 257 END
+) as 'Diciembre',
+
+chartdetailsbudgetlog.type,
+chartdetailsbudgetlog.transno,
+chartdetailsbudgetlog.cvefrom,
+0 as qty,
+'chartdetailsbudgetlog.period' as period,
+DATE_FORMAT(chartdetailsbudgetlog.fecha_captura, '%d-%m-%Y') as fecha_captura,
+CONCAT(tags.tagref, ' - ', tags.tagname) as tagname,
+legalbusinessunit.legalname,
+DATE_FORMAT(periods.lastdate_in_period, '%Y') as anio,
+'cat_Months.mes' as mesName,
+www_users.realname,
+systypescat.typename,
+tb_botones_status.statusname,
+CASE WHEN ROUND((chartdetailsbudgetlog.qty), 2) < 0 THEN 'Reducción' ELSE 'Ampliación' END as tipoMov,
+chartdetailsbudgetlog.nu_afectacion,
+chartdetailsbudgetbytag.cve_ramo,
+chartdetailsbudgetlog.txt_justificacion,
+DATE_FORMAT(NOW(), '%d-%m-%Y') as fechaImpresion,
+DATE_FORMAT(NOW(), '%H:%i:%S') as horaImpresion,
+chartdetailsbudgetbytag.tagref,
+DATE_FORMAT(dtm_aplicacion, '%d-%m-%Y') as fechaAplicacion,
+CONCAT(tb_tipo_adecuacion.sn_clave, ' - ', tb_tipo_adecuacion.txt_descripcion) as nameAdecuacion,
+CONCAT(tb_tipo_solicitud.sn_clave, ' - ', tb_tipo_solicitud.txt_descripcion) as nameTipoSolicitud,
+chartdetailsbudgetbytag.anho
+FROM chartdetailsbudgetlog
+JOIN chartdetailsbudgetbytag ON chartdetailsbudgetbytag.accountcode = chartdetailsbudgetlog.cvefrom
+LEFT JOIN tags ON tags.tagref = chartdetailsbudgetlog.tagref
+LEFT JOIN legalbusinessunit ON legalbusinessunit.legalid = tags.legalid
+LEFT JOIN www_users ON www_users.userid = chartdetailsbudgetlog.userid
+LEFT JOIN periods ON periods.periodno = chartdetailsbudgetlog.period
+LEFT JOIN cat_Months ON cat_Months.u_mes = DATE_FORMAT(periods.lastdate_in_period, '%m')
+LEFT JOIN systypescat ON systypescat.typeid = chartdetailsbudgetlog.nu_tipo_movimiento
+LEFT JOIN tb_botones_status ON tb_botones_status.statusid = chartdetailsbudgetlog.estatus AND tb_botones_status.sn_funcion_id = '2263'
+LEFT JOIN tb_tipo_adecuacion ON tb_tipo_adecuacion.nu_adecuacion = chartdetailsbudgetlog.sn_adecuacion
+LEFT JOIN tb_tipo_solicitud ON tb_tipo_solicitud.nu_tipo_solicitud = chartdetailsbudgetlog.nu_tipo_solicitud
+WHERE
+chartdetailsbudgetlog.type = $P{type}
+AND chartdetailsbudgetlog.transno = $P{transno}
+AND chartdetailsbudgetlog.nu_afectacion IS NOT NULL
+ORDER BY chartdetailsbudgetlog.idmov ASC]]>
+	</queryString>
+	<field name="cvefrom" class="java.lang.String"/>
+	<field name="qty" class="java.lang.String"/>
+	<field name="period" class="java.lang.String"/>
+	<field name="tagname" class="java.lang.String"/>
+	<field name="legalname" class="java.lang.String"/>
+	<field name="mesName" class="java.lang.String"/>
+	<field name="realname" class="java.lang.String"/>
+	<field name="fecha_captura" class="java.lang.String"/>
+	<field name="statusname" class="java.lang.String"/>
+	<field name="tipoMov" class="java.lang.String"/>
+	<field name="nu_afectacion" class="java.lang.String"/>
+	<field name="cve_ramo" class="java.lang.String"/>
+	<field name="txt_justificacion" class="java.lang.String"/>
+	<field name="fechaImpresion" class="java.lang.String"/>
+	<field name="horaImpresion" class="java.lang.String"/>
+	<field name="Total" class="java.lang.Double"/>
+	<field name="Enero" class="java.lang.Double"/>
+	<field name="Febrero" class="java.lang.Double"/>
+	<field name="Marzo" class="java.lang.Double"/>
+	<field name="Abril" class="java.lang.Double"/>
+	<field name="Mayo" class="java.lang.Double"/>
+	<field name="Junio" class="java.lang.Double"/>
+	<field name="Julio" class="java.lang.Double"/>
+	<field name="Agosto" class="java.lang.Double"/>
+	<field name="Septiembre" class="java.lang.Double"/>
+	<field name="Octubre" class="java.lang.Double"/>
+	<field name="Noviembre" class="java.lang.Double"/>
+	<field name="Diciembre" class="java.lang.Double"/>
+	<field name="tagref" class="java.lang.String"/>
+	<field name="fechaAplicacion" class="java.lang.String"/>
+	<field name="nameAdecuacion" class="java.lang.String"/>
+	<field name="nameTipoSolicitud" class="java.lang.String"/>
+	<field name="anho" class="java.lang.String"/>
+	<variable name="totalAmpliaciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Ampliación" ? $F{Total} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalReducciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Reducción" ? $F{Total} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="eneroReducciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Reducción" ? $F{Enero} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="febreroReducciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Reducción" ? $F{Febrero} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="marzoReducciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Reducción" ? $F{Marzo} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="abrilReducciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Reducción" ? $F{Abril} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="mayoReducciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Reducción" ? $F{Mayo} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="junioReducciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Reducción" ? $F{Junio} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="julioReducciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Reducción" ? $F{Julio} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="agostoReducciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Reducción" ? $F{Agosto} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="septiembreReducciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Reducción" ? $F{Septiembre} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="octubreReducciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Reducción" ? $F{Octubre} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="noviembreReducciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Reducción" ? $F{Noviembre} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="diciembreReducciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Reducción" ? $F{Diciembre} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="eneroAmpliaciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Ampliación" ? $F{Enero} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="febreroAmpliaciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Ampliación" ? $F{Febrero} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="marzoAmpliaciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Ampliación" ? $F{Marzo} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="abrilAmpliaciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Ampliación" ? $F{Abril} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="mayoAmpliaciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Ampliación" ? $F{Mayo} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="junioAmpliaciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Ampliación" ? $F{Junio} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="julioAmpliaciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Ampliación" ? $F{Julio} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="agostoAmpliaciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Ampliación" ? $F{Agosto} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="septiembreAmpliaciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Ampliación" ? $F{Septiembre} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="octubreAmpliaciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Ampliación" ? $F{Octubre} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="noviembreAmpliaciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Ampliación" ? $F{Noviembre} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="diciembreAmpliaciones" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[($F{tipoMov} == "Ampliación" ? $F{Diciembre} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="112" splitType="Stretch">
+			<textField>
+				<reportElement uuid="1015e28f-2059-4c12-8fc9-20941b8762e1" x="143" y="0" width="422" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{legalname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b42fdad3-3b26-415f-846e-fdffe7989f13" x="143" y="31" width="422" height="29"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tagname}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="295705d6-b343-426b-a047-74d25d14262a" x="2" y="2" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="442d9478-5cf3-4e3d-ae0e-d7943dc8d7ea" x="581" y="15" width="67" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["FOLIO: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="838185f7-3e07-4826-9846-a9a180964a26" x="648" y="15" width="103" height="15"/>
+				<textElement textAlignment="Center">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{transno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4b4e75b6-e907-458e-acf6-db96542f2404" x="581" y="0" width="67" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Unidad CR: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1c211633-a689-4ba9-9130-16ee2ecded83" x="648" y="0" width="103" height="15"/>
+				<textElement textAlignment="Center">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tagref}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="08d46729-a071-40fc-a323-61b66393a2ce" x="648" y="30" width="103" height="15"/>
+				<textElement textAlignment="Center">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nameAdecuacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="dc5e3874-4af2-4676-93cf-2989235fa4fe" x="581" y="30" width="67" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Clase: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="72d6d1ad-ee76-4a10-b143-f13084c4ea0a" x="648" y="45" width="103" height="15"/>
+				<textElement textAlignment="Center">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nameTipoSolicitud}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e1b03f89-37ef-45d7-8b45-74c7b9b82482" x="581" y="45" width="67" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tipo de Solicitud: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8bd04817-171d-4478-bce8-29438b3eca94" x="581" y="61" width="67" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha Exp: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4de6f3b5-2e68-4b1d-86f1-5bf430dcfe28" x="648" y="61" width="103" height="15"/>
+				<textElement textAlignment="Center">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_captura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cc501aad-f9eb-4f66-9473-03871d78483e" x="581" y="76" width="67" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha Apl: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="77dcfa84-64eb-4ead-ba49-475cad912da8" x="648" y="76" width="103" height="15"/>
+				<textElement textAlignment="Center">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaAplicacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f13d2f81-e620-48f4-9915-5d0b203ea941" x="580" y="92" width="67" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Estatus: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d1bb60ad-e873-489b-98d0-6c8e31de7550" x="647" y="92" width="103" height="15"/>
+				<textElement textAlignment="Center">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{statusname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="84f898ee-08b1-4024-a035-6f740a21c010" x="143" y="61" width="422" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ADECUACIONES PRESUPUESTARIAS"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="952820d3-11a8-440e-8f3c-5e60409bd05c" x="143" y="81" width="422" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["EJERCICIO FISCAL: "+$F{anho}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="7" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="b6c39cc4-d132-4cb1-bbde-1701e4aa3180" style="th" x="82" y="0" width="211" height="33"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Clave Presupuestaria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="79333e30-4403-469e-ae8b-36492b71a882" style="th" x="30" y="0" width="52" height="33"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Tipo de Operación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="06be1f3d-0895-45be-bf90-ca43fa65beca" style="th" x="293" y="0" width="57" height="33"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Total Ampliación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d8020256-479c-4519-b1b9-09234d975d1d" style="th" x="350" y="0" width="57" height="33"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Total Reducción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="547ade49-90f1-4c91-b366-e84d6f242858" style="th" x="694" y="0" width="58" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Junio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4b97dde2-77eb-4404-9c1e-11ee7ba6e7d8" style="th" x="694" y="16" width="58" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Diciembre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c8a57bfd-0256-4a43-9224-32747825ae16" style="th" x="637" y="16" width="58" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Noviembre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5760fa4e-e32f-4f29-bb25-768216aa5877" style="th" x="637" y="0" width="58" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Mayo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ddf4fdb1-3c4e-46a1-a075-3c39cc3f50d5" style="th" x="580" y="16" width="58" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Octubre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ac731fd8-9c27-4874-b68e-f69ae0beb24a" style="th" x="580" y="0" width="58" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Abril]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="28342892-5f8c-4ca2-b65c-bfbf136a5b83" style="th" x="523" y="16" width="58" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Septiembre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="67e3fab9-fb84-4a37-941d-87f249aab95d" style="th" x="523" y="0" width="58" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Marzo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="835919c3-a659-4a49-86d4-bf9c19226aec" style="th" x="465" y="0" width="58" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Febrero]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f43eda31-6a88-4876-96ee-08ccdbe7f15d" style="th" x="465" y="16" width="58" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Agosto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f1dde2bb-c9eb-4bba-9fb1-ed4ac2b30b5b" style="th" x="407" y="16" width="58" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Julio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e7a7658a-f61a-4f5a-830b-de4976c5f332" style="th" x="407" y="0" width="58" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Enero]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2a52ff5c-03ec-41e3-b7b5-27cb384ee3fb" style="th" x="0" y="0" width="30" height="33"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Ramo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="37" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="19f13403-6b8b-49fe-9ac4-295c730e759c" style="style1" x="82" y="0" width="211" height="37"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cvefrom}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="f4cab0b2-3106-429d-944b-bb5901b05fc5" style="style1" x="0" y="0" width="30" height="37"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cve_ramo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="dd83968c-1674-4ed4-b310-11e8884d2ed1" style="style1" x="30" y="0" width="52" height="37"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nu_afectacion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="92bfc923-028f-4663-9c03-6668e5f5d9ac" style="style1" x="293" y="0" width="57" height="37"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{tipoMov} == "Ampliación" ? $F{Total} : "")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="8a0f9af7-f43a-45b9-8d47-38339d71b8b5" style="style1" x="350" y="0" width="57" height="37"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{tipoMov} == "Reducción" ? $F{Total} : "")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="a42716eb-21ab-4091-94e8-0b65f1cf704b" style="style1" x="407" y="0" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Enero}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="7a471a9a-f61d-426c-b5ca-28944f7f9791" style="style1" x="407" y="18" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Julio}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="7f188a47-0ee8-40ca-8cb7-1f64ece456b8" style="style1" x="465" y="0" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Febrero}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="38833b13-df7e-4901-b8a9-86eea4e8891f" style="style1" x="465" y="18" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Agosto}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="0b0f4e67-f785-49d2-a162-5ebdf6e81928" style="style1" x="523" y="18" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Septiembre}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="4a14e129-b735-4538-abd9-a58b7c1412a7" style="style1" x="523" y="0" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Marzo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="18d0ccba-bdbc-4c32-9cff-20244680227d" style="style1" x="581" y="0" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Abril}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="b30691da-25dd-475b-9f75-a884f93cb4e8" style="style1" x="581" y="18" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Octubre}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="be4ec4e6-46cc-4bf9-8fb8-95e57056d767" style="style1" x="638" y="0" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Mayo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="72b9861d-539d-4591-a5a9-260f23d305b8" style="style1" x="638" y="18" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Noviembre}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="17a00e2c-9342-4719-b0d5-ffbe93ff8224" style="style1" x="695" y="0" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Junio}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="08cbcc30-96a8-4862-8e10-8164ed6ed0cf" style="style1" x="695" y="18" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Diciembre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="14" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement uuid="258cd0ad-65ec-4df2-b286-c0401d454e4c" x="263" y="5" width="227" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="176d6eb2-c76e-427d-9c44-01d8311e2573" x="0" y="5" width="227" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["Fecha de Impresión: "+$F{fechaImpresion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="834eb7a2-24ed-4ef7-b07f-3dcd3acf777b" x="525" y="5" width="227" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Hora: "+$F{horaImpresion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="132" splitType="Stretch">
+			<textField>
+				<reportElement uuid="1d0ca88d-5135-4a97-a820-3976167ca541" x="3" y="85" width="141" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Justificación: "]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="d037e445-c97e-433d-a1de-c0c1522c552d" x="4" y="106" width="748" height="24"/>
+				<textElement textAlignment="Justified">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{txt_justificacion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="8dc31f37-1923-43a5-88f0-cc899eddf135" x="636" y="26" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{noviembreAmpliaciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="1b5de45f-a6d1-49e2-bb2e-20844d47d54b" x="579" y="26" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{octubreAmpliaciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="20cbd575-508b-416c-bf78-bdc2e24d0015" x="521" y="8" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{marzoAmpliaciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="e7865a98-9c5b-4aee-81e3-36ef4c238919" x="463" y="26" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{agostoAmpliaciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="f0f0b8a5-80fd-4a7a-b0e8-d568fc3b4f6d" mode="Opaque" x="405" y="8" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{eneroAmpliaciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="a0b40413-175c-4804-b026-05dd23b7677c" x="405" y="26" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{julioAmpliaciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="9092eade-3a77-4427-b2d9-2b83dc877bb7" x="579" y="8" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{abrilAmpliaciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="7a94ca74-e342-422c-a200-b7665060d451" x="693" y="8" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{junioAmpliaciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="574582d3-1ae7-4b95-9e5e-a4a3443c49d0" x="636" y="8" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{mayoAmpliaciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="061cec9d-8dc2-4062-8759-8655efee047f" x="521" y="26" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{septiembreAmpliaciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="dffca34e-396e-4724-934f-25095b43c728" x="693" y="26" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{diciembreAmpliaciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="dbd51987-8ccf-4bbb-88aa-60426bbf4b5a" x="463" y="8" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{febreroAmpliaciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="f71b9c55-afc1-4ef7-afdb-f212339e668d" x="293" y="8" width="57" height="37"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalAmpliaciones}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6aa580c8-0608-46c9-8f35-1cef710caea2" x="96" y="8" width="197" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TOTAL AMPLIACIONES: "]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="8517e6f7-c2a9-4871-9f2b-6fc69d20c00e" x="405" y="50" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{eneroReducciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="335dbbc9-f1e6-4383-b41c-35511f4e8d61" x="579" y="50" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{abrilReducciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="04cc71bc-d3bd-4816-bb48-8189bb280938" x="463" y="68" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{agostoReducciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="6cc8b605-50e5-4ab2-bdc0-238bd89820d7" x="693" y="50" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{junioReducciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="c5cc0ea9-7109-4dc2-84ba-32e3335f4cf5" x="693" y="68" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{diciembreReducciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="ba346912-6102-4196-b538-9cbff938d06c" x="405" y="68" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{julioReducciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="a096828a-b346-495d-a526-9691686613f5" x="636" y="50" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{mayoReducciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="93e8fb47-57f4-4617-be67-f430485b40f3" x="521" y="68" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{septiembreReducciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="6f79fcfe-0349-48f3-bcf2-51df25d3ca94" x="579" y="68" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{octubreReducciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="0b8aca86-a6fe-481e-a5d3-9af63f373d19" x="521" y="50" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{marzoReducciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="40acfe47-be5c-484f-b230-00c4d05c0668" x="463" y="50" width="58" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{febreroReducciones}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="36524d8c-aecf-46cb-ad0c-2c33e67923b7" x="96" y="52" width="197" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TOTAL REDUCCIONES: "]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="8c70011a-ce69-4c33-a603-4ee5e8d30e8f" x="347" y="50" width="57" height="37"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalReducciones}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="6e18bdc8-fcd2-4545-9911-676b131dc0f2" x="636" y="68" width="57" height="19"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{noviembreReducciones}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="73782c18-42da-40ec-846a-ff3e5be765aa" x="293" y="5" width="457" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="dc24d8c7-1d9d-4dd8-a142-fa729f9c9772" x="294" y="47" width="457" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

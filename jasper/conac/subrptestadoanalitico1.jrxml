@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subrptsituacionfinanciera" language="groovy" pageWidth="569" pageHeight="792" columnWidth="569" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="b1f49ba7-74ab-47ca-bb74-c0ca8bf23ced">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="122"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "../estiloTablaJasper.jrtx"]]></template>
+	<parameter name="cuenta_mayor" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["1,2,3,4,5,6,8,9"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anio" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2018"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tagref" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["I6L"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ue" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["09"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechainicialnew" class="java.lang.String"/>
+	<parameter name="fechafinalnew" class="java.lang.String"/>
+	<parameter name="usuario" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="titulo_reporte" class="java.lang.String">
+		<defaultValueExpression><![CDATA["titulo"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="condicion1" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+	`rubro_ingreso`.id,
+	`rubro_ingreso`.`clave`,
+	UPPER(`rubro_ingreso`.`descripcion`) as txt_descripcion,
+	`rubro_ingreso`.`activo`,
+	coalesce(sum(chartdetailsbudgetlog.original),0) as original,
+	coalesce(sum(`chartdetailsbudgetlog`.`Ampliacion`),0) as ampliacion,
+	coalesce(sum(`chartdetailsbudgetlog`.`Reduccion`),0) as reduccion,
+	coalesce(sum(`chartdetailsbudgetlog`.`Devengado`),0) as devengado,
+	coalesce(sum(`chartdetailsbudgetlog`.`Recaudado`),0) as recaudado
+FROM `rubro_ingreso`
+LEFT JOIN `tipo_ingreso` ON rubro_ingreso.clave = tipo_ingreso.id_rubro
+LEFT JOIN `clasificador_ingreso` ON tipo_ingreso.id_rubro = clasificador_ingreso.id_rubro   AND tipo_ingreso.clave = clasificador_ingreso.id_tipo
+LEFT JOIN (select *
+			from chartdetailsbudgetbytag
+where `chartdetailsbudgetbytag`.`anho` = $P{anio}
+			) chartdetailsbudgetbytag ON  clasificador_ingreso.rtc = chartdetailsbudgetbytag.rtc
+LEFT JOIN (select
+				`chartdetailsbudgetlog`.`cvefrom`,
+				sum(IF(`chartdetailsbudgetlog`.`nu_tipo_movimiento`='312',`chartdetailsbudgetlog`.`qty`,0)) AS `Ampliacion`,
+				0 AS `Reduccion`,
+				sum(IF(`chartdetailsbudgetlog`.`nu_tipo_movimiento`='310',(`chartdetailsbudgetlog`.`qty` * systypescat.naturalezacontable),0)) AS `Devengadoant`,
+
+sum(IF((`chartdetailsbudgetlog`.`nu_tipo_movimiento`='310') AND (chartdetailsbudgetlog.qty < 0),(`chartdetailsbudgetlog`.`qty` * systypescat.naturalezacontable),0)) AS `Devengado`,
+				sum(IF(`chartdetailsbudgetlog`.`nu_tipo_movimiento`='311',(`chartdetailsbudgetlog`.`qty` * -1),0)) AS `Recaudado`,
+chartdetailsbudgetbytag.original
+			from chartdetailsbudgetlog
+			JOIN chartdetailsbudgetbytag ON chartdetailsbudgetbytag.accountcode = chartdetailsbudgetlog.cvefrom
+			left join systypescat on  chartdetailsbudgetlog.nu_tipo_movimiento = systypescat.typeid
+			where  `chartdetailsbudgetlog`.`datemov` >= $P{fechainicialnew}
+			AND `chartdetailsbudgetlog`.`datemov` <= $P{fechafinalnew}
+			and ('' LIKE $P{tagref} OR `chartdetailsbudgetlog`.`tagref` IN ('$P!{tagref}'))
+			AND ('' LIKE $P{ue} OR `chartdetailsbudgetlog`.`ln_ue` IN ('$P!{ue}'))
+			AND `chartdetailsbudgetlog`.`sn_disponible` = 1
+			AND chartdetailsbudgetbytag.rtc is not null
+			AND CASE WHEN 1 = $P{condicion1} THEN (chartdetailsbudgetbytag.rtc NOT LIKE '9.3%') ELSE CASE WHEN 2 = $P{condicion1} THEN (chartdetailsbudgetbytag.rtc NOT LIKE '5.%') ELSE 1 = 1 END END
+			group by `chartdetailsbudgetlog`.`cvefrom`
+			) chartdetailsbudgetlog ON chartdetailsbudgetbytag.accountcode = chartdetailsbudgetlog.cvefrom
+WHERE 1 = 1 and `rubro_ingreso`.`clave` in ($P!{cuenta_mayor})
+group by `rubro_ingreso`.`id`,`rubro_ingreso`.`clave`,`rubro_ingreso`.`descripcion`;]]>
+	</queryString>
+	<field name="txt_descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="original" class="java.lang.Double"/>
+	<field name="ampliacion" class="java.lang.Double"/>
+	<field name="reduccion" class="java.lang.Double"/>
+	<field name="devengado" class="java.lang.Double"/>
+	<field name="recaudado" class="java.lang.Double"/>
+	<variable name="totalOriginal" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{original}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="11">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="05c940e2-b59e-4e4f-b040-7b60f5a82d18" stretchType="RelativeToBandHeight" x="19" y="0" width="153" height="10" isPrintWhenDetailOverflows="true"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{txt_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="7cb63fdc-cf68-4213-9573-759606e5d350" x="172" y="0" width="73" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{original}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="6c3f8f1c-1563-44e8-84c2-15065bd97ae3" x="245" y="0" width="73" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ampliacion} + $F{reduccion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="c5a5c696-9ab3-4910-a237-c3bedfacea33" x="318" y="0" width="73" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{original} + ($F{ampliacion} + $F{reduccion})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="7060668f-983a-40db-9f90-1e4d0889bb67" x="391" y="0" width="55" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{devengado}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="a62f4b4d-bfcb-4056-8ce6-3988bc16a99f" x="446" y="0" width="59" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{recaudado}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="4e8a535b-37ef-42b4-9d67-06a61132b76a" x="505" y="0" width="64" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{recaudado} - $F{original}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

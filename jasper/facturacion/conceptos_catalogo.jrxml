@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="conceptos_catalogo" language="groovy" pageWidth="572" pageHeight="792" columnWidth="532" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8c988459-7da0-4820-b52a-542e8ef956a5">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="xPath">
+		<![CDATA[/Catalogo/concepto/Ctas]]>
+	</queryString>
+	<field name="CodAgrup" class="java.lang.String">
+		<fieldDescription><![CDATA[@CodAgrup]]></fieldDescription>
+	</field>
+	<field name="NumCta" class="java.lang.String">
+		<fieldDescription><![CDATA[@NumCta]]></fieldDescription>
+	</field>
+	<field name="Desc" class="java.lang.String">
+		<fieldDescription><![CDATA[@Desc]]></fieldDescription>
+	</field>
+	<field name="SubCtaDe" class="java.lang.String">
+		<fieldDescription><![CDATA[@SubCtaDe]]></fieldDescription>
+	</field>
+	<field name="Nivel" class="java.lang.String">
+		<fieldDescription><![CDATA[@Nivel]]></fieldDescription>
+	</field>
+	<field name="Natur" class="java.lang.String">
+		<fieldDescription><![CDATA[@Natur]]></fieldDescription>
+	</field>
+	<columnHeader>
+		<band height="15">
+			<rectangle>
+				<reportElement uuid="9120f40c-367a-4e08-b682-93d931474de7" x="0" y="0" width="531" height="15" forecolor="#CCCCCC" backcolor="#05669C"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="f9fa024e-fe60-4867-83e9-0c0c2fcb8127" x="1" y="0" width="100" height="15" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Código Agrupador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a5a5eecd-6a85-4b7a-b0b6-39abe9a220c3" x="102" y="0" width="77" height="15" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Número Cta.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8d3b0878-4c20-4556-a390-f679b9a30082" x="180" y="0" width="130" height="15" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Descripción de la Cta.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f168bcae-9ad9-4b11-932f-f6625fbcf194" x="311" y="0" width="94" height="15" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Subcuenta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2b86ba39-5762-4897-9ac0-0925aab14727" x="406" y="0" width="52" height="15" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nivel]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e172423f-4965-4d3b-abe1-aa291a319602" x="459" y="0" width="73" height="15" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Naturaleza]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="3ed774ae-2273-4784-9568-95aa882b8da5" x="101" y="0" width="1" height="15" forecolor="#CCCCCC"/>
+			</line>
+			<line>
+				<reportElement uuid="3193cdf4-d3df-4e9a-a9e6-88b859be4231" x="179" y="0" width="1" height="15" forecolor="#CCCCCC"/>
+			</line>
+			<line>
+				<reportElement uuid="494f129d-a81f-4005-a58f-536ab58252bb" x="310" y="0" width="1" height="15" forecolor="#CCCCCC"/>
+			</line>
+			<line>
+				<reportElement uuid="a6be0391-2bd9-4449-8cb8-8c9a8840bb5d" x="405" y="0" width="1" height="15" forecolor="#CCCCCC"/>
+			</line>
+			<line>
+				<reportElement uuid="0fcd883e-e357-420f-80c4-1f008a698031" x="458" y="0" width="1" height="15" forecolor="#CCCCCC"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="9">
+			<frame>
+				<reportElement uuid="c77fbeb5-6e09-4b7b-a529-e1aa212b1f74" x="0" y="0" width="532" height="9"/>
+				<rectangle>
+					<reportElement uuid="7f28739e-8a01-460b-9043-41303469442f" mode="Transparent" x="0" y="0" width="531" height="8" forecolor="#CCCCCC"/>
+				</rectangle>
+				<line>
+					<reportElement uuid="c59247c6-74c6-499f-91b8-50a077421ef3" x="101" y="0" width="1" height="8" forecolor="#CCCCCC"/>
+				</line>
+				<textField>
+					<reportElement uuid="9b7004cd-c0cb-4dea-97c5-021df885713a" x="105" y="0" width="71" height="8"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{NumCta}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="6765ae7d-4b2a-421f-9cd0-c9440245e120" x="4" y="0" width="95" height="9"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CodAgrup}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="f0d89a35-35f4-45f7-a29d-f1dcd9f20efc" x="189" y="0" width="108" height="8"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Desc}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="103b813c-ca6c-4d4b-8e5a-b2d4c7b8f759" x="320" y="0" width="74" height="8"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SubCtaDe}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="ef445508-8a05-417f-bf1c-186740804d3b" x="405" y="0" width="52" height="8"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Nivel}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="390428c1-d817-4c7b-b49e-80d1a180eb04" x="469" y="0" width="52" height="8">
+						<printWhenExpression><![CDATA[$F{Natur}=="D"]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<text><![CDATA[Deudora]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="4d09702d-b9e0-48ee-bb5c-413294fe8ad0" x="179" y="0" width="1" height="8" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement uuid="5e173e91-b4c1-444a-9b78-cb33b19815cb" x="310" y="0" width="1" height="8" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement uuid="4aa00ba9-1513-414a-99bf-2f42e2a76c9c" x="405" y="0" width="1" height="8" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement uuid="29188091-344b-453b-9f2e-f3dd09b02309" x="458" y="0" width="1" height="8" forecolor="#CCCCCC"/>
+				</line>
+				<staticText>
+					<reportElement uuid="ce8fcfb3-a318-4fee-bcc0-881692dcd9a0" x="469" y="1" width="52" height="7">
+						<printWhenExpression><![CDATA[$F{Natur}=="A"]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<text><![CDATA[Acreedora]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>

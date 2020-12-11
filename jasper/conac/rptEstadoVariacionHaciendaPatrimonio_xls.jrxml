@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptEstadoVariacionHaciendaPatrimonio" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="8da7941d-e213-4146-b340-420903eac3b7">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="18"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<parameter name="parEntePublico" class="java.lang.String">
+		<defaultValueExpression><![CDATA["esdsdsdf"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="parRangoDeFechas" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["sf"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/eloypm/ap_grp_2018/jasper/conac/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechainicial" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2017-1-1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafinal" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2018-06-30"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="descripcionUE" class="java.lang.String"/>
+	<parameter name="fechaReporteNew" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2018-01-01"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="xPath">
+		<![CDATA[/rptEstadoVariacionHacienda/cuentaMovimientos]]>
+	</queryString>
+	<field name="cuentaPrincipal" class="java.lang.String">
+		<fieldDescription><![CDATA[@cuentaPrincipal]]></fieldDescription>
+	</field>
+	<field name="cuentaMovimiento" class="java.lang.String">
+		<fieldDescription><![CDATA[@cuenta]]></fieldDescription>
+	</field>
+	<field name="nombrePrincipal" class="java.lang.String">
+		<fieldDescription><![CDATA[@nombrePrincipal]]></fieldDescription>
+	</field>
+	<field name="nombreMovimientos" class="java.lang.String">
+		<fieldDescription><![CDATA[@nombre]]></fieldDescription>
+	</field>
+	<field name="valor1" class="java.lang.String">
+		<fieldDescription><![CDATA[@val1]]></fieldDescription>
+	</field>
+	<field name="valor2" class="java.lang.String">
+		<fieldDescription><![CDATA[@val2]]></fieldDescription>
+	</field>
+	<field name="valor3" class="java.lang.String">
+		<fieldDescription><![CDATA[@val3]]></fieldDescription>
+	</field>
+	<field name="valor4" class="java.lang.String">
+		<fieldDescription><![CDATA[@val4]]></fieldDescription>
+	</field>
+	<field name="sumatoriaFila" class="java.lang.String">
+		<fieldDescription><![CDATA[@totalFila]]></fieldDescription>
+	</field>
+	<field name="sumaColumnaVal1" class="java.lang.String">
+		<fieldDescription><![CDATA[@totalColumna1]]></fieldDescription>
+	</field>
+	<field name="sumaColumnaVal2" class="java.lang.Double">
+		<fieldDescription><![CDATA[@totalColumna2]]></fieldDescription>
+	</field>
+	<field name="sumaColumnaVal3" class="java.lang.String">
+		<fieldDescription><![CDATA[@totalColumna3]]></fieldDescription>
+	</field>
+	<field name="sumaColumnaVal4" class="java.lang.String">
+		<fieldDescription><![CDATA[@totalColumna4]]></fieldDescription>
+	</field>
+	<field name="totalSumaTotalColumnas" class="java.lang.String">
+		<fieldDescription><![CDATA[@totalSumaTotalColumnas]]></fieldDescription>
+	</field>
+	<variable name="cuentaPrincipal_1" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{cuentaPrincipal}]]></variableExpression>
+	</variable>
+	<group name="cuentasPrincipales">
+		<groupExpression><![CDATA[$F{cuentaPrincipal}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement uuid="79966f4a-15d9-4fcc-9bdc-e03c376238a3" x="0" y="0" width="206" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nombrePrincipal}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="eab8bfbb-1a12-49a4-9769-980fb486418f" x="206" y="0" width="74" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sumaColumnaVal1} == "0.00" || $F{sumaColumnaVal1} == "0" ? "0.00" :Double.parseDouble($F{sumaColumnaVal1}) * -1]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="b93f5317-c2ad-4033-9d3e-0dfe1583a6e1" x="280" y="0" width="73" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sumaColumnaVal2} == "0" || $F{sumaColumnaVal2} == "0.00" ? "0.00" : $F{sumaColumnaVal2} * -1]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="f31371d1-00ab-4a6a-84d8-d83a51a136ff" x="353" y="0" width="73" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sumaColumnaVal3} == "0" || $F{sumaColumnaVal3} == "0.00" ? "0.00" : Double.parseDouble($F{sumaColumnaVal3}) * -1]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="9e3931b0-68ae-4ffe-9480-b7bb1cf3280c" x="426" y="0" width="74" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[Double.parseDouble($F{sumaColumnaVal4})]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="30dc78a9-2e41-438e-8191-2e240b4cb245" x="500" y="0" width="72" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[Double.parseDouble($F{totalSumaTotalColumnas}) * -1]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="81" splitType="Stretch">
+			<image>
+				<reportElement uuid="32a2a5d2-98f1-4a4a-9180-553d86b7d808" x="0" y="0" width="97" height="61"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="3fe3e29e-2bdc-4208-8e46-74fe5d00d0d8" x="97" y="19" width="475" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Estado de Variación en la Hacienda Pública]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="d3bcbd32-53ee-4e25-81b4-199b76aafa41" x="97" y="0" width="475" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{parEntePublico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="76feafb7-2ea0-4c40-9bc9-393af2aa6424" x="97" y="39" width="475" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{descripcionUE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6232df84-3eac-4a65-b57a-6ef5d7e0aa91" x="97" y="59" width="475" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaReporteNew}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="69">
+			<staticText>
+				<reportElement uuid="c086bfa2-40a1-4789-9238-35e737e06807" mode="Opaque" x="0" y="2" width="206" height="67" forecolor="#FFFFFF" backcolor="#006633"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Concepto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c9476713-9418-4c0b-95a6-858ca755feba" mode="Opaque" x="206" y="2" width="74" height="67" forecolor="#FFFFFF" backcolor="#006633"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Hacienda Pública / Patrimonio Contribuido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4ebff1c9-9cb0-4077-873a-dde821b02347" mode="Opaque" x="280" y="2" width="73" height="67" forecolor="#FFFFFF" backcolor="#006633"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Hacienda Pública / Patrimonio Generado de Ejercicios Anteriores]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="562e591d-dfcb-479b-b6ff-d29f078603bd" mode="Opaque" x="353" y="2" width="73" height="67" forecolor="#FFFFFF" backcolor="#006633"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Hacienda Pública / Patrimonio Generado del Ejercicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="af8d8d01-77d6-406f-826f-d89e7c702b6a" mode="Opaque" x="426" y="2" width="74" height="67" forecolor="#FFFFFF" backcolor="#006633"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Ajustes por Cambios de Valor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4816aa82-0108-4948-8826-7a4e29144f17" mode="Opaque" x="500" y="2" width="72" height="67" forecolor="#FFFFFF" backcolor="#006633"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField>
+				<reportElement uuid="f373a24e-4508-4941-8487-a7de7170d894" x="0" y="0" width="206" height="19">
+					<printWhenExpression><![CDATA[$F{cuentaMovimiento} != "-1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreMovimientos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="ff1d2d74-c10d-4a40-b277-c497c7f6666a" x="206" y="0" width="74" height="19">
+					<printWhenExpression><![CDATA[$F{cuentaMovimiento} != "-1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor1} ==  "0.00" ? Double.parseDouble($F{valor1}) * -1 : "0.00"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="caaed69d-6a92-42c6-9295-0fb33d0f93fc" x="280" y="0" width="73" height="19">
+					<printWhenExpression><![CDATA[$F{cuentaMovimiento} != "-1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor2} == "0" || $F{valor2} == "0.00" ? "0.00" : Double.parseDouble($F{valor2}) * -1]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="e6448981-9b48-459a-85bf-32ab4e8617ce" x="353" y="0" width="73" height="19">
+					<printWhenExpression><![CDATA[$F{cuentaMovimiento} != "-1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor3} == "0" ? "0.00" : Double.parseDouble($F{valor3}) * -1]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="a3b6d8d9-9805-453b-8702-ae4f6ab4267c" x="426" y="0" width="74" height="19">
+					<printWhenExpression><![CDATA[$F{cuentaMovimiento} != "-1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor4} == "0" ? "0.00" : Double.parseDouble($F{valor4}) * -1]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="ac83ea6b-4374-493a-bc1b-40d563cf416c" x="500" y="0" width="72" height="19">
+					<printWhenExpression><![CDATA[$F{cuentaMovimiento} != "-1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sumatoriaFila} =="0" ? "0.00" : Double.parseDouble($F{sumatoriaFila}) * -1]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c22fe82b-4ae1-469d-8a56-892ad0a32b94" x="0" y="0" width="206" height="19">
+					<printWhenExpression><![CDATA[$F{cuentaMovimiento} == "-1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreMovimientos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="eab33cdf-3a0e-4f5e-acec-d1cacc3d7f2c" x="206" y="0" width="74" height="19">
+					<printWhenExpression><![CDATA[$F{cuentaMovimiento} == "-1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor1} == "0.00" || $F{valor1} == "0" ? "0.00" : Double.parseDouble($F{valor1}) * -1]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="6a741810-cd24-4b7f-81c7-6fa255115089" x="280" y="0" width="73" height="19">
+					<printWhenExpression><![CDATA[$F{cuentaMovimiento} == "-1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor2} == "0" || $F{valor2} == "0.00" ? "0.00" : Double.parseDouble($F{valor2}) * -1]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="899e5959-36d2-4f90-ad68-976585b1108f" x="353" y="0" width="73" height="19">
+					<printWhenExpression><![CDATA[$F{cuentaMovimiento} == "-1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor3} == "0" || $F{valor3} == "0.00" ? "0.00" : Double.parseDouble($F{valor3}) * -1]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="e7bb5502-efea-4b8d-b678-aaa8718ed9f6" x="426" y="0" width="74" height="19">
+					<printWhenExpression><![CDATA[$F{cuentaMovimiento} == "-1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor4} == "0" || $F{valor4} =="0.00" ? "0.00" : Double.parseDouble($F{valor4}) * -1]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="1043da5a-8c16-4f6e-b845-de36ae18fe2b" x="500" y="0" width="72" height="19">
+					<printWhenExpression><![CDATA[$F{cuentaMovimiento} == "-1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Double.parseDouble($F{sumatoriaFila}) * -1]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

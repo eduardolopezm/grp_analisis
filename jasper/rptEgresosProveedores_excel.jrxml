@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptEgresosProveedores" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="d531e0dc-a985-4664-906a-da63898bf529">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "estiloTablaJasper.jrtx"]]></template>
+	<style name="bordesNegros" forecolor="#000000" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="1.0"/>
+			<topPen lineWidth="1.0"/>
+			<leftPen lineWidth="1.0"/>
+			<bottomPen lineWidth="1.0"/>
+			<rightPen lineWidth="1.0"/>
+		</box>
+	</style>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="fechainicio" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 00:00:00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafin" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 23:59:59"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagenEstado" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/juan/Trabajo/ap_grp_de/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userid" class="java.lang.String"/>
+	<parameter name="fechaIniText" class="java.lang.String"/>
+	<parameter name="fechaFinText" class="java.lang.String"/>
+	<parameter name="supplierid" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+suppliers.supplierid,
+suppliers.suppname,
+suppliers.address1,
+suppliers.address2,
+IFNULL(tb_cat_entidad_federativa.ln_nombre_entidad_federativa, suppliers.address4) as address4,
+suppliers.address6,
+suppliers.taxid,
+purchorders.realorderno,
+DATE_FORMAT(purchorders.orddate, '%d-%m-%Y') as fechaPedido,
+SUM(purchorderdetails.unitprice * purchorderdetails.quantityord) as montoPedido,
+DATE_FORMAT(supptrans.trandate, '%d-%m-%Y') as fechaFactura,
+SUM(supptransdetails.price * supptransdetails.qty) as montoFactura
+FROM supptrans
+JOIN suppliers ON suppliers.supplierid = supptrans.supplierno
+LEFT JOIN tb_cat_entidad_federativa ON tb_cat_entidad_federativa.id_nu_entidad_federativa = suppliers.id_nu_entidad_federativa
+JOIN supptransdetails ON supptransdetails.supptransid = supptrans.id
+JOIN grns ON grns.grnno = supptransdetails.grns
+JOIN purchorderdetails ON purchorderdetails.podetailitem = grns.podetailitem
+JOIN purchorders ON purchorders.orderno = purchorderdetails.orderno
+WHERE supptrans.type = 20
+AND purchorders.orddate between $P{fechainicio} AND $P{fechafin}
+AND (CASE WHEN $P{supplierid} = '' THEN 1 = 1 ELSE supptrans.supplierno like '%$P!{supplierid}%' END OR CASE WHEN $P{supplierid} = '' THEN 1 = 1 ELSE suppliers.suppname like '%$P!{supplierid}%' END)
+GROUP BY supptrans.type, supptrans.transno
+ORDER BY purchorders.realorderno ASC
+;]]>
+	</queryString>
+	<field name="supplierid" class="java.lang.String"/>
+	<field name="suppname" class="java.lang.String"/>
+	<field name="address1" class="java.lang.String"/>
+	<field name="address2" class="java.lang.String"/>
+	<field name="address4" class="java.lang.String"/>
+	<field name="address6" class="java.lang.String"/>
+	<field name="taxid" class="java.lang.String"/>
+	<field name="realorderno" class="java.lang.String"/>
+	<field name="fechaPedido" class="java.lang.String"/>
+	<field name="fechaFactura" class="java.lang.String"/>
+	<field name="montoPedido" class="java.lang.Double"/>
+	<field name="montoFactura" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="98">
+			<image>
+				<reportElement uuid="0008ca43-f2bb-40e5-8234-b06ce98ef9e5" x="0" y="10" width="152" height="66"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="1e73b338-cfc0-40bb-b971-08db2ec956cd" x="152" y="10" width="456" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Municipio de Tampico, Tam."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c40e8418-468e-46a8-81c8-fe59b1c32cca" x="152" y="31" width="456" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="687cebad-a90c-4719-af76-20272ee4ed35" x="608" y="10" width="144" height="68"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="b9b91e6b-8954-4b17-871a-f428f7a38e27" x="152" y="45" width="456" height="22" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Reporte de Proveedores"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="09aa2816-fc21-46cc-b8d1-8dd67d76e8cc" x="152" y="67" width="456" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DEL "+$P{fechaIniText}+"\nAL "+$P{fechaFinText}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="42" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="aedc9ad6-cde8-4e71-a459-b7f3d3cb1c78" x="237" y="2" width="72" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["COLONIA"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="f2a22dc8-8d37-44fc-99fc-83184051dc5e" x="375" y="2" width="64" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TELÉFONO"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="62f14ff9-9b06-42c9-b135-7e49c614c236" x="692" y="2" width="60" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MONTO \n FACTURA"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="5f0ef922-e582-40fe-926c-35c93b1b11b8" x="153" y="2" width="84" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CALLE"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3ea42c4f-f70f-41d3-885a-abd395ea113e" x="309" y="2" width="66" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CIUDAD"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="579cae32-0fb8-4fe6-b7ec-83f74bf9979e" x="439" y="2" width="53" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["RFC"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="11638abe-21b1-4f88-8387-563fcff316f9" x="62" y="2" width="91" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PROVEEDOR"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="0e25de18-c23f-48eb-ac67-b3b4eff43acc" x="0" y="2" width="62" height="38" backcolor="#FFFFFF">
+					<property name="net.sf.jasperreports.export.xls.auto.filter" value="Start"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["NO. PROV"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="019d9b82-1816-42f2-a3ef-81f6823b31b8" x="492" y="2" width="49" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PEDIDO"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="7e29c33a-6be4-488e-9e1f-7c09a0601451" x="541" y="2" width="57" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FECHA \n PEDIDO"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="0609058e-eb2c-41bc-8319-bb60a35178c1" x="598" y="2" width="51" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MONTO \n PEDIDO"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="ee6f3d67-f672-4795-bd35-97d60505d1f0" x="649" y="2" width="43" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FECHA \n FACTURA"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="f823f121-99cf-4cdb-ab39-a616431b70c6" x="0" y="2" width="62" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{supplierid}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="6a79cb79-1048-43c8-a5db-3f6d7288b133" x="692" y="2" width="58" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{montoFactura}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3447f776-bb8c-49f6-a983-4a12b5546d13" x="62" y="2" width="90" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{suppname}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="a20fa3e3-8f98-430e-8551-2b11ca1147b1" x="153" y="2" width="84" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="06ab1731-1406-43ff-9489-962b82f61698" x="237" y="2" width="72" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="f98d70ac-19a1-403d-adbd-e5dc9e722c9d" x="309" y="2" width="66" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="2c55e7f6-90af-4c4d-bcdb-c2daa3faba3c" x="375" y="2" width="64" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="32b12547-9fc0-43c7-8bc3-5e5635a3b947" x="439" y="2" width="53" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{taxid}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="0c664842-6a47-4184-88c7-5ff944225461" x="492" y="2" width="49" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{realorderno}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="43e40ea2-4a3c-4cb3-b725-89f54f38e5f7" x="541" y="2" width="57" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaPedido}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="2322b9a9-3545-4c9e-95cf-9e32143ec8cf" x="598" y="2" width="51" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{montoPedido}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="7b693f0f-92ea-491d-a0ae-34b440edf8e5" x="649" y="2" width="43" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaFactura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="16" splitType="Immediate"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subrptsituacionfinanciera" language="groovy" pageWidth="182" pageHeight="792" columnWidth="182" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="b1f49ba7-74ab-47ca-bb74-c0ca8bf23ced">
+	<property name="ireport.zoom" value="5.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cuenta_mayor" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["1.1%"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titulo_reporte" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["SituacionFinanciera"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anio" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2018"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tagref" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["I6L"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ue" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["09"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechainicialnew" class="java.lang.String"/>
+	<parameter name="fechafinalnew" class="java.lang.String"/>
+	<parameter name="usuario" class="java.lang.String">
+		<defaultValueExpression><![CDATA[desarrollo]]></defaultValueExpression>
+	</parameter>
+	<parameter name="naturaleza" class="java.lang.String">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/eloypm/ap_grp_2018/jasper/conac/"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT  SUBSTRING_INDEX(config_reportes_.valor, '.', 3) as accountcode,
+		chartmaster.accountname AS cuenta_mayor,
+		-- coalesce(gltrans.Periodo1,0) as Periodo1,
+		-- coalesce(gltrans.Periodo2,0) as Periodo2
+	case when SUBSTRING_INDEX(config_reportes_.valor, '.', 3) = '3.2.1' THEN tb_ahorro_desahorro.Periodo1 * -1 else coalesce(gltrans.Periodo1,0) end as Periodo1,
+	case when SUBSTRING_INDEX(config_reportes_.valor, '.', 3) = '3.2.1' THEN tb_ahorro_desahorro.Periodo2 * -1 else coalesce(gltrans.Periodo2,0) end as Periodo2,
+		case when (( case when SUBSTRING_INDEX(config_reportes_.valor, '.', 3) = '3.2.1' THEN (tb_ahorro_desahorro.Periodo1 - tb_ahorro_desahorro.Periodo2) * -1 else coalesce(gltrans.Periodo1 - gltrans.Periodo2,0)  end) * $P{naturaleza}) >0
+		then
+			(( case when SUBSTRING_INDEX(config_reportes_.valor, '.', 3) = '3.2.1' THEN (tb_ahorro_desahorro.Periodo1 - tb_ahorro_desahorro.Periodo2) * -1 else coalesce(gltrans.Periodo1 - gltrans.Periodo2,0)  end) * $P{naturaleza})
+		else
+			'0.00'
+		end
+		as diferenciaPositiva,
+		case when (( case when SUBSTRING_INDEX(config_reportes_.valor, '.', 3) = '3.2.1' THEN (tb_ahorro_desahorro.Periodo1 - tb_ahorro_desahorro.Periodo2) * -1 else coalesce(gltrans.Periodo1 - gltrans.Periodo2,0)  end) * $P{naturaleza}) <0
+		then
+			(( case when SUBSTRING_INDEX(config_reportes_.valor, '.', 3) = '3.2.1' THEN (tb_ahorro_desahorro.Periodo1 - tb_ahorro_desahorro.Periodo2) * -1 else coalesce(gltrans.Periodo1 - gltrans.Periodo2,0)  end) * $P{naturaleza})
+		else
+			'0.00'
+		end
+		as diferenciaNegativa
+FROM config_reportes_
+INNER JOIN chartmaster ON SUBSTRING_INDEX(config_reportes_.valor, '.', 3) = chartmaster.accountcode
+LEFT JOIN (SELECT SUBSTRING_INDEX(account, '.', "3") as account,
+					IFNULL(SUM(case when trandate between $P{fechainicialnew} and  $P{fechafinalnew} then gltrans.amount else 0 end), 0)  as Periodo1,
+					IFNULL(SUM(case when trandate between date_add($P{fechainicialnew}, INTERVAL -1 year) and date_add($P{fechafinalnew}, INTERVAL -1 year) then gltrans.amount else 0 end), 0)  as Periodo2
+			FROM  gltrans
+			INNER JOIN sec_unegsxuser ON gltrans.tag = sec_unegsxuser.tagref AND sec_unegsxuser.userid = $P{usuario}
+			INNER JOIN (SELECT SUBSTRING_INDEX(config_reportes_.valor, '.', 3)  AS valor
+      					FROM config_reportes_
+      					WHERE reporte ='SituacionFinanciera'
+      						AND config_reportes_.valor LIKE $P{cuenta_mayor}
+      					GROUP BY SUBSTRING_INDEX(config_reportes_.valor, '.', 3)
+      					) configReport ON SUBSTRING_INDEX(account, '.', "3") = configReport.valor
+			WHERE gltrans.tag = $P{tagref}
+	  				AND CASE WHEN $P{ue} = '' THEN 1 = 1 ELSE gltrans.ln_ue IN ($P{ue}) END
+	  				AND gltrans.account != ''
+      				AND gltrans.posted = 1
+				AND gltrans.periodno not like '%.5'
+      		GROUP BY SUBSTRING_INDEX(account, '.', "3")
+) gltrans ON SUBSTRING_INDEX(config_reportes_.valor, '.', 3) = gltrans.account
+LEFT JOIN (SELECT '3.2.1' as account,
+					IFNULL(SUM(case when trandate between $P{fechainicialnew} and  $P{fechafinalnew} then gltrans.amount else 0 end), 0)  as Periodo1,
+					IFNULL(SUM(case when trandate between date_add($P{fechainicialnew}, INTERVAL -1 year) and date_add($P{fechafinalnew}, INTERVAL -1 year) then gltrans.amount else 0 end), 0)  as Periodo2
+			FROM  gltrans
+			INNER JOIN sec_unegsxuser ON gltrans.tag = sec_unegsxuser.tagref AND sec_unegsxuser.userid = $P{usuario}
+			INNER JOIN (SELECT SUBSTRING_INDEX(config_reportes_.valor, '.', 3)  AS valor
+      					FROM config_reportes_
+      					WHERE reporte ='EstadoDeActividades'
+      					GROUP BY SUBSTRING_INDEX(config_reportes_.valor, '.', 3)
+      					) configReport ON SUBSTRING_INDEX(account, '.', "3") = configReport.valor
+			WHERE gltrans.tag = $P{tagref}
+	  				AND CASE WHEN $P{ue} = '' THEN 1 = 1 ELSE gltrans.ln_ue IN ($P{ue}) END
+	  				AND gltrans.account != ''
+					AND gltrans.periodno not like '%.5'
+      				AND gltrans.posted = 1) tb_ahorro_desahorro on SUBSTRING_INDEX(config_reportes_.valor, '.', 3) = CAST(tb_ahorro_desahorro.account AS CHAR CHARACTER SET utf8)
+
+WHERE reporte ='SituacionFinanciera'
+		AND config_reportes_.tagref = $P{tagref}
+		AND config_reportes_.valor LIKE $P{cuenta_mayor}
+GROUP BY SUBSTRING_INDEX(config_reportes_.valor, '.', 3);]]>
+	</queryString>
+	<field name="accountcode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cuenta_mayor" class="java.lang.String"/>
+	<field name="Periodo1" class="java.lang.Double"/>
+	<field name="Periodo2" class="java.lang.Double"/>
+	<field name="diferenciaPositiva" class="java.lang.Double"/>
+	<field name="diferenciaNegativa" class="java.lang.Double"/>
+	<variable name="total" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{Periodo1}]]></variableExpression>
+	</variable>
+	<variable name="totalPeriodo2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{Periodo2}]]></variableExpression>
+	</variable>
+	<variable name="difPositivo" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{diferenciaPositiva}]]></variableExpression>
+	</variable>
+	<variable name="difNegativo" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{diferenciaNegativa}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="13">
+			<textField pattern="#,##0.00">
+				<reportElement uuid="c137e5d4-01f2-4698-a8af-a92dbac505d0" x="91" y="0" width="91" height="12">
+					<printWhenExpression><![CDATA[$P{naturaleza} == "1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.abs($V{difPositivo}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="1862c36c-fb71-4add-9535-1f547dc38e86" x="0" y="0" width="91" height="12">
+					<printWhenExpression><![CDATA[$P{naturaleza} == "1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.abs($V{difNegativo}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="eeead454-0ca4-4d57-a501-6a39c1229a05" x="91" y="0" width="91" height="12">
+					<printWhenExpression><![CDATA[$P{naturaleza} == "-1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.abs($V{difNegativo}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="d159b21e-61c6-4263-b605-ac247d870ed2" x="0" y="0" width="91" height="12">
+					<printWhenExpression><![CDATA[$P{naturaleza} == "-1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.abs($V{difPositivo}.doubleValue())]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

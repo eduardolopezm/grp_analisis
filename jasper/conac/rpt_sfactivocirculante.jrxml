@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_sfactivocirculante" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a288c0cf-c3be-400d-806a-cff3b6c2c622">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cuenta_mayor" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["1.1%"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titulo_reporte" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["ACTIVO"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT config_reportes_.reporte,  cuentas.accountcode, cuentas.accountname AS cuenta_mayor,
+IFNULL(SUM(CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END), 0) AS total
+FROM config_reportes_
+INNER JOIN chartmaster ON config_reportes_.valor= chartmaster.accountcode
+LEFT JOIN gltrans ON config_reportes_.valor= gltrans.account
+LEFT JOIN chartmaster cuentas ON substr(config_reportes_.valor, 1, 5)= cuentas.accountcode
+WHERE config_reportes_.valor LIKE $P{cuenta_mayor}
+GROUP BY substr(config_reportes_.valor, 1, 5)
+ORDER BY config_reportes_.valor;]]>
+	</queryString>
+	<field name="accountcode" class="java.lang.String"/>
+	<field name="cuenta_mayor" class="java.lang.String"/>
+	<field name="total" class="java.lang.String"/>
+	<field name="reporte" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="22">
+			<textField>
+				<reportElement x="2" y="2" width="100" height="20" uuid="8f8a2975-fee7-4fd8-a57b-98f23fa9263d"/>
+				<textFieldExpression><![CDATA[$P{titulo_reporte}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="2" y="0" width="154" height="10" uuid="9288abc2-895a-418b-90dc-3152b595a8e1"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{accountcode}+" "+$F{cuenta_mayor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="10" width="49" height="10" uuid="a6688586-d702-4c93-aa23-374835c40e9b"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="10"/>
+	</summary>
+</jasperReport>

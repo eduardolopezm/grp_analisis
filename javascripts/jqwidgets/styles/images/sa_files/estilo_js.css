@@ -1,0 +1,955 @@
+
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+
+
+
+IMG
+{
+    BORDER-BOTTOM: 0px;
+    BORDER-LEFT: 0px;
+    BORDER-RIGHT: 0px;
+    BORDER-TOP: 0px
+}
+.linkhome
+{
+    BACKGROUND-COLOR: transparent;
+    COLOR: #B90000;
+    CURSOR: hand;
+    
+}
+A:link{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	color: #333333;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	text-align: left;
+
+}
+
+.amenu{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	color: #ffffff;
+	font-style: normal;
+	font-weight: bold;
+	text-decoration: none;
+	text-align: left;
+
+}
+
+
+A:visited {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	color: #333333;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	text-align: left;
+}
+
+A:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	color: #3C6684;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	text-align: left;
+}
+A:active
+{
+    BACKGROUND-COLOR: transparent;
+    COLOR: #000000;
+    CURSOR: hand;
+    TEXT-DECORATION: underline
+}
+TABLE.tabladatos
+{
+    BACKGROUND-COLOR: #f1f8fc;
+    COLOR: #000000
+}
+.tablaestadosceldatitulo
+{
+    BACKGROUND-COLOR: #616161;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: BOLD;
+    BORDER-TOP: thin solid lightgrey ;
+    BORDER-BOTTOM: thin  solid lightgrey;
+    COLOR: #FFFFFF;
+    TEXT-ALIGN: right;
+    PADDING:0;
+
+}
+.tablatitulo
+{
+    BACKGROUND-COLOR: #616161;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bold;
+    COLOR: #FFFFFF;
+    TEXT-ALIGN: center;
+    PADDING:0;
+
+}
+.tablafondo
+{
+    BACKGROUND-COLOR: #ffffff;
+    COLOR: #000000;
+    
+
+}
+.tablaestadosceldatitulolist
+{
+    BACKGROUND-COLOR: #666666;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: normal;
+    BORDER-TOP: thin solid lightgrey ;
+    BORDER-BOTTOM: thin  solid lightgrey;
+    COLOR:  #ffffff;
+    TEXT-ALIGN: right;
+    PADDING:0;
+
+}
+.tablaestadosceldatitulodesc
+{
+    BACKGROUND-COLOR: #666666;
+    COLOR: #FFFFFF;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bold;
+}
+
+.tablahome_js
+{
+    BACKGROUND-COLOR: #f1f8fc;
+    COLOR: #2064B9;
+    FONT-SIZE: 10pt;
+    TEXT-ALIGN: left
+}
+.titulofuncional
+{
+    BACKGROUND-COLOR: #ffffff;
+    COLOR: #666666 ;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bold;
+}
+.descripcionfuncional
+{
+    BACKGROUND-COLOR: #ffffff;
+    COLOR: #000000;
+    FONT-SIZE: 10pt;
+     FONT-family: verdana;
+}
+
+.descripcionerror
+{
+	BACKGROUND-COLOR: #f1f8fc;
+    COLOR: #334E6F;
+    FONT-SIZE: 10pt;
+}
+.descripcionfuncionalpwd
+{
+   
+    COLOR: #000000;
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 10pt;
+}
+.enlacefuncional
+{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	color: #2064b9;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	text-align: left;
+}
+.fuentecampo
+{
+    BACKGROUND-COLOR: #E9E7E2;
+	COLOR:#000000;
+    FONT-SIZE: 9pt;
+    FONT-WEIGHT: bold;
+    TEXT-ALIGN: right;
+    FONT-FAMILY: Verdana;
+}
+.fuenteinfo
+{
+ 	COLOR:#000000;
+    FONT-SIZE: 9pt;
+    TEXT-ALIGN: left;
+    FONT-FAMILY: Verdana;
+}
+.tablafondoinfo
+{
+	BACKGROUND-COLOR: #E9E7E2;
+	color: #ffffff;
+	font-family: Verdana;
+	
+	FONT-SIZE: 10pt;
+	cellspacing: 4px;
+	border:1;
+	border-style: inset;
+}
+.fuentecamporight
+{
+    BACKGROUND-COLOR: #E9E7E2;
+	COLOR:#000000;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bold;
+    TEXT-ALIGN: right;
+    FONT-FAMILY: Verdana;
+}
+.fuentecampocurr
+{
+    BACKGROUND-COLOR:#E9E7E2;
+	COLOR:#000000;
+    FONT-SIZE: 10pt;
+    TEXT-ALIGN: left;
+    FONT-FAMILY: Verdana;
+}
+.fuentecampofuer
+{
+    BACKGROUND-COLOR: #9E9E9E;
+	COLOR:#000000;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bold;
+    TEXT-ALIGN: left;
+    FONT-FAMILY: Verdana;
+}
+.fuentecampousu
+{
+    BACKGROUND-COLOR: #E9E7E2;
+	COLOR:#000000;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bold;
+    TEXT-ALIGN: left;
+    FONT-FAMILY: Verdana;
+}
+.fuentecampo1
+{
+    BACKGROUND-COLOR: #9E9E9E;
+	COLOR:#ffffff;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bold;
+    TEXT-ALIGN: left;
+    FONT-FAMILY: Verdana;
+}
+
+.fuentecampocen
+{
+    COLOR: #ffffff;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bold;
+    TEXT-ALIGN: center;
+}
+
+.fuentemensajeguardar
+{
+    COLOR: #000000;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bold;
+}
+.fuentelinkanyadir
+{
+    COLOR: #2064B9;
+    FONT-SIZE: 9pt;
+    FONT-WEIGHT: bold;
+    TEXT-ALIGN: right;
+}
+.fuentedescripcionlogin
+{
+    COLOR:#000000;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: normal;
+    TEXT-ALIGN: left;
+}
+.fuentecampo_cv
+
+{
+	COLOR: #000000;
+	FONT-SIZE: 10pt;
+	FONT-FAMILY: Verdana;
+
+}
+.fuentecampo_cv_bold
+{
+	COLOR: #ffffff;
+	FONT-SIZE: 10pt;
+	FONT-FAMILY: Verdana;
+	FONT-WEIGHT: bold;
+
+}
+.fuentevalor
+{
+    BACKGROUND-COLOR: #E9E7E2;
+    COLOR: #000000;
+    FONT-SIZE: 10pt;
+    TEXT-ALIGN: left;
+    FONT-WEIGHT: normal;
+}
+.fuentevalorcen
+{
+     BACKGROUND-COLOR:#E9E7E2;
+    COLOR: #000000;
+    FONT-SIZE: 10pt;
+    TEXT-ALIGN: center;
+
+}
+.fuentevalorbold
+{
+    BACKGROUND-COLOR: #E9E7E2;
+    COLOR: #000000;
+    FONT-SIZE: 10pt;
+    TEXT-ALIGN: left;
+	 FONT-WEIGHT: bold;
+}
+.fuentevalorboldcen
+{
+     BACKGROUND-COLOR:#E9E7E2;
+    COLOR: #000000;
+    FONT-SIZE: 10pt;
+    TEXT-ALIGN: center;
+    FONT-WEIGHT: bold;
+}
+.fuente
+{
+    BACKGROUND-COLOR:#ffffff;
+    COLOR: #000000;
+    FONT-SIZE: 10pt;
+    TEXT-ALIGN: left;
+    FONT-FAMILY: Verdana;
+    FONT-WEIGHT: normal;	
+}
+.fuentevalor1
+{
+    BACKGROUND-COLOR: #9E9E9E;
+    COLOR: #000000;
+    FONT-SIZE: 10pt;
+    TEXT-ALIGN: left;
+	
+}
+
+.fuentevalorcen1
+{
+     BACKGROUND-COLOR: #ffffff;
+    COLOR: #99000;
+    FONT-SIZE: 10pt;
+    TEXT-ALIGN: center
+}
+.fuentechica
+{
+    COLOR: #2064B9;
+    FONT-SIZE: 9pt;
+    TEXT-ALIGN: left
+}
+
+.fuentebarranombre
+{
+    BACKGROUND-COLOR: #ffffff;
+    COLOR: #0075ad;
+    FONT-SIZE: 10pt;
+}
+.fuentelinklista
+{
+    
+    COLOR: #d40000;
+    FONT-SIZE: 10pt;
+}
+.fuentelinktitulo
+{
+
+    BACKGROUND-COLOR: #666666;
+    COLOR: #ffffff;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bold;
+    FONT-FAMILY: Verdana;
+}
+.fuentelinktitulologin
+{
+
+    COLOR: #ffffff;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: normal;
+    FONT-FAMILY: Verdana;
+}
+
+.fuentelinkcampo
+{
+    BACKGROUND-COLOR: #f1f8fc;
+    COLOR: #2064b9;
+    FONT-SIZE: 10pt;
+ }
+
+.tablalink
+{
+	BACKGROUND-COLOR: #9E9E9E;
+	color: #ffffff;
+	FONT-FAMILY: Verdana;
+	font-weight: Bold;
+	FONT-SIZE: 10pt;
+	
+}
+.tablalink1
+{
+	BACKGROUND-COLOR: #FFFFFF;
+	color: #000000;
+	FONT-FAMILY: Verdana;
+	font-weight: Bold;
+	FONT-SIZE: 10pt;
+	
+}
+.tablalinkborde
+{
+	BACKGROUND-COLOR: #9E9E9E;
+	color: #ffffff;
+	FONT-FAMILY: Verdana;
+	font-weight: Bold;
+	FONT-SIZE: 10pt;
+	BORDER-RIGHT: thin inset #9E9E9E
+	BORDER-BOTTOM: thin inset #9E9E9E;
+	BORDER-TOP: thin solid #9E9E9E;
+	BORDER-LEFT: thin solid #9E9E9E;
+	margin-top: 2pt;
+	margin-bottom: 2pt;
+}
+.tablalinkborde_fuera
+{
+	BACKGROUND-COLOR: #9E9E9E;
+	color: #ffffff;
+	FONT-FAMILY: Verdana;
+	font-weight: Bold;
+	FONT-SIZE: 10pt;
+	BORDER-RIGHT: thin inset #9E9E9E;
+	BORDER-BOTTOM: thin inset #9E9E9E;
+	BORDER-TOP: thin solid #9E9E9E;
+	BORDER-LEFT: thin solid #9E9E9E;
+	margin-top: 2pt;
+	margin-bottom: 2pt;
+}
+.fuentedescripcion
+{
+    BACKGROUND-COLOR: #ffffff;
+    COLOR: #000000;
+	FONT-FAMILY: Verdana;
+    FONT-SIZE: 10pt;
+}
+.fuentetitulomenu
+{
+    BACKGROUND-COLOR: #ffffff;
+    COLOR: #b90000;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bold;
+}
+.fuentedisclaimer
+{
+    BACKGROUND-COLOR: #ffffff;
+    COLOR: #2064b9;
+    FONT-SIZE: 10pt;
+}
+TABLE.tablacabecera
+{
+    BACKGROUND-COLOR: #c2d7ed;
+    COLOR: #ffffff
+}
+.separador
+{
+    BACKGROUND-COLOR: #9E9E9E;
+    COLOR: #ffffff;
+}
+DIV.capamenu
+{
+    COLOR: #ffffff;
+}
+TABLE.tablamenu
+{
+    BACKGROUND-COLOR: #c2d7ed;
+    COLOR: #ffffff;
+}
+
+
+DIV.capalinks
+{
+    BACKGROUND-COLOR: green;
+}
+DIV.capacuerpo
+{
+    BACKGROUND-COLOR: #ffe4c4;
+}
+DIV.capadisclaimer
+{
+    BACKGROUND-COLOR: blue;
+}
+.fuentecapamenu
+{
+    BACKGROUND-COLOR: transparent;
+    COLOR: navy;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bolder;
+}
+TABLE.tablamenusuperior
+{
+    BACKGROUND-COLOR: #52a2c8;
+    COLOR: #ffffff;
+}
+.fuentemenusuperior
+{
+    BACKGROUND-COLOR: #52a2c8;
+    COLOR: #ffffff;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bolder;
+}
+.fuentemenu
+{
+    BACKGROUND-COLOR: #f8dba5;
+    COLOR: #395a82;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bolder;
+}
+.fuentemenu1
+{
+    BACKGROUND-COLOR: #395a82;
+    COLOR: white;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bolder
+}
+HR.barramenu
+{
+    COLOR: #eebe8b;
+}
+HR.resumen
+{
+    COLOR: #666666;
+}
+HR.imprimir
+{
+    COLOR: #000000;
+}
+UL.listaenlace
+{
+    COLOR: #fdbb58;
+}
+.fuentecalendario1
+{
+    BACKGROUND-COLOR: blanchedalmond;
+    COLOR: cornflowerblue
+}
+.fuentecalendario2
+{
+    BACKGROUND-COLOR: lightblue;
+    COLOR: cornflowerblue
+}
+.fuentecalendario3
+{
+    BACKGROUND-COLOR: navajowhite;
+    COLOR: cornflowerblue
+}
+.fuentecalendario4
+{
+    BACKGROUND-COLOR: crimson;
+    COLOR: cornflowerblue
+}
+.fuentecalendario
+{
+    COLOR: azure;
+    FONT-SIZE: 10pt;
+}
+.separadorlinea
+{
+    BACKGROUND-COLOR: #f1f8fc;
+    COLOR: #ffffff
+}
+.fuentecamponombre
+{
+    BACKGROUND-COLOR: #E9E7E2;
+    COLOR: #ffffff;
+    FONT-SIZE: 10pt;
+}
+.fuentecampoaccion
+{
+    BACKGROUND-COLOR: #E9E7E2;
+    COLOR: #ffd700;
+    FONT-SIZE: 10pt;
+}
+.fuentecampofiltro
+{
+    BACKGROUND-COLOR: #E9E7E2;
+    COLOR: #b22222;
+    FONT-SIZE: 10pt;
+}
+A
+{
+    BACKGROUND-COLOR: transparent;
+   
+    TEXT-DECORATION: none
+}
+.fuentebarraregistros
+{
+    BACKGROUND-COLOR: #f1f8fc;
+    BORDER-BOTTOM: #087aa8 1px solid;
+    BORDER-LEFT: #087aa8 1px solid;
+    BORDER-RIGHT: #087aa8 1px solid;
+    BORDER-TOP: #087aa8 1px solid;
+    COLOR: #2064b9;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bolder;
+}
+.fuentebarraregistrosanulado
+{
+    BACKGROUND-COLOR: #f1f8fc;
+    BORDER-BOTTOM: #087aa8 1px solid;
+    BORDER-LEFT: #087aa8 1px solid;
+    BORDER-RIGHT: #087aa8 1px solid;
+    BORDER-TOP: #087aa8 1px solid;
+    COLOR: #ff4500;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: lighter;
+}
+.tablacapamenu
+{
+    BACKGROUND-COLOR: #f8dba5;
+}
+
+.fuentemenuprincipal_js
+{
+    BACKGROUND-COLOR: #c2d7ed;
+    COLOR: #395a82;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bolder;
+}
+.acep
+{
+    COLOR: royalblue;
+    LIST-STYLE: square
+}
+.cance
+{
+    COLOR: darksalmon;
+    LIST-STYLE: square
+}
+.fest
+{
+    COLOR: gold;
+    LIST-STYLE: square
+}
+.pend
+{
+    COLOR: crimson;
+    LIST-STYLE: square
+}
+.tablanavegacion
+{
+    BACKGROUND-COLOR: #f1f8fc;
+    BORDER-BOTTOM: #087aa8 thin solid;
+    BORDER-LEFT: #087aa8 thin solid;
+    BORDER-RIGHT: #087aa8 thin solid;
+    BORDER-TOP: #087aa8 thin solid
+}
+
+.invisible					{visibility : hidden;}
+.invisible2					{display : none;}
+
+.tablacurriculo
+{
+	BACKGROUND-COLOR: #E9E7E2;
+	color: #000000;
+	font-family: Verdana;
+	font-weight: Bold;
+	FONT-SIZE: 10pt;
+	cellspacing: 4px;
+	border:1;
+	border-style: inset;
+
+
+}
+.tablacurrifondo
+{
+	BACKGROUND-COLOR: #E9E7E2;
+	color: #ffffff;
+}
+.titulmenuinf
+{
+	BACKGROUND-COLOR: #E9E7E2;
+	color: #E9E7E2;
+	font-family: Verdana;
+	font-weight: Bold;
+	FONT-SIZE: 10pt;
+	cellspacing: 4px;
+	border:1;
+	border-style: inset;
+	
+	
+}
+.tablacurriculooscuro
+{
+	BACKGROUND-COLOR: #9E9E9E;
+	color: #ffffff;
+	font-family: Verdana;
+	font-weight: Bold;
+	FONT-SIZE: 10pt;
+	cellspacing: 4px;
+	border:1;
+	border-style: inset;
+	
+	
+}
+
+.tablaestados
+{
+	BACKGROUND-COLOR: #CFCFCF;
+	color: #000000;
+	font-family: Verdana;
+	font-weight: Bold;
+	FONT-SIZE: 10pt;
+	cellspacing: 4%;
+}
+.tablaestadoscen
+{
+	BACKGROUND-COLOR: #CFCFCF;
+	color: #000000;
+	font-family: Verdana;
+	font-weight: Bold;
+	FONT-SIZE: 10pt;
+	cellspacing: 4%;
+	TEXT-ALIGN: center;
+}
+
+.tablafiltro
+{
+	BACKGROUND-COLOR: #666666;
+	color: #2064B9;
+	FONT-FAMILY: Verdana;
+	font-weight: Bold;
+	FONT-SIZE: 10pt;
+	border:1;
+	border-style: inset;
+}
+.tablafiltro1
+{
+	BACKGROUND-COLOR: #616161;
+	color: #2064B9;
+	FONT-FAMILY: Verdana;
+	font-weight: Bold;
+	FONT-SIZE: 10pt;
+	border:1;
+	border-style: inset;
+}
+.tabladescripcion_js
+{
+	
+	color: #2064B9;
+	FONT-FAMILY: Verdana;
+	FONT-SIZE: 8pt;
+	
+}
+.Disclaimer
+{
+    color: #711F7E;
+	font-family: Verdana;
+	FONT-SIZE: 8pt;
+}
+
+HR 
+{
+ Color: #456E9E;
+}
+HR.home 
+{
+ Color: #711F7E;
+}
+
+.tablausercontr
+{
+    BACKGROUND-COLOR: #F8DBA5;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bold;
+    BORDER: thin solid #456E9E;
+    COLOR: #334E6F;
+    TEXT-ALIGN: left;
+
+}
+.fuenteusercontrcabecera
+{
+    BACKGROUND-COLOR:gray;
+    COLOR: #FFFFFF;
+    FONT-SIZE: 10pt;
+}
+
+.fuenteusercontr
+{
+    BACKGROUND-COLOR: #616161;
+    COLOR:#FFFFFF;
+    FONT-SIZE: 10pt;
+}
+
+.fuentedatoblig
+{
+    COLOR: #7F3029;
+    FONT-SIZE: 10pt;
+}
+.imagencentrada
+{
+    BACKGROUND-COLOR: #666666;
+        margin-top: 20pt;
+	margin-bottom: 20pt;
+	margin-left: 20pt;
+	margin-right: 20pt;
+    
+}
+.fuentehomecabecera
+{
+	color: #000000;
+	font-family: Verdana;
+	font-weight: Bold;
+	FONT-SIZE: 10pt;
+}
+.fuentehomecab
+{
+	color: #B90000;
+	font-family: Verdana;
+	font-weight: Bold;
+	FONT-SIZE: 10pt;
+
+}
+.fuentehome
+{
+	BACKGROUND-COLOR: #666666;
+	color: #FFFFFF;
+	font-family: Verdana;
+	font-weight: Bold;
+	FONT-SIZE: 10pt;
+
+}
+.fuentehome1
+{
+	color: #B90000;
+	font-family: Verdana;
+	font-weight: Bold;
+	FONT-SIZE: 10pt;
+
+}
+.fuenteimprimir
+{
+	color: #000000;
+	font-family: Verdana;
+	font-weight: Bold;
+	FONT-SIZE: 10pt;
+
+}
+.fuenteresumenimprimir
+{
+	color: #000000;
+	font-family: Verdana;
+	font-weight: bold;
+	FONT-SIZE: 10pt;
+
+}
+.fuentehomedesripcion
+{
+	color: #2064B9;
+	font-family: Verdana;
+	font-weight: normal;
+	FONT-SIZE: 10pt;
+
+}
+.fuentehomedesripcion1
+{
+	color: #003366;
+	font-family: Verdana;
+	size: 10pt;
+}
+.fuenteresumen
+{
+	color: #2064B9;
+	font-family: Verdana;
+	font-weight: bold;
+	FONT-SIZE: 10pt;
+
+}
+.fuenteresumen1
+{
+	color: #666666;
+	font-family: Verdana;
+	font-weight: bold;
+	FONT-SIZE: 10pt;
+
+}
+.calendario
+{
+    BACKGROUND-COLOR: #808cbf;
+    BORDER-BOTTOM: 1px;
+    BORDER-LEFT: 1px;
+    BORDER-RIGHT: 1px;
+    BORDER-TOP: 1px;
+    COLOR: #000000;
+    
+}
+.colortabla
+{
+    BACKGROUND-COLOR: #ffffff;
+    COLOR: #000000;
+    FONT-SIZE: 9pt;
+
+}
+.fuenteformulario100
+{
+    BACKGROUND-COLOR: #ffffff;
+    COLOR: #2064b9;
+    FONT-SIZE: 9pt;
+    WIDTH: 100px;
+}
+.days
+{
+    BACKGROUND-COLOR: #ffffff;
+    COLOR: #990000;
+    FONT-WEIGHT: bold;
+}
+
+UL.ej02 {
+	
+	FONT-SIZE: 0.9em; 
+	FONT-FAMILY: Verdana, Helvetica,sans-serif; 
+	
+}
+
+UL.ej02 LI A {
+	 COLOR: Orange; 
+	 height:5px;
+	 
+}
+UL.ej02 LI A:hover {
+	COLOR: orange; 
+	
+}
+
+
+
+TD {
+	FONT-SIZE: 10pt; 
+	FONT-FAMILY: Verdana, Helvetica, sans-serif;
+       FONT-WEIGHT: normal;
+
+}
+TH {
+	FONT-SIZE: 10pt; FONT-FAMILY: Verdana, Helvetica, sans-serif;
+}
+.blanco_bold {
+	FONT-WEIGHT: bold; 
+	COLOR: #ffffff;
+}
+
+.Estilo2 {
+	FONT-SIZE: 10pt; FONT-FAMILY: Verdana, Helvetica, sans-serif;
+}
+.Estilo3 {
+	FONT-SIZE: 10pt;
+}
+.Estilo4 {
+	FONT-SIZE: 10pt;
+}

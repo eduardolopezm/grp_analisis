@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PDFShippingdetails" language="groovy" pageWidth="534" pageHeight="200" columnWidth="530" leftMargin="2" rightMargin="2" topMargin="2" bottomMargin="2" uuid="cb375ec6-b43d-42de-9a4c-6686401e9c8f">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="embarque" class="java.lang.String">
+		<parameterDescription><![CDATA[embarque]]></parameterDescription>
+	</parameter>
+	<parameter name="type" class="java.lang.String">
+		<parameterDescription><![CDATA[type]]></parameterDescription>
+	</parameter>
+	<parameter name="transno" class="java.lang.String">
+		<parameterDescription><![CDATA[transno]]></parameterDescription>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Users/desarrollo/git/erpdistribucionv2/jasper/facturacion/"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT stockmoves.stockid,
+	SUM(stockmoves.qty*-1) as qty,
+	AVG(stockmoves.price) as price,
+	DATE_FORMAT(stockmoves.trandate, '%d-%m-%Y') AS trandatemod,
+	stockmoves.stkmoveno,
+	stockmaster.description
+FROM stockmoves
+	INNER JOIN stockmaster on stockmaster.stockid = stockmoves.stockid
+WHERE type =  $P{type}
+	AND transno = $P{transno}
+GROUP BY stockmoves.stockid, stockmaster.description]]>
+	</queryString>
+	<field name="stockid" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="description" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="qty" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="trandatemod" class="java.lang.String">
+		<fieldDescription><![CDATA[trandatemod]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="69ad6387-48ee-4aef-8624-fa5926f06372" x="0" y="0" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Cod. Prod]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1260311-a54a-4690-b5be-0c07d9e0097c" x="100" y="0" width="288" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Descripcion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1cdbc2d1-772d-4585-9b53-089c06f2b595" x="388" y="0" width="67" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="265e8346-037d-42b2-8e8f-e70cbdb3b6ab" x="455" y="0" width="75" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement uuid="f89f9248-e390-4d6c-94b3-45443c8763f7" x="0" y="28" width="530" height="22" backcolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="1d57469f-cdb4-491d-b1e1-a47c98fc671b" x="0" y="30" width="81" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Codigo Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2e00f296-debe-4dd0-b6c8-0dbdb0b6be93" x="100" y="30" width="274" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Descripcion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f53538f7-f8fa-41b7-9fe9-e8e204c467f3" x="374" y="30" width="52" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bdd8be75-536f-4c63-b338-204f9710a0ca" x="426" y="30" width="80" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement uuid="9e0ea0c8-005e-4f5b-b28a-6b8fb4641c69" x="0" y="0" width="530" height="28" backcolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="015996b2-c45f-4706-b3f5-08eabfe718e4" x="13" y="0" width="507" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[DETALLE DE PRODUCTOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="44" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="a66730a0-191f-44fa-b109-849b35210501" mode="Transparent" x="0" y="0" width="530" height="44"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="67ef5d54-ca4a-4096-a657-8e74fee5246b" x="0" y="0" width="100" height="31"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{stockid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="61895641-c9c9-4142-8ffc-578b293d198e" x="100" y="0" width="274" height="44"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="b0ace4c5-b1f1-49a1-ba6a-37e81c753b8e" x="374" y="0" width="52" height="31"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="033114e1-d955-4bb1-9ea8-8777b4dc11b2" x="426" y="0" width="94" height="31"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{trandatemod}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="43">
+			<subreport>
+				<reportElement uuid="b5f6e61b-aba9-4963-aa28-56193bc42a8f" x="1" y="0" width="255" height="38" isRemoveLineWhenBlank="true"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="stockid">
+					<subreportParameterExpression><![CDATA[$F{stockid}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="transno">
+					<subreportParameterExpression><![CDATA[$P{transno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="type">
+					<subreportParameterExpression><![CDATA[$P{type}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="embarque">
+					<subreportParameterExpression><![CDATA[$P{embarque}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "PDFShippingdetailsserial.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

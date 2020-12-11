@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_ldf_01_xls" language="groovy" pageWidth="842" pageHeight="612" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="4075d947-1797-4622-be7c-e50f7eb03f3c">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "../estiloTablaJasper.jrtx"]]></template>
+	<parameter name="tagref" class="java.lang.String"/>
+	<parameter name="ue" class="java.lang.String"/>
+	<parameter name="descripcionUE" class="java.lang.String"/>
+	<parameter name="anioreporte" class="java.lang.String"/>
+	<parameter name="fechaIni" class="java.lang.String"/>
+	<parameter name="fechaFin" class="java.lang.String"/>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT `cur`.`desc_ur` AS `UR`,
+
+'X' AS `E`, "XX" AS 'orden',
+SUBSTR(`cr`.`parametro`,5) AS 'columna',
+
+CONCAT(SUBSTR($P{fechaIni},9,2)," de ",LOWER(`mesini`.`mes`),IF(SUBSTR($P{fechaIni},1,4)<>SUBSTR($P{fechaFin},1,4),CONCAT(" de ",SUBSTR($P{fechaIni},1,4)),"")) AS `fechaIniTexto`,
+CONCAT(SUBSTR($P{fechaFin},9,2)," de ",LOWER(`mesfin`.`mes`)," de ",SUBSTR($P{fechaFin},1,4)) AS `fechaFinTexto`,
+
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='253',`cdbl`.`qty`,0)) AS `Ampliacion`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='254',`cdbl`.`qty`,0)) AS `Reduccion`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='251',`cdbl`.`qty`,0)) AS `Original`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='260',(`cdbl`.`qty` * systypescat.naturalezacontable),0)) AS `Devengado`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='265',(`cdbl`.`qty` * systypescat.naturalezacontable),0)) AS `Pagado`
+
+FROM `chartdetailsbudgetlog` AS `cdbl`
+JOIN systypescat ON systypescat.typeid = cdbl.nu_tipo_movimiento
+INNER JOIN `chartdetailsbudgetbytag` AS `cdbbt` ON `cdbbt`.`accountcode` = `cdbl`.`cvefrom`
+INNER JOIN `config_reportes_` AS `cr` ON `cr`.`reporte` LIKE 'rpt_ldf_13' AND `cr`.`valor` = `cdbbt`.`cppt`
+LEFT JOIN `tb_cat_unidades_responsables` AS `cur` ON `cur`.`ur` = `cdbbt`.`tagref`
+LEFT JOIN `cat_Months` AS `mesini` ON `mesini`.`u_mes` = SUBSTR($P{fechaIni},6,2)
+LEFT JOIN `cat_Months` AS `mesfin` ON `mesfin`.`u_mes` = SUBSTR($P{fechaFin},6,2)
+
+WHERE ('' LIKE $P{tagref} OR `cdbl`.`tagref` IN ('$P{tagref}'))
+AND ('-1' LIKE $P{ue} OR `cdbl`.`ln_ue` IN ('$P!{ue}'))
+AND `cdbl`.`datemov` >= $P{fechaIni}
+AND `cdbl`.`datemov` <= $P{fechaFin}
+AND `cdbl`.`sn_disponible` = 1
+AND `cdbbt`.`anho` = $P{anioreporte}
+
+GROUP BY `cur`.`desc_ur`
+UNION
+SELECT `cur`.`desc_ur` AS `UR`,
+
+'1' AS `E`, CONCAT(IF(SUBSTR(`cr`.`parametro`,1,1)>=3,3,SUBSTR(`cr`.`parametro`,1,1)),'0') AS 'orden',
+SUBSTR(`cr`.`parametro`,5) AS 'columna',
+
+CONCAT(SUBSTR($P{fechaIni},9,2)," de ",LOWER(`mesini`.`mes`),IF(SUBSTR($P{fechaIni},1,4)<>SUBSTR($P{fechaFin},1,4),CONCAT(" de ",SUBSTR($P{fechaIni},1,4)),"")) AS `fechaIniTexto`,
+CONCAT(SUBSTR($P{fechaFin},9,2)," de ",LOWER(`mesfin`.`mes`)," de ",SUBSTR($P{fechaFin},1,4)) AS `fechaFinTexto`,
+
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='253',`cdbl`.`qty`,0)) AS `Ampliacion`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='254',`cdbl`.`qty`,0)) AS `Reduccion`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='251',`cdbl`.`qty`,0)) AS `Original`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='260',(`cdbl`.`qty` * systypescat.naturalezacontable),0)) AS `Devengado`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='265',(`cdbl`.`qty` * systypescat.naturalezacontable),0)) AS `Pagado`
+
+FROM `chartdetailsbudgetlog` AS `cdbl`
+JOIN systypescat ON systypescat.typeid = cdbl.nu_tipo_movimiento
+INNER JOIN `chartdetailsbudgetbytag` AS `cdbbt` ON `cdbbt`.`accountcode` = `cdbl`.`cvefrom`
+INNER JOIN `config_reportes_` AS `cr` ON `cr`.`reporte` LIKE 'rpt_ldf_13' AND `cr`.`valor` = `cdbbt`.`cppt`
+LEFT JOIN `tb_cat_unidades_responsables` AS `cur` ON `cur`.`ur` = `cdbbt`.`tagref`
+LEFT JOIN `cat_Months` AS `mesini` ON `mesini`.`u_mes` = SUBSTR($P{fechaIni},6,2)
+LEFT JOIN `cat_Months` AS `mesfin` ON `mesfin`.`u_mes` = SUBSTR($P{fechaFin},6,2)
+
+WHERE ('' LIKE $P{tagref} OR `cdbl`.`tagref` IN ('$P{tagref}'))
+AND ('-1' LIKE $P{ue} OR `cdbl`.`ln_ue` IN ('$P!{ue}'))
+AND `cdbl`.`datemov` >= $P{fechaIni}
+AND `cdbl`.`datemov` <= $P{fechaFin}
+AND `cdbl`.`sn_disponible` = 1
+AND `cdbbt`.`anho` = $P{anioreporte}
+
+GROUP BY IF(SUBSTR(`cr`.`parametro`,1,1)>=3,3,SUBSTR(`cr`.`parametro`,1,1))
+UNION
+SELECT `cur`.`desc_ur` AS `UR`,
+
+'0' AS `E`, CONCAT(SUBSTR(`cr`.`parametro`,1,1),SUBSTR(`cr`.`parametro`,1,1)) AS 'orden',
+SUBSTR(`cr`.`parametro`,5) AS 'columna',
+
+CONCAT(SUBSTR($P{fechaIni},9,2)," de ",LOWER(`mesini`.`mes`),IF(SUBSTR($P{fechaIni},1,4)<>SUBSTR($P{fechaFin},1,4),CONCAT(" de ",SUBSTR($P{fechaIni},1,4)),"")) AS `fechaIniTexto`,
+CONCAT(SUBSTR($P{fechaFin},9,2)," de ",LOWER(`mesfin`.`mes`)," de ",SUBSTR($P{fechaFin},1,4)) AS `fechaFinTexto`,
+
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='253',`cdbl`.`qty`,0)) AS `Ampliacion`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='254',`cdbl`.`qty`,0)) AS `Reduccion`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='251',`cdbl`.`qty`,0)) AS `Original`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='260',(`cdbl`.`qty` * systypescat.naturalezacontable),0)) AS `Devengado`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='265',(`cdbl`.`qty` * systypescat.naturalezacontable),0)) AS `Pagado`
+
+FROM `chartdetailsbudgetlog` AS `cdbl`
+JOIN systypescat ON systypescat.typeid = cdbl.nu_tipo_movimiento
+INNER JOIN `chartdetailsbudgetbytag` AS `cdbbt` ON `cdbbt`.`accountcode` = `cdbl`.`cvefrom`
+INNER JOIN `config_reportes_` AS `cr` ON `cr`.`reporte` LIKE 'rpt_ldf_13' AND `cr`.`valor` = `cdbbt`.`cppt`
+LEFT JOIN `tb_cat_unidades_responsables` AS `cur` ON `cur`.`ur` = `cdbbt`.`tagref`
+LEFT JOIN `cat_Months` AS `mesini` ON `mesini`.`u_mes` = SUBSTR($P{fechaIni},6,2)
+LEFT JOIN `cat_Months` AS `mesfin` ON `mesfin`.`u_mes` = SUBSTR($P{fechaFin},6,2)
+
+WHERE ('' LIKE $P{tagref} OR `cdbl`.`tagref` IN ('$P{tagref}'))
+AND ('-1' LIKE $P{ue} OR `cdbl`.`ln_ue` IN ('$P!{ue}'))
+AND `cdbl`.`datemov` >= $P{fechaIni}
+AND `cdbl`.`datemov` <= $P{fechaFin}
+AND `cdbl`.`sn_disponible` = 1
+AND `cdbbt`.`anho` = $P{anioreporte}
+
+GROUP BY `cr`.`parametro`
+ORDER BY `orden` ASC;]]>
+	</queryString>
+	<field name="UR" class="java.lang.String"/>
+	<field name="E" class="java.lang.String"/>
+	<field name="orden" class="java.lang.String"/>
+	<field name="columna" class="java.lang.String"/>
+	<field name="fechaIniTexto" class="java.lang.String"/>
+	<field name="fechaFinTexto" class="java.lang.String"/>
+	<field name="Ampliacion" class="java.math.BigDecimal"/>
+	<field name="Reduccion" class="java.math.BigDecimal"/>
+	<field name="Original" class="java.math.BigDecimal"/>
+	<field name="Devengado" class="java.math.BigDecimal"/>
+	<field name="Pagado" class="java.math.BigDecimal"/>
+	<group name="grupoTotal">
+		<groupExpression><![CDATA[$F{UR}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<staticText>
+					<reportElement uuid="77429ab6-e75c-4751-a8ca-8508550726dd" x="0" y="0" width="202" height="21"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+						<paragraph leftIndent="5"/>
+					</textElement>
+					<text><![CDATA[Programas Federales]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="37">
+				<printWhenExpression><![CDATA[$F{E}=="X"]]></printWhenExpression>
+				<line>
+					<reportElement uuid="ab8e4c2f-9c6f-4100-be68-ea9b52deae71" positionType="FixRelativeToBottom" x="0" y="32" width="802" height="1"/>
+					<graphicElement>
+						<pen lineColor="#CCCCCC"/>
+					</graphicElement>
+				</line>
+				<frame>
+					<reportElement uuid="e4555dd3-9358-486e-8a98-78ca2ab89196" x="0" y="3" width="802" height="30" isPrintWhenDetailOverflows="true"/>
+					<line>
+						<reportElement uuid="45c293d9-3502-45b4-af3b-b91bcbc32145" x="0" y="2" width="802" height="1"/>
+						<graphicElement>
+							<pen lineColor="#CCCCCC"/>
+						</graphicElement>
+					</line>
+					<staticText>
+						<reportElement uuid="af27e669-cdfa-410c-8b1e-8d054607bad5" x="0" y="8" width="202" height="20"/>
+						<textElement verticalAlignment="Middle">
+							<font size="8" isBold="true"/>
+						</textElement>
+						<text><![CDATA[Total del Gasto]]></text>
+					</staticText>
+					<textField pattern="#,##0.00">
+						<reportElement uuid="b837551a-ac26-42cc-9743-00b93b3a4914" x="202" y="8" width="100" height="20"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8" isBold="true"/>
+							<paragraph rightIndent="2"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{Original}]]></textFieldExpression>
+					</textField>
+					<textField pattern="#,##0.00">
+						<reportElement uuid="60aa4e0d-52b4-411b-84ed-1d8cd66d11fc" x="302" y="8" width="100" height="20"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8" isBold="true"/>
+							<paragraph rightIndent="2"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{Ampliacion}+$F{Reduccion}]]></textFieldExpression>
+					</textField>
+					<textField pattern="#,##0.00">
+						<reportElement uuid="650011d8-68eb-4520-a162-46f9dbf0194c" x="402" y="8" width="100" height="20"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8" isBold="true"/>
+							<paragraph rightIndent="2"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{Original}+$F{Ampliacion}+$F{Reduccion}]]></textFieldExpression>
+					</textField>
+					<textField pattern="#,##0.00">
+						<reportElement uuid="df57b20c-c111-4f80-907d-8b56baf36bbe" x="502" y="8" width="100" height="20"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8" isBold="true"/>
+							<paragraph rightIndent="2"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{Devengado}]]></textFieldExpression>
+					</textField>
+					<textField pattern="#,##0.00">
+						<reportElement uuid="ebbf38f9-aecb-4215-b09a-9916d24be8ab" x="602" y="8" width="100" height="20"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8" isBold="true"/>
+							<paragraph rightIndent="2"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{Pagado}]]></textFieldExpression>
+					</textField>
+					<textField pattern="#,##0.00">
+						<reportElement uuid="944507a5-02da-429f-ab8e-cae836915ee7" x="702" y="8" width="100" height="20"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8" isBold="true"/>
+							<paragraph rightIndent="2"/>
+						</textElement>
+						<textFieldExpression><![CDATA[($F{Original}+$F{Ampliacion}+$F{Reduccion})-$F{Devengado}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="100" splitType="Stretch">
+			<textField>
+				<reportElement uuid="67c7d577-8410-4b0c-8533-31be02e59791" x="141" y="0" width="661" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{UR}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="afee8b9f-5169-47fe-ab41-de43eb58dc9a" x="141" y="20" width="661" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gasto por Categoría Programática (Armonizado)]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="77c9fe37-8e63-4177-b7fa-c3e97fb0a66a" x="141" y="40" width="661" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaIniTexto}+" al "+$F{fechaFinTexto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="074dbea2-fe80-462a-aef7-b7b8b7cd524c" x="141" y="60" width="661" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[(cifras en pesos)]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9a9336a4-1adb-47d7-a3b5-1ac21b3efead" x="141" y="80" width="661" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{descripcionUE}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="cc903863-a3da-453e-a374-4cf00ad97116" x="1" y="1" width="140" height="57"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="56" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ed88c430-47c5-41c3-b609-b69cacab43a7" style="th" x="0" y="0" width="202" height="54"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[CONCEPTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="aef24bad-1c70-497f-82f8-175c0f62732a" style="th" x="202" y="0" width="100" height="54"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[APROBADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="abfc8757-db5b-4b59-a719-f6d7b06c7a0a" style="th" x="302" y="0" width="100" height="54"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[AMPLIACIONES / (REDUCCIONES)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="725738ce-9c26-4717-ab5d-b7ea6c563d3f" style="th" x="402" y="0" width="100" height="54"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[MODIFICADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1f42b6f6-bce5-4378-9b60-7475c79706d2" style="th" x="502" y="0" width="100" height="54"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[DEVENGADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1cc4d100-5c1e-4413-9925-24ae00f63478" style="th" x="602" y="0" width="100" height="54"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[PAGADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5538814f-9f23-47c4-b776-9d27ae25e10b" style="th" x="702" y="0" width="100" height="54"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[SUBEJERCICIO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{E}=="0"||$F{E}=="1"]]></printWhenExpression>
+			<textField>
+				<reportElement uuid="c833d975-a6ff-44a3-9dbd-33fc70fea6ab" x="50" y="0" width="152" height="21">
+					<printWhenExpression><![CDATA[$F{E}=="1"]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{orden}=="10" ? "Subsidios: Sectores Social y Privado o Entidades Federativas y Municipios" : $F{orden}=="20" ? "Desempeño de las Funciones" : $F{orden}=="30" ? "Administrativos y de Apoyo" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="75239378-c495-4c07-9cc6-0392f42e4192" x="101" y="0" width="101" height="21">
+					<printWhenExpression><![CDATA[$F{E}=="0"]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{columna}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="f40ee6fc-79d7-47b9-a355-670960324544" x="202" y="0" width="100" height="21"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Original}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="a1c31b0d-7bef-4a0c-a31f-a143e9841315" x="302" y="0" width="100" height="21"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Ampliacion}+$F{Reduccion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="0b537ae1-1170-4ae3-a918-a756ce6f04f5" x="402" y="0" width="100" height="21"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Original}+$F{Ampliacion}+$F{Reduccion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="1fa4739d-cace-424d-be17-e1a680f1fcea" x="502" y="0" width="100" height="21"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Devengado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="a23c2478-1c0c-4958-aa53-6698eb48f718" x="602" y="0" width="100" height="21"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Pagado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="769707da-b0a8-4a0c-b106-dde1a7011214" x="702" y="0" width="100" height="21"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{Original}+$F{Ampliacion}+$F{Reduccion})-$F{Devengado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

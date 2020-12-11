@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_clasificacion_administrativa" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4604d20f-22b1-4c74-a153-771dcfa2c739">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="entepublico" class="java.lang.String"/>
+	<parameter name="anio" class="java.lang.String"/>
+	<parameter name="tagref" class="java.lang.String"/>
+	<parameter name="fechainicial" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2017-1-1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafinal" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2018-1-1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="titulo_reporte" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[Select tg.tagref, tg.tagdescription, cdbl.partida_esp, apro.typename AS typename, IFNULL(SUM(apro.qty),0) as qtyApro, amp.typename AS typename, IFNULL(SUM(amp.qty),0) as qtyAmp, redu.typename AS typename, IFNULL(SUM(redu.qty),0) as qtyReduc, IFNULL(SUM(amp.qty + redu.qty),0) total_sum_Amp_and_Reduc, IFNULL(SUM(apro.qty) + SUM(amp.qty + redu.qty),0) as total_modif, deven.typename AS typename, IFNULL(SUM(deven.qty),0) as qtyDeven, paga.typename as typenamePaga, IFNULL(SUM(paga.qty),0) as qtyPaga, IFNULL((SUM(apro.qty) + SUM(amp.qty + redu.qty)) - SUM(deven.qty),0) as total_subejer From tags tg
+Join chartdetailsbudgetbytag cdbt On tg.tagref = cdbt.tagref
+Join chartdetailsbudgetlog cdbl On cdbl.partida_esp = cdbt.partida_esp
+Left Join(
+  select tg.tagref, tg.tagdescription, SUM(cdbl.qty) as qty, systcat.typename from tags tg
+    Join chartdetailsbudgetbytag cdbt On tg.tagref = cdbt.tagref
+    Join chartdetailsbudgetlog cdbl On cdbl.partida_esp = cdbt.partida_esp
+    join systypescat systcat On cdbl.nu_tipo_movimiento = systcat.typeid
+    where cdbl.nu_tipo_movimiento IN (251) And tg.tagactive = '1'
+    group by tg.tagref, cdbt.tagref, cdbl.nu_tipo_movimiento
+)as apro on apro.tagref = tg.tagref
+Left Join(
+  select tg.tagref, tg.tagdescription, SUM(cdbl.qty) as qty, systcat.typename from tags tg
+    Join chartdetailsbudgetbytag cdbt On tg.tagref = cdbt.tagref
+    Join chartdetailsbudgetlog cdbl On cdbl.partida_esp = cdbt.partida_esp
+    join systypescat systcat On cdbl.nu_tipo_movimiento = systcat.typeid
+    where cdbl.nu_tipo_movimiento IN (253) And tg.tagactive = '1'
+    group by tg.tagref, cdbt.tagref, cdbl.nu_tipo_movimiento
+)as amp on amp.tagref = tg.tagref
+Left Join(
+  select tg.tagref, tg.tagdescription, SUM(cdbl.qty) as qty, systcat.typename from tags tg
+    Join chartdetailsbudgetbytag cdbt On tg.tagref = cdbt.tagref
+    Join chartdetailsbudgetlog cdbl On cdbl.partida_esp = cdbt.partida_esp
+    join systypescat systcat On cdbl.nu_tipo_movimiento = systcat.typeid
+    where cdbl.nu_tipo_movimiento IN (254) And tg.tagactive = '1'
+    group by tg.tagref, cdbt.tagref, cdbl.nu_tipo_movimiento
+)as redu on redu.tagref = tg.tagref
+Left Join(
+  select tg.tagref, tg.tagdescription, SUM(cdbl.qty) as qty, systcat.typename from tags tg
+    Join chartdetailsbudgetbytag cdbt On tg.tagref = cdbt.tagref
+    Join chartdetailsbudgetlog cdbl On cdbl.partida_esp = cdbt.partida_esp
+    join systypescat systcat On cdbl.nu_tipo_movimiento = systcat.typeid
+    where cdbl.nu_tipo_movimiento IN (260) And tg.tagactive = '1'
+    group by tg.tagref, cdbt.tagref, cdbl.nu_tipo_movimiento
+)as deven on deven.tagref = tg.tagref
+Left Join(
+  select tg.tagref, tg.tagdescription, SUM(cdbl.qty) as qty, systcat.typename from tags tg
+    Join chartdetailsbudgetbytag cdbt On tg.tagref = cdbt.tagref
+    Join chartdetailsbudgetlog cdbl On cdbl.partida_esp = cdbt.partida_esp
+    join systypescat systcat On cdbl.nu_tipo_movimiento = systcat.typeid
+    where cdbl.nu_tipo_movimiento IN (265) And tg.tagactive = '1'
+    group by tg.tagref, cdbt.tagref, cdbl.nu_tipo_movimiento
+)as paga on paga.tagref = tg.tagref
+group by tg.tagref
+order by tg.tagref]]>
+	</queryString>
+	<field name="tagdescription" class="java.lang.String"/>
+	<field name="qtyApro" class="java.math.BigDecimal"/>
+	<field name="qtyAmp" class="java.math.BigDecimal"/>
+	<field name="total_sum_Amp_and_Reduc" class="java.math.BigDecimal"/>
+	<field name="total_modif" class="java.math.BigDecimal"/>
+	<field name="qtyDeven" class="java.math.BigDecimal"/>
+	<field name="qtyPaga" class="java.math.BigDecimal"/>
+	<field name="total_subejer" class="java.math.BigDecimal"/>
+	<variable name="Total_Apro" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtyApro}]]></variableExpression>
+	</variable>
+	<variable name="Total_Amp_Redu" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_sum_Amp_and_Reduc}]]></variableExpression>
+	</variable>
+	<variable name="Total_Mod" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_modif}]]></variableExpression>
+	</variable>
+	<variable name="Total_Deven" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtyDeven}]]></variableExpression>
+	</variable>
+	<variable name="Total_Pag" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{qtyPaga}]]></variableExpression>
+	</variable>
+	<variable name="Total_Sub_Ejer" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_subejer}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement uuid="9457e3e3-4c79-4604-a8a2-d0dbcad37069" x="20" y="12" width="552" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$P{entepublico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="ab5fe065-de0b-4b9b-8d03-b68b4f5d21f6" x="20" y="26" width="552" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Estado Analítico del Ejercicio del Presupuesto de Egresos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="67f8dfbe-7973-4db3-b45c-6dfc0042d978" x="20" y="41" width="552" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Clasificación Administrativa]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="e78f7992-546f-447b-be83-d171dee3904b" x="20" y="55" width="552" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["DESDE " + $P{fechainicial} + " HASTA "+ $P{fechafinal}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="d38427ab-5598-4a3b-9299-b06de2e62948" x="-11" y="10" width="140" height="57"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="41" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="e159bb73-a750-4af4-afcb-308461aa2cb6" x="-11" y="1" width="593" height="40" forecolor="#003300" backcolor="#1B693F"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="b64b0824-dc1d-4341-a30d-84bff7d37de0" x="101" y="25" width="85" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aprobado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="db1963a6-18c7-4e6b-92ea-61ad286a7982" x="191" y="19" width="80" height="22" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Ampliaciones / (Reducciones)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2b9f6328-4a24-4a13-bd58-54c983ff5a46" x="273" y="25" width="88" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Modificado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2cefa920-e04a-47ea-97f3-e31b71fab37f" x="362" y="25" width="64" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Devengado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e44e455f-9cb4-4960-abbb-55f559439f0a" x="428" y="25" width="70" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pagado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="34c52b44-4a82-4cc0-83d3-7e0d9d63115f" x="514" y="18" width="55" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Subejercicio]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="b4f4e359-58c2-43a7-b5ac-8e8262b2573a" stretchType="RelativeToBandHeight" x="498" y="1" width="1" height="40"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="b4d8b78c-304e-4cbf-8f43-2822d9b644cb" stretchType="RelativeToBandHeight" x="190" y="16" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="5c0b3c22-8575-4cb8-a6e3-e2365ac20a0c" stretchType="RelativeToBandHeight" x="361" y="16" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="8aad65b8-891c-4906-856d-a6b845cf6bc3" stretchType="RelativeToBandHeight" x="427" y="16" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="26e97b4b-7e4e-424a-883e-bf07e9ca4ba0" stretchType="RelativeToBandHeight" x="272" y="16" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="f140d025-1ff1-496a-92ad-c44adb78e690" stretchType="RelativeToBandHeight" x="100" y="1" width="1" height="40"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="b81a10f9-1453-4d29-809f-245faf785672" x="101" y="16" width="399" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="10988d85-8fba-4e05-9ba4-a2dfed8fa736" x="169" y="3" width="348" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Egresos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8a7b100e-3e82-4160-9b74-0a25b025ccb3" x="-10" y="1" width="109" height="38" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Concepto]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<line>
+				<reportElement uuid="a2995c7e-c1d9-4348-b05c-a01a608da36d" stretchType="RelativeToBandHeight" x="-11" y="0" width="1" height="30"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="040b5af7-7ecd-4cfa-9d29-c4fc516a1c64" stretchType="RelativeToBandHeight" x="100" y="0" width="1" height="30"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="4b6dfb41-3b1a-441e-999b-c6e8c538d771" stretchType="RelativeToBandHeight" x="190" y="0" width="1" height="30"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="fe1a729e-3589-4e4b-b2d4-1a1468cd034f" stretchType="RelativeToBandHeight" x="272" y="0" width="1" height="30"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="38628795-8bb8-4df4-b435-85ff7000ff91" stretchType="RelativeToBandHeight" x="361" y="0" width="1" height="30"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="8c0976eb-d789-4917-bf94-8c08dbc6653e" stretchType="RelativeToBandHeight" x="427" y="0" width="1" height="30"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="c8efa9ca-c08e-40ce-80f6-7cf0bf3a3941" stretchType="RelativeToBandHeight" x="498" y="0" width="1" height="30"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="2f0e4068-0ec8-4087-a56d-0b16017a0af1" stretchType="RelativeToBandHeight" x="581" y="0" width="1" height="30"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement uuid="787bd5fd-3153-4a0d-a275-6a4ceada0c95" x="-10" y="0" width="109" height="30"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+					<paragraph leftIndent="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tagdescription}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="693eff33-d12b-4e21-8e1a-c561eff2a36b" x="101" y="0" width="89" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtyApro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="719a137d-9064-43e4-bc6c-a5aca7238bff" x="191" y="0" width="81" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_sum_Amp_and_Reduc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="56cb091c-e093-40f4-a3ed-968639b0606f" x="273" y="0" width="88" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_modif}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="dd461b06-e8e1-4dc9-ae09-1797d238736b" x="362" y="0" width="65" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtyDeven}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d0a62866-b749-47e1-941b-e097370a9b5e" x="428" y="0" width="70" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtyPaga}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c1013f18-1527-4be1-a315-1fe47a7f816f" x="499" y="0" width="82" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_subejer}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="35" splitType="Stretch">
+			<line>
+				<reportElement uuid="80f5a892-5e2d-4db5-a506-4524e85f24e1" x="-10" y="0" width="591" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="a283cc42-5784-4ac8-8cf4-78ad0458197d" stretchType="RelativeToBandHeight" x="-11" y="1" width="1" height="34"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="76614165-26a7-4a92-bceb-6a3dd73bd676" stretchType="RelativeToBandHeight" x="581" y="0" width="1" height="35"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="513a7798-fb7f-4e5d-a551-699357a8fa76" x="-10" y="34" width="591" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="b7b7d7b5-170a-4450-b668-7ed9efd1dccb" stretchType="RelativeToBandHeight" x="100" y="0" width="1" height="34"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="a55bb8e0-aa1d-4cda-9b7e-2f0484611b40" stretchType="RelativeToBandHeight" x="190" y="0" width="1" height="34"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="03b5f9d3-b9de-4f00-8dd9-fcfa265628ac" stretchType="RelativeToBandHeight" x="272" y="0" width="1" height="34"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="eb2de88f-2a61-491e-a082-78dd1fba1cfe" stretchType="RelativeToBandHeight" x="361" y="0" width="1" height="34"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="391c44f0-36af-4ce0-a948-4ebec7bd9c57" stretchType="RelativeToBandHeight" x="427" y="0" width="1" height="34"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="d140867e-d4c4-4c93-add0-774676cfca20" stretchType="RelativeToBandHeight" x="498" y="0" width="1" height="34"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="bcb9f2dc-a507-4ce7-a77a-0b8c68fb58f2" x="-10" y="1" width="109" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Total del Gasto]]></text>
+			</staticText>
+			<textField pattern="¤###,###,##0.00;¤-###,###,##0.00">
+				<reportElement uuid="107dc3fa-c9ae-41c3-a299-106441ddbc73" x="101" y="1" width="89" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_Apro}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤###,###,##0.00;¤-###,###,##0.00">
+				<reportElement uuid="2c01dfb8-5a0d-4c3a-a679-d2a0624c7f00" x="191" y="1" width="81" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_Amp_Redu}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤###,###,##0.00;¤-###,###,##0.00">
+				<reportElement uuid="46fd59a6-ef02-47cb-a8bb-afd962a0f622" x="273" y="1" width="87" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_Mod}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤###,###,##0.00;¤-###,###,##0.00">
+				<reportElement uuid="00ac75ae-dce1-4d73-ab72-cb51f77e0ce4" x="362" y="1" width="64" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_Deven}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤###,###,##0.00;¤-###,###,##0.00">
+				<reportElement uuid="963fb6bb-7cb3-454d-bc8e-07e106887406" x="428" y="1" width="70" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_Pag}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤###,###,##0.00;¤-###,###,##0.00">
+				<reportElement uuid="241cb231-b746-4b34-b2fa-97fd234cd93c" x="500" y="1" width="81" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_Sub_Ejer}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

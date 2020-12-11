@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptCorteCajaGeneral" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d531e0dc-a985-4664-906a-da63898bf529">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="fechainicio" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2020-01-03 00:00:00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafin" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2020-01-03 23:59:59"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagenEstado" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/juan/Trabajo/ap_grp_de/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechalarga" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["VIERNES 03 DE ENERO DEL 2020"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechainicio2" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 00:00:00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="decimales" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT legalname, rubro, rubrodesc, tipoingreso, tipodesc, objprincipal, objparcial, objparcialdesc, SUM(neto) AS neto, SUM(netomensual) AS netomensual, SUM(importe) AS importe, SUM(bonificacion) AS bonificacion
+FROM (
+
+SELECT CONCAT(UPPER(DWH_Tiempo.NombreDia), ' ', cat_Days.Dia, ' DE ', UPPER(cat_Months.mes), ' DE ', YEAR(debtortrans.trandate)) AS fecha, UPPER(legalbusinessunit.legalname) AS legalname, rubro_ingreso.clave AS rubro, rubro_ingreso.descripcion AS rubrodesc, tipo_ingreso.clave AS tipoingreso, tipo_ingreso.descripcion AS tipodesc,
+salesorderdetails.fromstkloc AS objprincipal,
+salesorderdetails.stkcode AS objparcial,
+stockmaster.description AS objparcialdesc,
+0 AS importe,
+0 AS recargos,
+0 AS bonificacion,
+SUM((salesorderdetails.unitprice * salesorderdetails.quantity) - ((salesorderdetails.unitprice * salesorderdetails.quantity) * salesorderdetails.discountpercent)) AS neto, 0 AS netomensual
+FROM debtortrans
+JOIN custallocns ON custallocns.transid_allocfrom = debtortrans.id
+JOIN debtortrans debtortransFac ON debtortransFac.id = custallocns.transid_allocto
+JOIN salesorders ON salesorders.orderno = debtortransFac.order_
+JOIN salesorderdetails ON salesorderdetails.orderno = salesorders.orderno
+JOIN stockmaster ON stockmaster.stockid = salesorderdetails.stkcode
+JOIN tb_cat_objeto_detalle ON tb_cat_objeto_detalle.stockid = salesorderdetails.stkcode
+JOIN chartdetailsbudgetbytag ON chartdetailsbudgetbytag.accountcode = tb_cat_objeto_detalle.clave_presupuestal
+LEFT JOIN clasificador_ingreso ON chartdetailsbudgetbytag.rtc= clasificador_ingreso.rtc
+LEFT JOIN tipo_ingreso ON clasificador_ingreso.id_tipo= tipo_ingreso.clave AND clasificador_ingreso.id_rubro= tipo_ingreso.id_rubro
+LEFT JOIN rubro_ingreso ON tipo_ingreso.id_rubro= rubro_ingreso.clave
+LEFT JOIN tags ON debtortrans.tagref= tags.tagref
+LEFT JOIN legalbusinessunit ON tags.legalid= legalbusinessunit.legalid
+LEFT JOIN DWH_Tiempo ON YEAR(debtortrans.trandate)= DWH_Tiempo.anio AND MONTH(debtortrans.trandate)= DWH_Tiempo.mes AND DAY(debtortrans.trandate)= DWH_Tiempo.dia
+LEFT JOIN cat_Days ON DAY(debtortrans.trandate)=cat_Days.DiaId
+LEFT JOIN cat_Months ON MONTH(debtortrans.trandate)= cat_Months.u_mes
+WHERE debtortrans.type = 12
+AND debtortrans.trandate BETWEEN $P{fechainicio} AND $P{fechafin}
+GROUP BY CONCAT(UPPER(DWH_Tiempo.NombreDia), ' ', cat_Days.Dia, ' DE ', UPPER(cat_Months.mes), ' DE ', YEAR(debtortrans.trandate)), legalbusinessunit.legalname, rubro_ingreso.clave, rubro_ingreso.descripcion, tipo_ingreso.clave, tipo_ingreso.descripcion,
+salesorderdetails.fromstkloc,
+salesorderdetails.stkcode,
+stockmaster.description
+
+UNION
+
+SELECT CONCAT(UPPER(DWH_Tiempo.NombreDia), ' ', cat_Days.Dia, ' DE ', UPPER(cat_Months.mes), ' DE ', YEAR(debtortrans.trandate)) AS fecha, UPPER(legalbusinessunit.legalname) AS legalname, rubro_ingreso.clave AS rubro, rubro_ingreso.descripcion AS rubrodesc, tipo_ingreso.clave AS tipoingreso, tipo_ingreso.descripcion AS tipodesc,
+salesorderdetails.fromstkloc AS objprincipal,
+salesorderdetails.stkcode AS objparcial,
+stockmaster.description AS objparcialdesc,
+SUM(salesorderdetails.unitprice * salesorderdetails.quantity) AS importe,
+0 AS recargos,
+SUM((salesorderdetails.unitprice * salesorderdetails.quantity) * salesorderdetails.discountpercent) AS bonificacion,
+0 AS neto,
+SUM((salesorderdetails.unitprice * salesorderdetails.quantity) - ((salesorderdetails.unitprice * salesorderdetails.quantity) * salesorderdetails.discountpercent)) AS netomensual
+FROM debtortrans
+JOIN custallocns ON custallocns.transid_allocfrom = debtortrans.id
+JOIN debtortrans debtortransFac ON debtortransFac.id = custallocns.transid_allocto
+JOIN salesorders ON salesorders.orderno = debtortransFac.order_
+JOIN salesorderdetails ON salesorderdetails.orderno = salesorders.orderno
+JOIN stockmaster ON stockmaster.stockid = salesorderdetails.stkcode
+JOIN tb_cat_objeto_detalle ON tb_cat_objeto_detalle.stockid = salesorderdetails.stkcode
+JOIN chartdetailsbudgetbytag ON chartdetailsbudgetbytag.accountcode = tb_cat_objeto_detalle.clave_presupuestal
+LEFT JOIN clasificador_ingreso ON chartdetailsbudgetbytag.rtc= clasificador_ingreso.rtc
+LEFT JOIN tipo_ingreso ON clasificador_ingreso.id_tipo= tipo_ingreso.clave AND clasificador_ingreso.id_rubro= tipo_ingreso.id_rubro
+LEFT JOIN rubro_ingreso ON tipo_ingreso.id_rubro= rubro_ingreso.clave
+LEFT JOIN tags ON debtortrans.tagref= tags.tagref
+LEFT JOIN legalbusinessunit ON tags.legalid= legalbusinessunit.legalid
+LEFT JOIN DWH_Tiempo ON YEAR(debtortrans.trandate)= DWH_Tiempo.anio AND MONTH(debtortrans.trandate)= DWH_Tiempo.mes AND DAY(debtortrans.trandate)= DWH_Tiempo.dia
+LEFT JOIN cat_Days ON DAY(debtortrans.trandate)=cat_Days.DiaId
+LEFT JOIN cat_Months ON MONTH(debtortrans.trandate)= cat_Months.u_mes
+WHERE debtortrans.type = 12
+AND debtortrans.trandate BETWEEN $P{fechainicio2} AND $P{fechafin}
+GROUP BY CONCAT(UPPER(DWH_Tiempo.NombreDia), ' ', cat_Days.Dia, ' DE ', UPPER(cat_Months.mes), ' DE ', YEAR(debtortrans.trandate)), legalbusinessunit.legalname, rubro_ingreso.clave, rubro_ingreso.descripcion, tipo_ingreso.clave, tipo_ingreso.descripcion,
+salesorderdetails.fromstkloc,
+salesorderdetails.stkcode,
+stockmaster.description
+ORDER BY rubro, tipoingreso, objprincipal, objparcial
+) AS datos
+GROUP BY legalname, rubro, rubrodesc, tipoingreso, tipodesc, objprincipal, objparcial, objparcialdesc]]>
+	</queryString>
+	<field name="rubro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rubrodesc" class="java.lang.String">
+		<fieldDescription><![CDATA[nombre]]></fieldDescription>
+	</field>
+	<field name="tipoingreso" class="java.lang.String">
+		<fieldDescription><![CDATA[Folio de la póliza de cierre]]></fieldDescription>
+	</field>
+	<field name="tipodesc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="objprincipal" class="java.lang.String"/>
+	<field name="objparcial" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="objparcialdesc" class="java.lang.String"/>
+	<field name="neto" class="java.lang.Double"/>
+	<field name="legalname" class="java.lang.String"/>
+	<field name="netomensual" class="java.lang.Double"/>
+	<field name="importe" class="java.lang.Double"/>
+	<field name="bonificacion" class="java.lang.Double"/>
+	<variable name="totalneto" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{neto}]]></variableExpression>
+	</variable>
+	<variable name="subtotalneto" class="java.lang.Double" resetType="Group" resetGroup="TipoIngreso" calculation="Sum">
+		<variableExpression><![CDATA[$F{neto}]]></variableExpression>
+	</variable>
+	<variable name="subtotalnetomensual" class="java.lang.Double" resetType="Group" resetGroup="TipoIngreso" calculation="Sum">
+		<variableExpression><![CDATA[$F{netomensual}]]></variableExpression>
+	</variable>
+	<variable name="totalnetomensual" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{netomensual}]]></variableExpression>
+	</variable>
+	<variable name="totalimporte" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{importe}]]></variableExpression>
+	</variable>
+	<variable name="totalbonificacion" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{bonificacion}]]></variableExpression>
+	</variable>
+	<group name="RubroIngreso">
+		<groupExpression><![CDATA[$F{rubro}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement uuid="ec02f4a5-696d-4758-b1fd-f21fc9fb45b8" x="120" y="0" width="630" height="20"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{rubro}+". "+$F{rubrodesc}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="TipoIngreso">
+		<groupExpression><![CDATA[$F{tipoingreso}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement uuid="515c2b3c-0bff-40ac-a56e-6ade3c6f90ca" x="120" y="0" width="630" height="20"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{rubro}+"."+$F{tipoingreso}+" "+$F{tipodesc}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="21">
+				<staticText>
+					<reportElement uuid="949ced97-8f3f-4949-b35b-f005cc9853ed" x="205" y="1" width="113" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[SUBTOTAL:]]></text>
+				</staticText>
+				<textField pattern="$ #,##0.00">
+					<reportElement uuid="39eb0f06-168f-4a0f-b14a-8e02733d4c1c" x="497" y="1" width="124" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($V{subtotalneto})]]></textFieldExpression>
+				</textField>
+				<textField pattern="$ #,##0.00">
+					<reportElement uuid="30ff4e19-add6-45dd-a39a-37330a12d25b" x="621" y="1" width="129" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($V{subtotalnetomensual})]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="138" splitType="Stretch">
+			<image>
+				<reportElement uuid="ce0a9881-3642-4d14-8295-e9fe105c5e08" x="0" y="0" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="370bb989-a8fc-42bd-8305-cc5c851b0e32" x="610" y="0" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="4ab2aa5d-a83a-4455-83ce-5fb898daca41" x="236" y="3" width="286" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{legalname}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="62d4d5cc-fddd-41b0-b04b-f1a0152d0fbf" x="318" y="23" width="122" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[TESORERIA MUNICIPAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2e121981-f26f-4e72-bedf-cb4ca5adfb0a" x="318" y="43" width="122" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[2018-2021]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ed0816eb-0f40-48fe-924b-fc718ca0b13b" x="251" y="63" width="257" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[ACUMULADO MENSUAL DE INGRESOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2ae73b13-c1cf-4037-a6ac-734c13af54cd" x="1" y="90" width="141" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CORRESPONDIENTE AL DIA:]]></text>
+			</staticText>
+			<frame>
+				<reportElement uuid="c4cc1caa-e28a-49da-929b-e6dabbc8755b" x="1" y="113" width="751" height="25"/>
+				<staticText>
+					<reportElement uuid="5e53836c-2b38-424e-a582-66406edbe900" x="0" y="2" width="60" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[OP. PPAL]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="728a726b-1064-4ef0-94cf-1d4735b794f4" x="60" y="2" width="59" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[OP.PARC.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="14959a91-1785-41a2-b34b-3a12d2f1b806" x="119" y="3" width="377" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[DESCRIPCION]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="1e3704f7-c1e3-4063-862f-03c6a9c12909" x="496" y="2" width="124" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[NETO DEL DIA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5ea7861a-3a3c-422d-8d11-25e2cd242b30" x="620" y="3" width="130" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[NETO MENSUAL]]></text>
+				</staticText>
+			</frame>
+			<textField>
+				<reportElement uuid="5a41dd75-959f-447c-8321-ef463e6485ba" x="142" y="90" width="286" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechalarga}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="bc189a62-4dc9-4616-8f49-40c9cc9d83af" x="0" y="0" width="61" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{objprincipal}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="e7b25925-7b80-4a0b-b70f-8fcafa8501b8" x="61" y="0" width="59" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{objparcial}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="true">
+				<reportElement uuid="ff30fe1f-2572-4b61-baff-58f012205b46" x="120" y="0" width="377" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{objparcialdesc}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="$ #,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="a4a61644-05c6-4aed-bc05-580aeb8588db" x="497" y="0" width="124" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{neto})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="$ #,##0.00">
+				<reportElement uuid="8849de25-4e06-45cc-84b3-bbd73bec53ee" x="621" y="0" width="129" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{netomensual})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField evaluationTime="Report">
+				<reportElement uuid="95a6d8d3-0f57-47bc-8d1b-e4e5ac438fcf" x="374" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e095303c-227a-45a4-af9b-101edee177e5" x="343" y="0" width="31" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}+"/"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="22" splitType="Immediate">
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="9d71025f-be6e-4f82-bf07-1321600e9038" x="621" y="2" width="129" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalimporte} - $V{totalbonificacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="fe0f17c5-805f-4d7c-9fd2-9f6eb61c4571" x="205" y="2" width="113" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="28d02c2f-7a95-468c-90fd-82ee828004af" x="497" y="2" width="124" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{totalneto})]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

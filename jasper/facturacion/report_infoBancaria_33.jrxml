@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_infoBancaria_33" pageWidth="612" pageHeight="792" columnWidth="610" leftMargin="1" rightMargin="1" topMargin="1" bottomMargin="1" uuid="ec0ecea0-bb07-4360-bf4f-fba309356cae">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="comprobante"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="xPath">
+		<![CDATA[/Comprobante/InformacionBancaria/Descripciones]]>
+	</queryString>
+	<field name="descripcion0" class="java.lang.String">
+		<fieldDescription><![CDATA[@descripcion0]]></fieldDescription>
+	</field>
+	<field name="descripcion1" class="java.lang.String">
+		<fieldDescription><![CDATA[@descripcion1]]></fieldDescription>
+	</field>
+	<field name="descripcion2" class="java.lang.String">
+		<fieldDescription><![CDATA[@descripcion2]]></fieldDescription>
+	</field>
+	<field name="descripcion3" class="java.lang.String">
+		<fieldDescription><![CDATA[@descripcion3]]></fieldDescription>
+	</field>
+	<field name="descripcion4" class="java.lang.String">
+		<fieldDescription><![CDATA[@descripcion4]]></fieldDescription>
+	</field>
+	<field name="descripcion5" class="java.lang.String">
+		<fieldDescription><![CDATA[@descripcion5]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="da23a318-a0cf-4d6c-8ab1-ccda5d5a892f" x="0" y="0" width="376" height="12"/>
+				<textElement markup="none">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{descripcion0}!=null && !$F{descripcion0}.isEmpty()?"Banco:"+$F{descripcion0}:"")+
+($F{descripcion1}!=null && !$F{descripcion1}.isEmpty()?"\nSucursal:"+$F{descripcion1}:"")+
+($F{descripcion2}!=null && !$F{descripcion2}.isEmpty()?"\n"+$F{descripcion2}:"")+
+($F{descripcion3}!=null && !$F{descripcion3}.isEmpty()?"\n"+$F{descripcion3}:"")+
+($F{descripcion4}!=null && !$F{descripcion4}.isEmpty()?"\n"+$F{descripcion4}:"")+
+($F{descripcion5}!=null && !$F{descripcion5}.isEmpty()?"\n"+$F{descripcion5}:"")]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

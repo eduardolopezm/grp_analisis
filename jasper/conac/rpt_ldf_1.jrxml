@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_ldf_1" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="edca45a6-31d1-455a-a07b-2165dded3ea0">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="420"/>
+	<property name="ireport.y" value="316"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/alfredob/Projects/grp/ap_grp/jasper/conac/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tagref" class="java.lang.String"/>
+	<parameter name="parEntePublico" class="java.lang.String"/>
+	<parameter name="parRangoDeFechas" class="java.lang.String"/>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="anioreporte" class="java.lang.String"/>
+	<parameter name="fechainicialnew" class="java.lang.String"/>
+	<parameter name="fechafinalnew" class="java.lang.String"/>
+	<parameter name="usuario" class="java.lang.String"/>
+	<parameter name="ue" class="java.lang.String"/>
+	<parameter name="fechaReporteNewFin" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[Select 1]]>
+	</queryString>
+	<variable name="totalIzquierda" class="java.lang.Double"/>
+	<variable name="totalIzquierda2" class="java.lang.Double"/>
+	<variable name="abajoizquierda" class="java.lang.Double"/>
+	<variable name="abajoizquierda2" class="java.lang.Double"/>
+	<variable name="totalReporte1DerechaA" class="java.lang.Double"/>
+	<variable name="totalReporte1DerechaB" class="java.lang.Double"/>
+	<variable name="totalReporte2DerechaA" class="java.lang.Double"/>
+	<variable name="totalReporte2DerechaB" class="java.lang.Double"/>
+	<variable name="totalReporte3DerechaA" class="java.lang.Double"/>
+	<variable name="totalReporte3DerechaB" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="72" splitType="Stretch">
+			<textField>
+				<reportElement uuid="9b6e05e4-9f1f-4d69-be12-dd2eab8022ce" x="25" y="3" width="520" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{parEntePublico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="0f4b3df7-6ed0-442e-bcf5-a8db21f19358" x="25" y="21" width="520" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Situacion Financiera (Detallado)]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="60b42517-67d7-4c80-9119-7cee0107802a" x="0" y="0" width="140" height="57"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="2c2b779e-92bc-460f-b051-e8680521c266" x="117" y="41" width="359" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaReporteNewFin}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<subreport isUsingCache="false" runToBottom="false">
+				<reportElement uuid="f4602cc2-3ee2-44ac-a7b0-c29c6d3df0ee" mode="Opaque" x="287" y="0" width="258" height="38"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="anio">
+					<subreportParameterExpression><![CDATA[$P{anioreporte}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titulo_reporte">
+					<subreportParameterExpression><![CDATA["Pasivo Circulante"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechainicialnew">
+					<subreportParameterExpression><![CDATA[$P{fechainicialnew}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cuenta_mayor">
+					<subreportParameterExpression><![CDATA["2.1%"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ue">
+					<subreportParameterExpression><![CDATA[$P{ue}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="usuario">
+					<subreportParameterExpression><![CDATA[$P{usuario}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechafinalnew">
+					<subreportParameterExpression><![CDATA[$P{fechafinalnew}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tagref">
+					<subreportParameterExpression><![CDATA[$P{tagref}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="naturaleza">
+					<subreportParameterExpression><![CDATA[1]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="total" toVariable="totalReporte2DerechaA"/>
+				<returnValue subreportVariable="totalPeriodo2" toVariable="totalReporte2DerechaB"/>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subrptsituacionfinancieraDetallado.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport isUsingCache="false" runToBottom="true">
+				<reportElement uuid="f3d5ba47-96ec-47b4-bbf5-f348b21afee9" mode="Transparent" x="0" y="0" width="276" height="38"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="anioreporte">
+					<subreportParameterExpression><![CDATA[$P{anioreporte}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechainicialnew">
+					<subreportParameterExpression><![CDATA[$P{fechainicialnew}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titulo_reporte">
+					<subreportParameterExpression><![CDATA["Activo Circulante"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cuenta_mayor">
+					<subreportParameterExpression><![CDATA["1.1%"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ue">
+					<subreportParameterExpression><![CDATA[$P{ue}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="usuario">
+					<subreportParameterExpression><![CDATA[$P{usuario}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechafinalnew">
+					<subreportParameterExpression><![CDATA[$P{fechafinalnew}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tagref">
+					<subreportParameterExpression><![CDATA[$P{tagref}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="naturaleza">
+					<subreportParameterExpression><![CDATA[1]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="total" toVariable="abajoizquierda"/>
+				<returnValue subreportVariable="totalPeriodo2" toVariable="abajoizquierda2"/>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subrptsituacionfinancieraDetallado.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="40">
+			<subreport isUsingCache="false" runToBottom="false">
+				<reportElement uuid="274c4be3-a399-4599-86f0-e4aef8929d53" mode="Opaque" x="287" y="3" width="258" height="37"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="anio">
+					<subreportParameterExpression><![CDATA[$P{anioreporte}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titulo_reporte">
+					<subreportParameterExpression><![CDATA["Pasivo No Circulante"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechainicialnew">
+					<subreportParameterExpression><![CDATA[$P{fechainicialnew}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cuenta_mayor">
+					<subreportParameterExpression><![CDATA["2.2%"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ue">
+					<subreportParameterExpression><![CDATA[$P{ue}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="usuario">
+					<subreportParameterExpression><![CDATA[$P{usuario}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechafinalnew">
+					<subreportParameterExpression><![CDATA[$P{fechafinalnew}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tagref">
+					<subreportParameterExpression><![CDATA[$P{tagref}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="naturaleza">
+					<subreportParameterExpression><![CDATA[1]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="total" toVariable="totalReporte2DerechaA"/>
+				<returnValue subreportVariable="totalPeriodo2" toVariable="totalReporte2DerechaB"/>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subrptsituacionfinancieraDetallado.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport isUsingCache="false" runToBottom="false">
+				<reportElement uuid="afb9e3b8-15c4-4aa5-8355-17925724396f" mode="Transparent" x="0" y="3" width="276" height="37"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="anio">
+					<subreportParameterExpression><![CDATA[$P{anioreporte}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titulo_reporte">
+					<subreportParameterExpression><![CDATA["Activo No Circulante"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechainicialnew">
+					<subreportParameterExpression><![CDATA[$P{fechainicialnew}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cuenta_mayor">
+					<subreportParameterExpression><![CDATA["1.2%"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ue">
+					<subreportParameterExpression><![CDATA[$P{ue}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="usuario">
+					<subreportParameterExpression><![CDATA[$P{usuario}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechafinalnew">
+					<subreportParameterExpression><![CDATA[$P{fechafinalnew}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tagref">
+					<subreportParameterExpression><![CDATA[$P{tagref}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="naturaleza">
+					<subreportParameterExpression><![CDATA[1]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="total" toVariable="abajoizquierda"/>
+				<returnValue subreportVariable="totalPeriodo2" toVariable="abajoizquierda2"/>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subrptsituacionfinancieraDetallado.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="40">
+			<subreport isUsingCache="false" runToBottom="false">
+				<reportElement uuid="39db38d5-0591-4ebf-96c2-621b07b7b546" mode="Opaque" x="287" y="6" width="258" height="32"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="anio">
+					<subreportParameterExpression><![CDATA[$P{anioreporte}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechainicialnew">
+					<subreportParameterExpression><![CDATA[$P{fechainicialnew}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titulo_reporte">
+					<subreportParameterExpression><![CDATA["Hacienda Publica/Patrimonio Contribuido"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cuenta_mayor">
+					<subreportParameterExpression><![CDATA["3.1%"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ue">
+					<subreportParameterExpression><![CDATA[$P{ue}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="usuario">
+					<subreportParameterExpression><![CDATA[$P{usuario}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechafinalnew">
+					<subreportParameterExpression><![CDATA[$P{fechafinalnew}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tagref">
+					<subreportParameterExpression><![CDATA[$P{tagref}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="naturaleza">
+					<subreportParameterExpression><![CDATA[1]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="total" toVariable="totalReporte3DerechaA"/>
+				<returnValue subreportVariable="totalPeriodo2" toVariable="totalReporte3DerechaB"/>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subrptsituacionfinancieraDetallado.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="35">
+			<subreport isUsingCache="false" runToBottom="false">
+				<reportElement uuid="955087f7-1356-4fe8-a965-1a6df9c9d19f" mode="Opaque" x="287" y="0" width="258" height="32"/>
+				<subreportParameter name="anio">
+					<subreportParameterExpression><![CDATA[$P{anioreporte}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titulo_reporte">
+					<subreportParameterExpression><![CDATA["Hacienda Publica/Patrimonio Generado"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechainicialnew">
+					<subreportParameterExpression><![CDATA[$P{fechainicialnew}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cuenta_mayor">
+					<subreportParameterExpression><![CDATA["3.2%"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ue">
+					<subreportParameterExpression><![CDATA[$P{ue}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="usuario">
+					<subreportParameterExpression><![CDATA[$P{usuario}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechafinalnew">
+					<subreportParameterExpression><![CDATA[$P{fechafinalnew}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tagref">
+					<subreportParameterExpression><![CDATA[$P{tagref}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="naturaleza">
+					<subreportParameterExpression><![CDATA[1]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="total" toVariable="totalReporte3DerechaA"/>
+				<returnValue subreportVariable="totalPeriodo2" toVariable="totalReporte3DerechaB"/>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subrptsituacionfinanciera.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="35">
+			<subreport isUsingCache="false" runToBottom="false">
+				<reportElement uuid="4a170d25-5038-4de2-a81c-77256c55bd47" mode="Opaque" x="287" y="0" width="258" height="32"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="anioreporte">
+					<subreportParameterExpression><![CDATA[$P{anioreporte}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titulo_reporte">
+					<subreportParameterExpression><![CDATA["Exceso o Insuficiencia en la Actualización de la Hacienda Publica/Patrimonio"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechainicialnew">
+					<subreportParameterExpression><![CDATA[$P{fechainicialnew}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cuenta_mayor">
+					<subreportParameterExpression><![CDATA["3.3%"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ue">
+					<subreportParameterExpression><![CDATA[$P{ue}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="usuario">
+					<subreportParameterExpression><![CDATA[$P{usuario}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tagref">
+					<subreportParameterExpression><![CDATA[$P{tagref}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="naturaleza">
+					<subreportParameterExpression><![CDATA[1]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="total" toVariable="totalReporte3DerechaA"/>
+				<returnValue subreportVariable="totalPeriodo2" toVariable="totalReporte3DerechaB"/>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subrptsituacionfinancieraDetallado.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

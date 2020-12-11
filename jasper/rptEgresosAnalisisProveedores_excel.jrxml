@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptEgresosAnalisisProveedores" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="d531e0dc-a985-4664-906a-da63898bf529">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "estiloTablaJasper.jrtx"]]></template>
+	<style name="bordesNegros" forecolor="#000000" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="1.0"/>
+			<topPen lineWidth="1.0"/>
+			<leftPen lineWidth="1.0"/>
+			<bottomPen lineWidth="1.0"/>
+			<rightPen lineWidth="1.0"/>
+		</box>
+	</style>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="fechainicio" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 00:00:00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafin" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 23:59:59"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagenEstado" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/juan/Trabajo/ap_grp_de/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="userid" class="java.lang.String"/>
+	<parameter name="fechaIniText" class="java.lang.String"/>
+	<parameter name="fechaFinText" class="java.lang.String"/>
+	<parameter name="supplierid" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+suppliers.supplierid,
+suppliers.suppname,
+DATE_FORMAT(purchorders.orddate, '%d-%m-%Y') as fechaPedido,
+SUM(IFNULL(purchorderdetails.unitprice,0) * IFNULL(purchorderdetails.quantityord,0)) as montoPedido,
+SUM(IFNULL(purchorderdetails.unitprice,0) * IFNULL(purchorderdetails.quantityord,0)) as montoMercancia,
+DATE_FORMAT(supptrans.trandate, '%d-%m-%Y') as fechaFactura,
+SUM(IFNULL(supptransdetails.price,0) * IFNULL(supptransdetails.qty,0)) as montoFactura,
+DATE_FORMAT(NOW(), '%d-%m-%Y') as fechaConsulta,
+DATE_FORMAT(NOW(), '%T') as horaConsulta,
+suppliersNum.totalProveedores
+FROM suppliers
+LEFT JOIN supptrans ON suppliers.supplierid = supptrans.supplierno AND supptrans.type = 20
+LEFT JOIN tb_cat_entidad_federativa ON tb_cat_entidad_federativa.id_nu_entidad_federativa = suppliers.id_nu_entidad_federativa
+LEFT JOIN supptransdetails ON supptransdetails.supptransid = supptrans.id
+LEFT JOIN grns ON grns.grnno = supptransdetails.grns
+LEFT JOIN purchorderdetails ON purchorderdetails.podetailitem = grns.podetailitem
+LEFT JOIN purchorders ON purchorders.orderno = purchorderdetails.orderno AND purchorders.orddate between $P{fechainicio} AND $P{fechafin}
+JOIN (
+SELECT COUNT(*) as totalProveedores
+FROM suppliers
+WHERE suppliers.id_nu_tipo = 1
+AND suppliers.supplierid <> '111111'
+) AS suppliersNum
+WHERE
+suppliers.id_nu_tipo = 1
+AND suppliers.supplierid <> '111111'
+AND (CASE WHEN $P{supplierid} = '' THEN 1 = 1 ELSE suppliers.supplierid like '%$P!{supplierid}%' END OR CASE WHEN $P{supplierid} = '' THEN 1 = 1 ELSE suppliers.suppname like '%$P!{supplierid}%' END)
+GROUP BY supptrans.supplierno
+ORDER BY purchorders.realorderno ASC]]>
+	</queryString>
+	<field name="supplierid" class="java.lang.String"/>
+	<field name="suppname" class="java.lang.String"/>
+	<field name="montoPedido" class="java.lang.Double"/>
+	<field name="montoMercancia" class="java.lang.Double"/>
+	<field name="montoFactura" class="java.lang.Double"/>
+	<field name="fechaConsulta" class="java.lang.String"/>
+	<field name="horaConsulta" class="java.lang.String"/>
+	<field name="totalProveedores" class="java.lang.String"/>
+	<variable name="totalPedido" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{montoPedido}]]></variableExpression>
+	</variable>
+	<variable name="totalMercancia" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{montoMercancia}]]></variableExpression>
+	</variable>
+	<variable name="totalFactura" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{montoFactura}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="115">
+			<image>
+				<reportElement uuid="0008ca43-f2bb-40e5-8234-b06ce98ef9e5" x="0" y="10" width="152" height="66"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="1e73b338-cfc0-40bb-b971-08db2ec956cd" x="152" y="10" width="276" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Municipio de Tampico, Tam."]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="687cebad-a90c-4719-af76-20272ee4ed35" x="428" y="10" width="144" height="68"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="b9b91e6b-8954-4b17-871a-f428f7a38e27" x="152" y="31" width="276" height="22" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Análisis Proveedores : Valos Compras"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="09aa2816-fc21-46cc-b8d1-8dd67d76e8cc" x="152" y="53" width="276" height="23"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DEL "+$P{fechaIniText}+"\nAL "+$P{fechaFinText}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="1e96bf60-b0c2-4532-9a7f-e230a1a3e89c" x="0" y="100" width="152" height="13" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cantidad de Proveedor: "+$F{totalProveedores}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="a9a034e4-b4e9-4029-b6e4-a411df756108" x="0" y="76" width="152" height="12" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sel. mediante: "+$P{userid}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="e14201e4-142e-4ccb-9b64-3e5fd5a5a47c" x="152" y="76" width="140" height="12" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["el "+$F{fechaConsulta}+" / "+$F{horaConsulta}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="e1a27f8c-6b67-4ca3-8a20-edce259f0c21" x="0" y="88" width="152" height="12" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Estructura info"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="e1f725ce-fa7f-4fcd-a704-d58c113ee3a1" x="152" y="88" width="140" height="12" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Registros selecciona"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="32453d2f-e02b-4b85-84ff-47f49aad5c02" x="292" y="76" width="136" height="12" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sistema/Mandate"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="03c4b34f-d56d-41c1-a6df-c97128e77c03" x="292" y="88" width="136" height="12" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tiempo selección"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="42" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="62f14ff9-9b06-42c9-b135-7e49c614c236" x="152" y="2" width="140" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["VALOR DE PEDIDO"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="11638abe-21b1-4f88-8387-563fcff316f9" x="0" y="2" width="152" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PROVEEDOR"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="11e58e73-77af-45aa-8234-1053693cfcc9" x="292" y="2" width="140" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["VAL.ENTR.MCÍA"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3d76ee40-63cf-413a-8a26-997cb606ac97" x="432" y="2" width="140" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["IMPORTE FACTURA"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="6a79cb79-1048-43c8-a5db-3f6d7288b133" x="152" y="2" width="140" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{montoPedido}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3447f776-bb8c-49f6-a983-4a12b5546d13" x="0" y="2" width="152" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{suppname}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="3b7e8ba4-069b-45be-bea5-fe65ae326166" x="292" y="2" width="140" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{montoPedido}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="3aa48936-9252-433d-af72-cd86aab3e424" x="432" y="2" width="140" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{montoFactura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="19" splitType="Immediate">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="c4040e48-1ca4-41c0-b91c-3afbc539bbc3" x="0" y="1" width="152" height="16" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="b78d668b-5d75-4cd1-85e5-a1e3ccd40ab4" x="152" y="1" width="140" height="16" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalPedido}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="6a9370b1-7f48-4a35-b6d2-61a978372216" x="292" y="1" width="140" height="16" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalMercancia}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="e2981963-2804-41e9-bdec-ff3d1fa60abc" x="432" y="1" width="140" height="16" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalFactura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

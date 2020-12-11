@@ -1,0 +1,286 @@
+    @charset "utf-8";
+/* CSS Document      */
+hr{
+    color: #333333;
+}
+
+#idContentRequisicion{
+    max-height: 100%;
+    /*overflow-y: auto;*/
+}
+
+#navArticulos div, #navServicios div, #navAnexos div, #navInstrumental div{
+    float: left;
+    border-right: solid 1px gray;
+    padding-top: 10px;
+    text-align: center;
+    height: 30px;
+
+}
+#idMainListContentArticulo ol li, #idMainListContentServicio ol li, #idMainListContentInstrumental ol li{
+    float: left;
+    list-style: none;
+
+}
+#idMainListContentArticulo ul, #idMainListContentServicio ul, #idMainListContentInstrumental ul{
+    overflow: scroll;
+    min-height: 30px;
+    max-height: 250px;
+    width: auto;
+}
+#idMainListContentArticulo ul li, #idMainListContentServicio ul li, #idMainListContentInstrumental ul li{
+    float: none;
+    list-style: none;
+}
+
+#idMainListContentArticulo label, #idMainListContentServicio label, #idMainListContentInstrumental label{
+    padding-top: 5px;
+
+}
+div.btn-group{
+    width: 100%;
+
+}
+ input[name=anexoTecnicoCheck]{
+    -webkit-transform: scale(2);
+    -moz-transform: scale(2);
+    -ms-transform: scale(2);
+    -o-transform: scale(2);
+    transform: scale(2);
+
+}
+
+@media (min-width: 600px) and (max-width: 1400px){ 
+  .hTablaValidarPanel {
+    max-height: 250px;
+  }
+}
+@media (min-width: 1401px) {
+  .hTablaValidarPanel {
+    max-height: 400px;
+  }
+}
+/*#divAnexoTabla div{
+    border: solid 1px #DDDDDD;
+    border-bottom: none;
+}*/
+
+#divAnexoTabla #divAnexoTablaHeader div{
+    color: #FFFFFF;
+    font-size: 12;
+    height: 20px;
+    background-color: #1B693F;
+}
+#idContentFechaEntrega label{
+    max-width: 30%;
+}
+
+#idTableReqValidacion{
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    background: rgba(124, 134, 133, 0.7) ;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+
+}
+#idTableContReq{
+    background-color: #FFFFFF;
+    padding: 5px;
+    max-height: 80%;
+    overflow-y: auto;
+}
+
+/*#modal-obs{
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    background: rgba(124, 134, 133, 0.7) ;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+#modal-obs-content{
+    background-color: #FFFFFF;
+    margin: 5% auto;
+    width: 80%;
+    max-height: 500px;
+}
+#modal-obs-Tab-content{
+    width: 95%;
+    height: 400;
+    overflow-y: auto;
+}
+
+#modal-obs-main{
+    padding: 10px;
+    max-height: 500px;
+}
+
+#modal-obs-foot{
+    padding: 10px;
+}*/
+
+#modal-obs{
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    background: rgba(124, 134, 133, 0.7) ;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    padding: 5%;
+}
+#modal-obs-content{
+    background-color: #FFFFFF;
+    margin: 0 auto;
+    height: 95%;
+    padding: 5px;
+    
+}
+#modal-obs-Tab-content{
+    overflow-y: auto;
+    height: 90%;
+}
+
+#modal-obs-top{
+    height: 25%;
+}
+
+#modal-obs-main{
+    height: 65%;
+}
+
+#modal-obs-foot{
+    margin-top: 10px;
+    padding: 5px;
+    text-align: right;
+    
+}
+#tableSufPresupuestalModalTab{
+    width: 100%;
+    height: 90%;
+}
+
+#tableNoExistenciaModalTab, #tableSolAlmacenModalTab{
+    width: 100%;
+    height: 100%;
+}
+
+#tableNoExistenciaModalTab tr:nth-child(odd) {
+    background-color: #FFFFFF;
+}
+#tableNoExistenciaModalTab tr:nth-child(even) {
+    background-color:#F2F2F2;
+}
+
+#tableSufPresupuestalModalTab tr:nth-child(odd) {
+    background-color: #FFFFFF;
+}
+#tableSufPresupuestalModalTab tr:nth-child(even) {
+    background-color:#F2F2F2;
+}
+
+#tableSolAlmacenModalTab tr:nth-child(odd) {
+    background-color: #FFFFFF;
+}
+#tableSolAlmacenModalTab tr:nth-child(even) {
+    background-color:#F2F2F2;
+}
+
+.mensajeError{
+    border: 1px solid #FF0000;
+    color: #FF0000;
+    width: 90%;
+    padding: 10px 0 0 0;
+    margin-bottom: 5px;
+}
+
+.mensajeSuccess{
+    border: solid 1px #1B693F;
+    color: #1B693F;
+    width: 90%;
+    padding: 10px 0 0 0;
+    margin-bottom: 5px; 
+}
+
+/*#idMainListContentArticulo, #idMainListContentServicio{
+  min-height: 150px;
+  height: 350px;
+  overflow-y: auto;
+}*/
+
+/*input[type=checkbox] {
+  transform: scale(2);
+}*/
+
+/* Editor de Texot Inicio */
+
+.idPopupEditor {
+    left: 0;
+    position: fixed;
+    top: 15%;
+    width: 100%;
+    z-index: 1001;
+}
+
+.content-popup {
+    margin:0px auto;
+    margin-top:20px;
+    position:relative;
+    padding:10px;
+    width: 98%;
+    height:80%;
+    border-radius:4px;
+    background-color:#FFFFFF;
+    box-shadow: 0 2px 5px #666666;
+}
+
+.content-popup h2 {
+    color:#BEBEBE;
+    border-bottom: 1px solid #BEBEBE;
+    margin-top: 0;
+    padding-bottom: 4px;
+}
+
+.popOver{
+    background: rgba(255, 255, 255, 1); 
+    display: none;
+    margin: 0px;
+    padding: 0px;
+    width: 95%;
+    height: 95%;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #333;
+    position: absolute;
+    top: 2%;
+    left: 2%;
+    z-index: 1000;
+    overflow-y: auto;
+}
+.popOver h3 {
+    color:#333333;
+}
+
+.popup-overlay {
+    left: 0;
+    position: fixed;
+    top: 15%;
+    width: 100%;
+    height: 510px ! important;
+    z-index: 999;
+    display:none;
+    background-color: #777777;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.popupEditorClose {
+    position: absolute;
+    right: 15px;
+}
+/* Editor de Texot Fin */

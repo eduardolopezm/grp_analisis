@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_ldf_funcionalgasto_xls" language="groovy" pageWidth="842" pageHeight="612" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="4075d947-1797-4622-be7c-e50f7eb03f3c">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="645"/>
+	<property name="ireport.y" value="38"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "../estiloTablaJasper.jrtx"]]></template>
+	<parameter name="tagref" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaIni" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2019-12-01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaFin" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2019-12-19"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anioreporte" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="descripcionUE" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Prueba"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ue" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["-1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/juan/Trabajo/ap_grp_de/jasper/conac/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="entepublico" class="java.lang.String"/>
+	<parameter name="parEntePublico" class="java.lang.String"/>
+	<parameter name="imagenEstado" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+'' AS UR,
+tb_ldf_conf_ingresos_detallado1.idDeta1 as id_finalidad,
+tb_ldf_conf_ingresos_detallado1.ln_etiqueta as desc_fin,
+tb_ldf_conf_ingresos_detallado1.ln_etiqueta2 as desc_fin2,
+tb_ldf_conf_ingresos_detallado2.idDeta2 as id_funcion,
+tb_ldf_conf_ingresos_detallado2.ln_etiqueta as desc_fun,
+0 as id_subfuncion,
+'' as desc_subfun,
+
+CONCAT(SUBSTR('2020-01-01 00:00:00',9,2)," de ",LOWER(`mesini`.`mes`)) AS `fechaIniTexto`,
+CONCAT(SUBSTR('2020-01-21 23:59:59',9,2)," de ",LOWER(`mesfin`.`mes`)) AS `fechaFinTexto`,
+
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='253',`cdbl`.`qty`,0)) AS `Ampliacion`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='254',`cdbl`.`qty`,0)) AS `Reduccion`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='309',`cdbl`.`qty`,0)) AS `Original`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='310',(IF(`cdbl`.`qty` < 0, `cdbl`.`qty`, 0) * systypescat.naturalezacontable),0)) AS `Devengado`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='311',(`cdbl`.`qty` * systypescat.naturalezacontable),0)) AS `Pagado`,
+
+IFNULL(tb_ldf_conf_ingresos_detallado3.total,0) as totalSubReporte
+
+FROM tb_ldf_conf_ingresos_detallado1
+JOIN tb_ldf_conf_ingresos_detallado2 ON tb_ldf_conf_ingresos_detallado2.idDeta1 = tb_ldf_conf_ingresos_detallado1.idDeta1 AND tb_ldf_conf_ingresos_detallado2.nu_activo = 1
+
+LEFT JOIN tb_ldf_detalle2_cri ON tb_ldf_detalle2_cri.idDeta2 = tb_ldf_conf_ingresos_detallado2.idDeta2
+LEFT JOIN chartdetailsbudgetbytag ON chartdetailsbudgetbytag.rtc = tb_ldf_detalle2_cri.rtc
+AND `chartdetailsbudgetbytag`.`anho` = '2020'
+LEFT JOIN chartdetailsbudgetlog AS cdbl ON chartdetailsbudgetbytag.accountcode = cdbl.cvefrom
+AND chartdetailsbudgetbytag.rtc IS NOT NULL
+AND (CASE WHEN $P{tagref} = '' THEN 1 = 1 ELSE  `cdbl`.`tagref` IN ($P{tagref}) END)
+AND `cdbl`.`datemov` >= $P{fechaIni}
+AND `cdbl`.`datemov` <= $P{fechaFin}
+AND `chartdetailsbudgetbytag`.`anho` = $P{anioreporte}
+AND (CASE WHEN $P{ue} = '-1' THEN 1 = 1 ELSE `cdbl`.`ln_ue` IN ($P{ue}) END)
+LEFT JOIN systypescat ON systypescat.typeid = cdbl.nu_tipo_movimiento
+
+LEFT JOIN `cat_Months` AS `mesini` ON `mesini`.`u_mes` = SUBSTR($P{fechaIni},6,2)
+LEFT JOIN `cat_Months` AS `mesfin` ON `mesfin`.`u_mes` = SUBSTR($P{fechaFin},6,2)
+
+LEFT JOIN (
+SELECT
+COUNT(*) as total,
+tb_ldf_conf_ingresos_detallado3.idDeta2
+FROM tb_ldf_conf_ingresos_detallado3
+GROUP BY tb_ldf_conf_ingresos_detallado3.idDeta2
+) tb_ldf_conf_ingresos_detallado3 ON tb_ldf_conf_ingresos_detallado3.idDeta2 = tb_ldf_conf_ingresos_detallado2.idDeta2
+
+WHERE tb_ldf_conf_ingresos_detallado1.nu_activo = 1
+
+GROUP BY tb_ldf_conf_ingresos_detallado1.idDeta1, tb_ldf_conf_ingresos_detallado2.idDeta2
+ORDER BY tb_ldf_conf_ingresos_detallado1.idDeta1, tb_ldf_conf_ingresos_detallado2.idDeta2]]>
+	</queryString>
+	<field name="UR" class="java.lang.String"/>
+	<field name="fechaIniTexto" class="java.lang.String"/>
+	<field name="fechaFinTexto" class="java.lang.String"/>
+	<field name="Ampliacion" class="java.math.BigDecimal"/>
+	<field name="Reduccion" class="java.math.BigDecimal"/>
+	<field name="Original" class="java.math.BigDecimal"/>
+	<field name="Devengado" class="java.math.BigDecimal"/>
+	<field name="Pagado" class="java.math.BigDecimal"/>
+	<field name="id_finalidad" class="java.lang.String"/>
+	<field name="desc_fin" class="java.lang.String"/>
+	<field name="id_funcion" class="java.lang.String"/>
+	<field name="desc_fun" class="java.lang.String"/>
+	<field name="id_subfuncion" class="java.lang.String"/>
+	<field name="desc_subfun" class="java.lang.String"/>
+	<field name="desc_fin2" class="java.lang.String"/>
+	<field name="totalSubReporte" class="java.lang.Double"/>
+	<variable name="totAprobado" class="java.math.BigDecimal" resetType="Group" resetGroup="finalidad" calculation="Sum">
+		<variableExpression><![CDATA[$F{Original}]]></variableExpression>
+	</variable>
+	<variable name="totAmpRed" class="java.math.BigDecimal" resetType="Group" resetGroup="finalidad" calculation="Sum">
+		<variableExpression><![CDATA[$F{Ampliacion}+$F{Reduccion}]]></variableExpression>
+	</variable>
+	<variable name="totModificado" class="java.math.BigDecimal" resetType="Group" resetGroup="finalidad" calculation="Sum">
+		<variableExpression><![CDATA[$F{Original}+$F{Ampliacion}+$F{Reduccion}]]></variableExpression>
+	</variable>
+	<variable name="totDevengado" class="java.math.BigDecimal" resetType="Group" resetGroup="finalidad" calculation="Sum">
+		<variableExpression><![CDATA[$F{Devengado}]]></variableExpression>
+	</variable>
+	<variable name="totPagado" class="java.math.BigDecimal" resetType="Group" resetGroup="finalidad" calculation="Sum">
+		<variableExpression><![CDATA[$F{Pagado}]]></variableExpression>
+	</variable>
+	<variable name="totSubejercicio" class="java.math.BigDecimal" resetType="Group" resetGroup="finalidad" calculation="Sum">
+		<variableExpression><![CDATA[($F{Original}+$F{Ampliacion}+$F{Reduccion})-$F{Devengado}]]></variableExpression>
+	</variable>
+	<variable name="totAprobadoGeneral" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{Original}]]></variableExpression>
+	</variable>
+	<variable name="totAmpRedGeneral" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{Ampliacion}+$F{Reduccion}]]></variableExpression>
+	</variable>
+	<variable name="totModificadoGeneral" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{Original}+$F{Ampliacion}+$F{Reduccion}]]></variableExpression>
+	</variable>
+	<variable name="totDevengadoGeneral" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{Devengado}]]></variableExpression>
+	</variable>
+	<variable name="totPagadoGeneral" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{Pagado}]]></variableExpression>
+	</variable>
+	<variable name="totSubejercicioGeneral" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[($F{Original}+$F{Ampliacion}+$F{Reduccion})-$F{Devengado}]]></variableExpression>
+	</variable>
+	<group name="finalidad">
+		<groupExpression><![CDATA[$F{desc_fin}]]></groupExpression>
+		<groupHeader>
+			<band height="14">
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="75239378-c495-4c07-9cc6-0392f42e4192" x="0" y="0" width="202" height="13"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{desc_fin}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="13">
+				<textField isStretchWithOverflow="true" pattern="#,##0.00">
+					<reportElement uuid="698f8cc8-a86b-4ef3-81c5-63b461a30f06" x="0" y="0" width="202" height="13"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{desc_fin2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00">
+					<reportElement uuid="b837551a-ac26-42cc-9743-00b93b3a4914" x="202" y="0" width="100" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totAprobado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00">
+					<reportElement uuid="60aa4e0d-52b4-411b-84ed-1d8cd66d11fc" x="302" y="0" width="100" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totAmpRed}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00">
+					<reportElement uuid="650011d8-68eb-4520-a162-46f9dbf0194c" x="402" y="0" width="100" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totModificado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00">
+					<reportElement uuid="df57b20c-c111-4f80-907d-8b56baf36bbe" x="502" y="0" width="100" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totDevengado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00">
+					<reportElement uuid="ebbf38f9-aecb-4215-b09a-9916d24be8ab" x="602" y="0" width="100" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totPagado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00">
+					<reportElement uuid="944507a5-02da-429f-ab8e-cae836915ee7" x="702" y="0" width="100" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totSubejercicio}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="funcion">
+		<groupExpression><![CDATA[$F{desc_fun}]]></groupExpression>
+		<groupHeader>
+			<band height="18" splitType="Stretch">
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="a3578056-7eac-4b13-9e14-9026c52e0042" x="20" y="0" width="182" height="13"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{desc_fun}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement uuid="f40ee6fc-79d7-47b9-a355-670960324544" x="202" y="0" width="100" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Original}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement uuid="a1c31b0d-7bef-4a0c-a31f-a143e9841315" x="302" y="0" width="100" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Ampliacion}+$F{Reduccion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement uuid="0b537ae1-1170-4ae3-a918-a756ce6f04f5" mode="Transparent" x="402" y="0" width="100" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Original}+$F{Ampliacion}+$F{Reduccion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement uuid="1fa4739d-cace-424d-be17-e1a680f1fcea" x="502" y="0" width="100" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Devengado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement uuid="a23c2478-1c0c-4958-aa53-6698eb48f718" x="602" y="0" width="100" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Pagado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement uuid="769707da-b0a8-4a0c-b106-dde1a7011214" x="702" y="0" width="100" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($F{Original}+$F{Ampliacion}+$F{Reduccion})-$F{Devengado}]]></textFieldExpression>
+				</textField>
+				<subreport isUsingCache="false" runToBottom="false">
+					<reportElement uuid="d35ee499-5970-4f27-bd92-130474d424ec" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" mode="Opaque" x="20" y="17" width="782" height="1" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true">
+						<printWhenExpression><![CDATA[$F{totalSubReporte} != 0]]></printWhenExpression>
+					</reportElement>
+					<subreportParameter name="SUBREPORT_DIR">
+						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="anioreporte">
+						<subreportParameterExpression><![CDATA[$P{anioreporte}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="ue">
+						<subreportParameterExpression><![CDATA[$P{ue}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="fechaIni">
+						<subreportParameterExpression><![CDATA[$P{fechaIni}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="fechaFin">
+						<subreportParameterExpression><![CDATA[$P{fechaFin}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="id_funcion">
+						<subreportParameterExpression><![CDATA[$F{id_funcion}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="tagref">
+						<subreportParameterExpression><![CDATA[$P{tagref}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "rpt_ldf_19_xls_sub.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="88" splitType="Stretch">
+			<textField>
+				<reportElement uuid="67c7d577-8410-4b0c-8533-31be02e59791" x="141" y="3" width="521" height="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{entepublico}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="afee8b9f-5169-47fe-ab41-de43eb58dc9a" x="141" y="33" width="521" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado Analítico de Ingresos Detallado - LDF]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="77c9fe37-8e63-4177-b7fa-c3e97fb0a66a" x="141" y="46" width="521" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaIniTexto}+" al "+$F{fechaFinTexto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="074dbea2-fe80-462a-aef7-b7b8b7cd524c" x="141" y="59" width="521" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[(cifras en pesos)]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="ecff6a8a-ee4f-49a7-8fc5-3b801f379436" x="141" y="72" width="521" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{descripcionUE}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="6d7a38ee-2db7-4fa6-b9cc-b0ab964d47b5" x="0" y="5" width="118" height="55"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="16c66979-1e69-4970-aa21-4af1454c7857" x="662" y="3" width="140" height="57"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="51bed6af-fdb9-4e05-9e35-edf72af3d3e6" x="141" y="20" width="521" height="13"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{parEntePublico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="9958b923-a467-4e95-a00a-6d1b3a1a04b7" x="141" y="5" width="521" height="15"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MUNICIPIO DE TAMPICO, TAMAULIPAS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="126e34f1-008c-4001-9282-ceb841a1920b" style="th" x="202" y="21" width="100" height="21"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Estimado (d) ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c36029d5-da9f-402d-8bdf-45beab6c222e" style="th" x="302" y="21" width="100" height="21"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ampliaciones/ (Reducciones) ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="06834cca-0127-44f3-8894-7d1dfa634f39" style="th" x="402" y="21" width="100" height="21"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Modificado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ce40278d-4e9c-4bba-b8f6-40849d95936f" style="th" x="502" y="21" width="100" height="21"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Devengado ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6e9d73f5-d4d0-48e9-9a7a-28db087d2f01" style="th" x="602" y="21" width="100" height="21"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Recaudado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f95bde1d-b447-41c1-9698-8e4dd9ce9572" style="th" x="702" y="0" width="100" height="42"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Diferencia (e) ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="12d8730d-5927-4cee-ac7b-dce101b633f8" style="th" x="0" y="0" width="202" height="42"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Concepto
+(c)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="138f4d87-4444-4299-9ce4-d2ed6f999f6a" style="th" x="202" y="0" width="500" height="21"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ingreso]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<summary>
+		<band height="95">
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="83f35e8d-d19d-4552-9fe4-21aaef3cfcd2" x="202" y="0" width="100" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totAprobadoGeneral}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="32092adb-fa2c-43e2-ab2a-6c04312552cf" x="302" y="0" width="100" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totAmpRedGeneral}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="cc74b560-2752-4dab-86e9-d17604addece" x="402" y="0" width="100" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totModificadoGeneral}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="1c576499-89ce-45da-8100-a145b54cc70d" x="502" y="0" width="100" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totDevengadoGeneral}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="2251f9d4-4324-45ec-a5e1-5097119d7ba9" x="602" y="0" width="100" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totPagadoGeneral}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="272a563a-f068-463c-9cdc-d5ed2dc56d2b" x="702" y="0" width="100" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totSubejercicioGeneral}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="8410e5a6-d924-4036-884d-a24f252bdad2" x="0" y="0" width="202" height="13"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["IV. Total de Ingresos (IV = I + II + III)"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="347cc070-21d1-44ca-a2d0-66ecd2a0d06b" x="0" y="18" width="202" height="13"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Datos Informativos"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="ee23138f-955c-4f15-a3db-16da63bd92c8" x="0" y="31" width="202" height="26"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["1. Ingresos Derivados de Financiamientos con Fuente de Pago de Ingresos de Libre Disposición"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="4f269511-d1a3-412d-9743-3cb2017efe8f" x="0" y="57" width="202" height="26"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["2. Ingresos Derivados de Financiamientos con Fuente de Pago de Transferencias Federales Etiquetadas"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="d300a490-d40e-4d4b-a56f-aa1c8f0fb3bd" x="0" y="83" width="202" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["3. Ingresos Derivados de Financiamientos (3 = 1 + 2)"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

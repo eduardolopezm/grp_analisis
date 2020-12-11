@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subrptsituacionfinanciera" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="b1f49ba7-74ab-47ca-bb74-c0ca8bf23ced">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cuenta_mayor" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["1.1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titulo_reporte" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["nada"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anio" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[2017]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tagref" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT chartmaster.accountcode, reporte_group, chartmaster.accountname AS cuenta_mayor,
+
+IFNULL(SUM(case when year(trandate) = $P{anio} then CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END else 0 end), 0)  as 'PERIODO1',
+IFNULL(SUM(case when year(trandate) = $P{anio} -1 then CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END else 0 end), 0)  as 'PERIODO2'
+FROM config_reportes_
+INNER JOIN (select  c2.* from chartmaster c1
+ inner join chartmaster c2 on c1.accountcode = c2.groupcode
+where c1.groupcode = $P{cuenta_mayor}) chartmaster ON config_reportes_.valor = chartmaster.groupcode
+LEFT JOIN gltrans ON chartmaster.accountcode= gltrans.account and gltrans.tag = config_reportes_.tagref
+WHERE config_reportes_.valor LIKE $P{cuenta_mayor}
+AND CASE WHEN $P{tagref} = '' THEN 1 = 1 ELSE  config_reportes_.tagref IN ('$P!{tagref}') END
+GROUP BY chartmaster.accountcode, reporte_group, accountname
+ORDER BY 1;]]>
+	</queryString>
+	<field name="cuenta_mayor" class="java.lang.String"/>
+	<field name="Periodo1" class="java.lang.Double"/>
+	<field name="Periodo2" class="java.lang.Double"/>
+	<field name="reporte_group" class="java.lang.String"/>
+	<variable name="total" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{Periodo1}]]></variableExpression>
+	</variable>
+	<variable name="totalPeriodo2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{Periodo2}]]></variableExpression>
+	</variable>
+	<variable name="totalsalida" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{Periodo1}]]></variableExpression>
+	</variable>
+	<variable name="totalsalida2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{Periodo2}]]></variableExpression>
+	</variable>
+	<group name="grupo_cuenta">
+		<groupExpression><![CDATA[$F{reporte_group}]]></groupExpression>
+		<groupHeader>
+			<band height="18">
+				<rectangle>
+					<reportElement uuid="12ff4baf-c330-4945-a57c-eb2679e3cbc3" x="0" y="0" width="263" height="18" forecolor="#003300" backcolor="#1B693F"/>
+					<graphicElement>
+						<pen lineWidth="0.0"/>
+					</graphicElement>
+				</rectangle>
+				<textField>
+					<reportElement uuid="0b31afea-9647-4b01-9376-2975eea9fd99" x="0" y="0" width="371" height="17" forecolor="#FFFFFF"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{reporte_group}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="12"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="27">
+			<textField>
+				<reportElement uuid="4d9d1401-d0a6-4e88-bfca-bb5994c3492e" x="0" y="0" width="246" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{titulo_reporte}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f2567f48-c062-4623-844d-e542b6ece4e6" x="159" y="15" width="44" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{anio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b2e13989-9113-4f9a-bcf5-ee9ef7419fb1" x="203" y="15" width="44" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{anio}-1]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="11">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="f5fa2f37-027a-496e-9de9-5c76bf686e9b" x="10" y="0" width="149" height="11"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta_mayor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="9aa1face-7e64-40b3-8ae6-5d0f15207de2" x="111" y="0" width="85" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Periodo1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="fd237aeb-f92f-45c1-a0e7-20d96ecd30d8" x="186" y="0" width="60" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Periodo2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="14" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement uuid="422b2b52-c5f8-4602-acdf-054812155fb1" x="96" y="0" width="100" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6a46dc9a-92b4-464a-aff0-772b64e5ede1" x="57" y="0" width="102" height="10"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo_reporte}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="741de14c-9743-49c3-9a0f-0af669815655" x="0" y="0" width="100" height="10"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total de]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="fcd107c7-612b-4a3f-b875-8d859e4e921e" x="196" y="0" width="50" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalPeriodo2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

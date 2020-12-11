@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cc232553-bd75-4b72-b3f6-6f2c4ee6d9c2">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="80"/>
+	<subDataset name="New Dataset 1" uuid="ee6d8510-b29a-4f10-97dd-c9f553f19fd4"/>
+	<field name="UUID" class="java.lang.String"/>
+	<field name="rfc" class="java.lang.String"/>
+	<field name="rfc2" class="java.lang.String"/>
+	<field name="totalCFDi" class="java.lang.String"/>
+	<field name="selloSAT" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle">
+				<reportElement uuid="cfde4338-7b32-4b9a-a4f0-5750e84ee4a4" positionType="Float" mode="Transparent" x="12" y="10" width="102" height="87" isPrintWhenDetailOverflows="true"/>
+				<imageExpression><![CDATA[new com.java4less.rbarcode.jr.J4LBarcodeRenderer(
+    (new com.java4less.qrcode.QRCodeFacade()).createBarcodeImage(
+        ("https://verificacfdi.facturaelectronica.sat.gob.mx/default.aspx?&id="+$F{UUID}+"&re="+$F{rfc}+"&rr="+$F{rfc2}+"&tt=" + new DecimalFormat("0000000000.000000").format(Double.parseDouble($F{totalCFDi})).toString()
+
++"&fe="+
+($F{selloSAT}.length()>8 ? $F{selloSAT}.substring( ($F{selloSAT}.length() -8),$F{selloSAT}.length()  ):"")
+
+),null,3,true,0,"H","AUTO",1,null) )]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subrptsituacionfinanciera" language="groovy" pageWidth="500" pageHeight="792" columnWidth="500" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="b1f49ba7-74ab-47ca-bb74-c0ca8bf23ced">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cuenta_mayor" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["1.1%"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titulo_reporte" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["SituacionFinanciera"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anio" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2018"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tagref" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["I6L"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ue" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["09"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechainicialnew" class="java.lang.String"/>
+	<parameter name="fechafinalnew" class="java.lang.String"/>
+	<parameter name="usuario" class="java.lang.String">
+		<defaultValueExpression><![CDATA[desarrollo]]></defaultValueExpression>
+	</parameter>
+	<parameter name="naturaleza" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT dtMovimientos.`account`,
+					dtMovimientos.`partidaEspecifica`,
+					partidaespecifica.descripcion,
+      				sum(dtMovimientos.`prdInicialMovimiento`) as prdInicialMovimiento,
+      				sum(dtMovimientos.`saldoMovimientoCargo`) as saldoMovimientoCargo,
+      				sum(dtMovimientos.`saldoMovimientoAbonos`) as saldoMovimientoAbonos,
+      				dtMovimientos.`loccode`,
+      				coalesce(sum(dtIniciales.prdInicial),0) as prdInicial
+
+      		FROM (SELECT
+      			SUBSTRING_INDEX(gltrans.account, '.', "5") as account,
+				stockmoves.stockid,
+				(amount) as prdInicialMovimiento,
+                (CASE WHEN  gltrans.amount >=0 THEN gltrans.amount ELSE 0 END) AS saldoMovimientoCargo,
+                (CASE WHEN  gltrans.amount <0 THEN gltrans.amount ELSE 0 END) AS saldoMovimientoAbonos,
+				stockmoves.loccode,
+				tb_partida_articulo.partidaEspecifica
+			FROM stockmoves
+			INNER  JOIN (SELECT gltrans.account,gltrans.type, gltrans.typeno, gltrans.stockid,sum(gltrans.amount) as amount
+						FROM gltrans
+						INNER JOIN (SELECT SUBSTRING_INDEX(config_reportes_.valor, '.', 5)  AS valor
+      								FROM config_reportes_
+      								WHERE reporte ='rpt_inventario_c1'
+      								GROUP BY SUBSTRING_INDEX(config_reportes_.valor, '.', 5)
+      								) configReport ON SUBSTRING_INDEX(gltrans.account, '.', "5") = configReport.valor
+						WHERE gltrans.trandate BETWEEN '2018-01-01' and '2018-12-31' AND gltrans.tag = 'I6L' and  CASE WHEN  '22'= '' THEN 1 = 1 ELSE gltrans.ln_ue IN ('22') END
+						group by gltrans.account,gltrans.type, gltrans.typeno, gltrans.stockid
+      					) gltrans on stockmoves.type = gltrans.type  and stockmoves.transno = gltrans.typeno and stockmoves.stockid = gltrans.stockid
+      		LEFT JOIN locations ON stockmoves.loccode = locations.loccode
+      		LEFT JOIN stockmaster on gltrans.stockid = stockmaster.stockid
+      		LEFT JOIN tb_partida_articulo on stockmaster.eq_stockid = tb_partida_articulo.eq_stockid
+			WHERE  stockmoves.trandate BETWEEN '2018-01-01' and '2018-12-31'
+					AND stockmoves.tagref = 'I6L'
+	  				AND CASE WHEN  '22'= '' THEN 1 = 1 ELSE stockmoves.ln_ue IN ('22') END
+			GROUP BY stockmoves.tagref, stockmoves.ln_ue, stockmoves.loccode, stockmoves.stockid) dtMovimientos
+			LEFT JOIN (SELECT
+      			SUBSTRING_INDEX(gltrans.account, '.', "5") as account,
+				stockmoves.stockid,
+				SUM(amount) as prdInicial,
+                SUM(CASE WHEN  gltrans.amount >=0 THEN gltrans.amount ELSE 0 END) AS saldoInicialCargo,
+                SUM(CASE WHEN  gltrans.amount <0 THEN gltrans.amount ELSE 0 END) AS saldoInicialAbonos,
+				stockmoves.loccode,
+				tb_partida_articulo.partidaEspecifica
+			FROM stockmoves
+			INNER JOIN gltrans on gltrans.type = stockmoves.type and  gltrans.typeno = stockmoves.transno and gltrans.stockid = stockmoves.stockid
+			INNER JOIN (SELECT SUBSTRING_INDEX(config_reportes_.valor, '.', 5)  AS valor
+      					FROM config_reportes_
+      					WHERE reporte ='rpt_inventario_c1'
+      					GROUP BY SUBSTRING_INDEX(config_reportes_.valor, '.', 5)
+      					) configReport ON SUBSTRING_INDEX(gltrans.account, '.', "5") = configReport.valor
+      		LEFT JOIN locations ON stockmoves.loccode = locations.loccode
+      		LEFT JOIN stockmaster on gltrans.stockid = stockmaster.stockid
+      		LEFT JOIN tb_partida_articulo on stockmaster.eq_stockid = tb_partida_articulo.eq_stockid
+			WHERE  stockmoves.trandate  < '2018-01-01'
+					AND stockmoves.tagref = 'I6L'
+	  				AND CASE WHEN  '22'= '' THEN 1 = 1 ELSE stockmoves.ln_ue IN ('22') END
+			GROUP BY  stockmoves.tagref, stockmoves.ln_ue, stockmoves.loccode, stockmoves.stockid) dtIniciales on dtMovimientos.account = dtIniciales.account and dtMovimientos.stockid = dtIniciales.stockid and dtMovimientos.loccode = dtIniciales.loccode and  dtMovimientos.partidaEspecifica = dtIniciales.partidaEspecifica
+			LEFT JOIN tb_cat_partidaspresupuestales_partidaespecifica partidaespecifica on dtMovimientos.`partidaEspecifica` = partidaespecifica.partidacalculada
+			GROUP BY  dtMovimientos.`account`,dtMovimientos.`partidaEspecifica`,dtMovimientos.`loccode` ;]]>
+	</queryString>
+	<field name="account" class="java.lang.String"/>
+	<field name="partidaEspecifica" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="prdInicial" class="java.lang.String"/>
+	<field name="saldoMovimientoCargo" class="java.lang.String"/>
+	<field name="saldoMovimientoAbonos" class="java.lang.String"/>
+	<variable name="sumSaldoInicial" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[Double.parseDouble($F{prdInicial})]]></variableExpression>
+	</variable>
+	<variable name="sumDebe" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[Double.parseDouble($F{saldoMovimientoCargo})]]></variableExpression>
+	</variable>
+	<variable name="sumHaber" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[Double.parseDouble($F{saldoMovimientoAbonos})]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="31">
+			<staticText>
+				<reportElement uuid="2579e882-527c-4af4-b601-a980a3fd9767" x="244" y="16" width="67" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SALDO INICIAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8f9e1c35-1c7d-4e56-abdb-d861de512d4f" x="311" y="16" width="60" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEBE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="86d1c837-c29b-4d93-853f-2a4206c8d1d1" x="371" y="16" width="60" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HABER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f2e0a1db-d5c0-4125-b3d8-128c020baafa" x="431" y="16" width="67" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SALDO FINAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="dd8c1a1d-b8f9-4384-8bc2-8bd4b6eea569" x="244" y="1" width="254" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MOVIMIENTOS PERIODO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="11">
+			<textField>
+				<reportElement uuid="91e111ae-5474-4dea-adb6-ae26df95ff38" x="0" y="0" width="71" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{partidaEspecifica}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="442bc143-0e44-4b80-8df0-0b22b897cee6" x="71" y="0" width="173" height="11"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="3efb977b-a00b-460d-932f-4b486694fe7e" x="244" y="0" width="67" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Double.parseDouble($F{prdInicial})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="8fd89bea-9396-4373-8287-f84921fb144c" x="311" y="0" width="60" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Double.parseDouble($F{saldoMovimientoCargo})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="7154916c-2e58-48d9-8ad0-80bd9f74e420" x="371" y="0" width="60" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.abs(Double.parseDouble($F{saldoMovimientoAbonos}))]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="caadadf9-54f2-4bfd-b38c-ab1a580d3318" x="431" y="0" width="67" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Double.parseDouble($F{prdInicial}) + Double.parseDouble($F{saldoMovimientoCargo}) + Double.parseDouble($F{saldoMovimientoAbonos})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{titulo_reporte}!="Hacienda Pública/Patrimonio Contribuido" &&
+$P{titulo_reporte}!="Hacienda Pública/Patrimonio Generado"]]></printWhenExpression>
+			<staticText>
+				<reportElement uuid="9b4d133f-fbb8-423a-8c7c-187acc073e02" x="0" y="0" width="244" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL DEL ALMACÉN : ]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="4b8907e5-3486-4e6d-9a38-523b52399b27" x="244" y="0" width="67" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumSaldoInicial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0cf04822-2c65-49a4-a94d-f6e35919006b" x="311" y="0" width="60" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumDebe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="db611956-6105-4655-8db3-8608bbf14410" x="371" y="0" width="60" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.abs($V{sumHaber})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="635d9133-18d5-46b7-b2c8-0d6f4b8c3236" x="431" y="0" width="67" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumSaldoInicial} + $V{sumDebe} + $V{sumHaber}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

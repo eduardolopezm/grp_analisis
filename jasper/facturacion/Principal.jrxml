@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Principal" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="NoDataSection" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="e3635a3c-46cf-4ceb-a63d-fdca5f1b9b30">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/fruebel/GitHub/erpdistribucionv2/jasper/facturacion/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FISCAL" class="java.lang.String">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LOGO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Users/juan/Trabajo/erpdistribucion/companies/gruposervillantas_DES/logo.jpg"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NOMBRE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Factura Venta"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TYPE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["10"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CANCELADO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COPIAS" class="java.lang.String">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SHOW_COSTO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="flaglogo" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="facturacliente" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mensajelegal" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Mensaje"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pagares" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Pagares"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="foliointerno" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["458707"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logoalterno" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Users/juan/Trabajo/erpdistribucion/companies/gruposervillantas_DES/logo.jpg"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mostrardescuento" class="java.lang.String">
+		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orderno" class="java.lang.String">
+		<defaultValueExpression><![CDATA["1027464"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="branchcode" class="java.lang.String">
+		<defaultValueExpression><![CDATA["100181"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="MostrarCodigoCliente" class="java.lang.String">
+		<defaultValueExpression><![CDATA["0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="emision" class="java.lang.String"/>
+	<queryString language="xPath">
+		<![CDATA[/]]>
+	</queryString>
+	<field name="LugarExpedicion" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@LugarExpedicion]]></fieldDescription>
+	</field>
+	<field name="Moneda" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@Moneda]]></fieldDescription>
+	</field>
+	<field name="NumCtaPago" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@NumCtaPago]]></fieldDescription>
+	</field>
+	<field name="TipoCambio" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@TipoCambio]]></fieldDescription>
+	</field>
+	<field name="anoAprobacion" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@anoAprobacion]]></fieldDescription>
+	</field>
+	<field name="certificado" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@certificado]]></fieldDescription>
+	</field>
+	<field name="condicionesDePago" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@condicionesDePago]]></fieldDescription>
+	</field>
+	<field name="descuento" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@descuento]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@fecha]]></fieldDescription>
+	</field>
+	<field name="folio" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@folio]]></fieldDescription>
+	</field>
+	<field name="formaDePago" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@formaDePago]]></fieldDescription>
+	</field>
+	<field name="metodoDePago" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@metodoDePago]]></fieldDescription>
+	</field>
+	<field name="noAprobacion" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@noAprobacion]]></fieldDescription>
+	</field>
+	<field name="noCertificado" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@noCertificado]]></fieldDescription>
+	</field>
+	<field name="sello" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@sello]]></fieldDescription>
+	</field>
+	<field name="serie" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@serie]]></fieldDescription>
+	</field>
+	<field name="subTotal" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@subTotal]]></fieldDescription>
+	</field>
+	<field name="tipoDeComprobante" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@tipoDeComprobante]]></fieldDescription>
+	</field>
+	<field name="total" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@total]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/@nombre]]></fieldDescription>
+	</field>
+	<field name="rfc" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/@rfc]]></fieldDescription>
+	</field>
+	<field name="calle" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/DomicilioFiscal/@calle]]></fieldDescription>
+	</field>
+	<field name="codigoPostal" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/DomicilioFiscal/@codigoPostal]]></fieldDescription>
+	</field>
+	<field name="colonia" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/DomicilioFiscal/@colonia]]></fieldDescription>
+	</field>
+	<field name="estado" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/DomicilioFiscal/@estado]]></fieldDescription>
+	</field>
+	<field name="municipio" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/DomicilioFiscal/@municipio]]></fieldDescription>
+	</field>
+	<field name="noExterior" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/DomicilioFiscal/@noExterior]]></fieldDescription>
+	</field>
+	<field name="pais" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/DomicilioFiscal/@pais]]></fieldDescription>
+	</field>
+	<field name="referencia" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/DomicilioFiscal/@referencia]]></fieldDescription>
+	</field>
+	<field name="Regimen" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/RegimenFiscal/@Regimen]]></fieldDescription>
+	</field>
+	<field name="calle2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/ExpedidoEn/@calle]]></fieldDescription>
+	</field>
+	<field name="codigoPostal2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/ExpedidoEn/@codigoPostal]]></fieldDescription>
+	</field>
+	<field name="colonia2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/ExpedidoEn/@colonia]]></fieldDescription>
+	</field>
+	<field name="estado2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/ExpedidoEn/@estado]]></fieldDescription>
+	</field>
+	<field name="municipio2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/ExpedidoEn/@municipio]]></fieldDescription>
+	</field>
+	<field name="noExterior2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/ExpedidoEn/@noExterior]]></fieldDescription>
+	</field>
+	<field name="pais2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/ExpedidoEn/@pais]]></fieldDescription>
+	</field>
+	<field name="referencia2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/ExpedidoEn/@referencia]]></fieldDescription>
+	</field>
+	<field name="nombre2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/@nombre]]></fieldDescription>
+	</field>
+	<field name="rfc2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/@rfc]]></fieldDescription>
+	</field>
+	<field name="calle3" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@calle]]></fieldDescription>
+	</field>
+	<field name="codigoPostal3" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@codigoPostal]]></fieldDescription>
+	</field>
+	<field name="colonia3" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@colonia]]></fieldDescription>
+	</field>
+	<field name="estado3" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@estado]]></fieldDescription>
+	</field>
+	<field name="localidad" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@localidad]]></fieldDescription>
+	</field>
+	<field name="municipio3" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@municipio]]></fieldDescription>
+	</field>
+	<field name="noExterior3" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@noExterior]]></fieldDescription>
+	</field>
+	<field name="noInterior" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@noInterior]]></fieldDescription>
+	</field>
+	<field name="pais3" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@pais]]></fieldDescription>
+	</field>
+	<field name="totalImpuestosTrasladados" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Impuestos/@totalImpuestosTrasladados]]></fieldDescription>
+	</field>
+	<field name="impuesto" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Impuestos/Traslados/Traslado/@impuesto]]></fieldDescription>
+	</field>
+	<field name="tasa" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Impuestos/Traslados/Traslado/@tasa]]></fieldDescription>
+	</field>
+	<field name="cadenaOriginal" class="java.lang.String">
+		<fieldDescription><![CDATA[@cadenaOriginal]]></fieldDescription>
+	</field>
+	<field name="FechaTimbrado" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/TimbreFiscalDigital/@FechaTimbrado]]></fieldDescription>
+	</field>
+	<field name="UUID" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/TimbreFiscalDigital/@UUID]]></fieldDescription>
+	</field>
+	<field name="noCertificadoSAT" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/TimbreFiscalDigital/@noCertificadoSAT]]></fieldDescription>
+	</field>
+	<field name="selloCFD" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/TimbreFiscalDigital/@selloCFD]]></fieldDescription>
+	</field>
+	<field name="selloSAT" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/TimbreFiscalDigital/@selloSAT]]></fieldDescription>
+	</field>
+	<field name="totalCFDi" class="java.lang.Double">
+		<fieldDescription><![CDATA[@total]]></fieldDescription>
+	</field>
+	<field name="cantidadLetra" class="java.lang.String">
+		<fieldDescription><![CDATA[@cantidadLetra]]></fieldDescription>
+	</field>
+	<field name="nombre3" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/@nombre]]></fieldDescription>
+	</field>
+	<field name="calle4" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@calle]]></fieldDescription>
+	</field>
+	<field name="codigoPostal4" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@codigoPostal]]></fieldDescription>
+	</field>
+	<field name="colonia4" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@colonia]]></fieldDescription>
+	</field>
+	<field name="estado4" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@estado]]></fieldDescription>
+	</field>
+	<field name="localidad2" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@localidad]]></fieldDescription>
+	</field>
+	<field name="municipio4" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@municipio]]></fieldDescription>
+	</field>
+	<field name="noExterior4" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@noExterior]]></fieldDescription>
+	</field>
+	<field name="noInterior2" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@noInterior]]></fieldDescription>
+	</field>
+	<field name="pais4" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@pais]]></fieldDescription>
+	</field>
+	<field name="referencia3" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@referencia]]></fieldDescription>
+	</field>
+	<field name="LeyendaPrivacidad" class="java.lang.String">
+		<fieldDescription><![CDATA[LeyendaPrivacidad/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="NodoLeyendaRentriccion" class="java.lang.String">
+		<fieldDescription><![CDATA[LeyendasRestricciones/Descripciones/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="NodoInformacionVehiculo" class="java.lang.String">
+		<fieldDescription><![CDATA[InformacionVehiculos/Descripciones/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="NodoInformacionComercial" class="java.lang.String">
+		<fieldDescription><![CDATA[InformacionComercial/Descripciones/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="NodoInformacionSucursales" class="java.lang.String">
+		<fieldDescription><![CDATA[InformacionSucursales/Descripciones/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="NodoInformacionBancaria" class="java.lang.String">
+		<fieldDescription><![CDATA[InformacionBancaria/Descripciones/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="nombreDocumento" class="java.lang.String">
+		<fieldDescription><![CDATA[@nombreDocumento]]></fieldDescription>
+	</field>
+	<field name="pedidoVenta" class="java.lang.String">
+		<fieldDescription><![CDATA[@pedidoVenta]]></fieldDescription>
+	</field>
+	<field name="status" class="java.lang.Integer">
+		<fieldDescription><![CDATA[@status]]></fieldDescription>
+	</field>
+	<field name="comentarios" class="java.lang.String">
+		<fieldDescription><![CDATA[@comentarios]]></fieldDescription>
+	</field>
+	<field name="telefono" class="java.lang.String">
+		<fieldDescription><![CDATA[InfoEmisor/Descripciones[@etiqueta="TELEFONO"]/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="fax" class="java.lang.String">
+		<fieldDescription><![CDATA[InfoEmisor/Descripciones[@etiqueta="FAX"]/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="idCliente" class="java.lang.String">
+		<fieldDescription><![CDATA[InfoCliente/Descripciones[@etiqueta="ID"]/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="NodoInfoRemision" class="java.lang.String">
+		<fieldDescription><![CDATA[InfoRemision/Descripciones/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="totalImpuestosRetenidos" class="java.lang.String">
+		<fieldDescription><![CDATA[Impuestos/@totalImpuestosRetenidos]]></fieldDescription>
+	</field>
+	<field name="impuesto2" class="java.lang.String">
+		<fieldDescription><![CDATA[Impuestos/Retenciones/Retencion/@impuesto]]></fieldDescription>
+	</field>
+	<field name="tasa2" class="java.lang.String">
+		<fieldDescription><![CDATA[Impuestos/Retenciones/Retencion/@tasa]]></fieldDescription>
+	</field>
+	<field name="showRemision" class="java.lang.String">
+		<fieldDescription><![CDATA[InfoImpresion/Descripciones[@etiqueta="SHOW_REMISION"]/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="version" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@version]]></fieldDescription>
+	</field>
+	<field name="HIDE_CANCELADO" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/InfoImpresion/Descripciones[@etiqueta="HIDE_CANCELADO"]/@descripcion0]]></fieldDescription>
+	</field>
+	<variable name="reporte" class="java.lang.String">
+		<variableExpression><![CDATA[$P{facturacliente} == 0 ? "Facturacion.jasper" : "FacturacionServillantas.jasper"]]></variableExpression>
+	</variable>
+	<background>
+		<band height="752" splitType="Stretch">
+			<image hAlign="Center" vAlign="Middle" onErrorType="Blank">
+				<reportElement uuid="1fd0a49b-fc76-41c2-a58c-94402ce7ec85" mode="Opaque" x="1" y="160" width="572" height="386">
+					<printWhenExpression><![CDATA[$P{CANCELADO}=="1" && $F{HIDE_CANCELADO}!="1"]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+"cancelado.jpeg"]]></imageExpression>
+			</image>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Blank">
+				<reportElement uuid="e0083711-3408-46d2-bd26-62360d7b873e" mode="Opaque" x="445" y="111" width="128" height="118">
+					<printWhenExpression><![CDATA[($F{UUID}!=null ? false : true) && $P{FISCAL}.equals("1")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+"error_sello.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<detail>
+		<band height="15">
+			<subreport>
+				<reportElement uuid="e845cd10-0a22-4051-a844-6d971a8fdd22" mode="Transparent" x="0" y="0" width="612" height="13" isRemoveLineWhenBlank="true" forecolor="#010101"/>
+				<subreportParameter name="NOMBRE">
+					<subreportParameterExpression><![CDATA[$P{NOMBRE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SHOW_COSTO">
+					<subreportParameterExpression><![CDATA[$P{SHOW_COSTO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="mostrardescuento">
+					<subreportParameterExpression><![CDATA[$P{mostrardescuento}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="facturacliente">
+					<subreportParameterExpression><![CDATA[$P{facturacliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="orderno">
+					<subreportParameterExpression><![CDATA[$P{orderno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="mensajelegal">
+					<subreportParameterExpression><![CDATA[$P{mensajelegal}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="foliointerno">
+					<subreportParameterExpression><![CDATA[$P{foliointerno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="branchcode">
+					<subreportParameterExpression><![CDATA[$P{branchcode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="isCopy">
+					<subreportParameterExpression><![CDATA["0"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="COPIAS">
+					<subreportParameterExpression><![CDATA[$P{COPIAS}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="MostrarCodigoCliente">
+					<subreportParameterExpression><![CDATA[$P{MostrarCodigoCliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CANCELADO">
+					<subreportParameterExpression><![CDATA[$P{CANCELADO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="LOGO">
+					<subreportParameterExpression><![CDATA[$P{LOGO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="FISCAL">
+					<subreportParameterExpression><![CDATA[$P{FISCAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="logoalterno">
+					<subreportParameterExpression><![CDATA[$P{logoalterno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="emision">
+					<subreportParameterExpression><![CDATA[$P{emision}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="TYPE">
+					<subreportParameterExpression><![CDATA[$P{TYPE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pagares">
+					<subreportParameterExpression><![CDATA[$P{pagares}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="flaglogo">
+					<subreportParameterExpression><![CDATA[$P{flaglogo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)
+$P{REPORT_DATA_SOURCE}).subDataSource("/Comprobante")]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+ $V{reporte}]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement uuid="cfbbff71-ba7d-4964-b5bd-d41c9417be94" x="0" y="13" width="612" height="1">
+					<printWhenExpression><![CDATA[Double.parseDouble($P{COPIAS})>=2]]></printWhenExpression>
+				</reportElement>
+			</break>
+		</band>
+		<band height="15">
+			<printWhenExpression><![CDATA[Double.parseDouble($P{COPIAS})>=2]]></printWhenExpression>
+			<subreport>
+				<reportElement uuid="89fa0941-47ef-4352-9faa-769274cd1922" mode="Transparent" x="0" y="0" width="612" height="13" isRemoveLineWhenBlank="true" forecolor="#010101">
+					<printWhenExpression><![CDATA[$P{facturacliente} == 0 ? true : false]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="NOMBRE">
+					<subreportParameterExpression><![CDATA[$P{NOMBRE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SHOW_COSTO">
+					<subreportParameterExpression><![CDATA[$P{SHOW_COSTO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="mostrardescuento">
+					<subreportParameterExpression><![CDATA[$P{mostrardescuento}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="facturacliente">
+					<subreportParameterExpression><![CDATA[$P{facturacliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="foliointerno">
+					<subreportParameterExpression><![CDATA[$P{foliointerno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="mensajelegal">
+					<subreportParameterExpression><![CDATA[$P{mensajelegal}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="orderno">
+					<subreportParameterExpression><![CDATA[$P{orderno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="isCopy">
+					<subreportParameterExpression><![CDATA[Double.parseDouble($P{COPIAS})>=2?1:0]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="branchcode">
+					<subreportParameterExpression><![CDATA[$P{branchcode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="COPIAS">
+					<subreportParameterExpression><![CDATA[$P{COPIAS}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="MostrarCodigoCliente">
+					<subreportParameterExpression><![CDATA[$P{MostrarCodigoCliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CANCELADO">
+					<subreportParameterExpression><![CDATA[$P{CANCELADO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="LOGO">
+					<subreportParameterExpression><![CDATA[$P{LOGO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="FISCAL">
+					<subreportParameterExpression><![CDATA[$P{FISCAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="logoalterno">
+					<subreportParameterExpression><![CDATA[$P{logoalterno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="emision">
+					<subreportParameterExpression><![CDATA[$P{emision}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="TYPE">
+					<subreportParameterExpression><![CDATA[$P{TYPE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pagares">
+					<subreportParameterExpression><![CDATA[$P{pagares}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="flaglogo">
+					<subreportParameterExpression><![CDATA[$P{flaglogo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)
+$P{REPORT_DATA_SOURCE}).subDataSource("/Comprobante")]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+ "Facturacion.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement uuid="475c814d-b0a0-4498-b69e-e1e958936b3b" x="0" y="13" width="612" height="1">
+					<printWhenExpression><![CDATA[Double.parseDouble($P{COPIAS})>=3]]></printWhenExpression>
+				</reportElement>
+			</break>
+		</band>
+		<band height="15">
+			<printWhenExpression><![CDATA[Double.parseDouble($P{COPIAS})>=3]]></printWhenExpression>
+			<subreport>
+				<reportElement uuid="8dada3f6-eeb4-4818-922a-6f1113afe9ea" mode="Transparent" x="0" y="0" width="612" height="13" isRemoveLineWhenBlank="true" forecolor="#010101">
+					<printWhenExpression><![CDATA[$P{facturacliente} == 0 ? true : false]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="NOMBRE">
+					<subreportParameterExpression><![CDATA[$P{NOMBRE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SHOW_COSTO">
+					<subreportParameterExpression><![CDATA[$P{SHOW_COSTO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="mostrardescuento">
+					<subreportParameterExpression><![CDATA[$P{mostrardescuento}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="facturacliente">
+					<subreportParameterExpression><![CDATA[$P{facturacliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="foliointerno">
+					<subreportParameterExpression><![CDATA[$P{foliointerno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="mensajelegal">
+					<subreportParameterExpression><![CDATA[$P{mensajelegal}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="orderno">
+					<subreportParameterExpression><![CDATA[$P{orderno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="isCopy">
+					<subreportParameterExpression><![CDATA[Double.parseDouble($P{COPIAS})>=3?1:0]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="branchcode">
+					<subreportParameterExpression><![CDATA[$P{branchcode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="COPIAS">
+					<subreportParameterExpression><![CDATA[$P{COPIAS}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="MostrarCodigoCliente">
+					<subreportParameterExpression><![CDATA[$P{MostrarCodigoCliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CANCELADO">
+					<subreportParameterExpression><![CDATA[$P{CANCELADO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="FISCAL">
+					<subreportParameterExpression><![CDATA[$P{FISCAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="LOGO">
+					<subreportParameterExpression><![CDATA[$P{LOGO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="logoalterno">
+					<subreportParameterExpression><![CDATA[$P{logoalterno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="emision">
+					<subreportParameterExpression><![CDATA[$P{emision}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="TYPE">
+					<subreportParameterExpression><![CDATA[$P{TYPE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pagares">
+					<subreportParameterExpression><![CDATA[$P{pagares}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="flaglogo">
+					<subreportParameterExpression><![CDATA[$P{flaglogo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)
+$P{REPORT_DATA_SOURCE}).subDataSource("/Comprobante")]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"Facturacion.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement uuid="1d577e38-12e5-40f8-bece-e2b2bcb90f1c" x="0" y="13" width="612" height="1">
+					<printWhenExpression><![CDATA[Double.parseDouble($P{COPIAS})>=4]]></printWhenExpression>
+				</reportElement>
+			</break>
+		</band>
+		<band height="15">
+			<printWhenExpression><![CDATA[Double.parseDouble($P{COPIAS})>=4]]></printWhenExpression>
+			<subreport>
+				<reportElement uuid="5e70a725-1d8f-4074-a64d-69e858105ab0" mode="Transparent" x="0" y="0" width="612" height="13" isRemoveLineWhenBlank="true" forecolor="#010101">
+					<printWhenExpression><![CDATA[$P{facturacliente} == 0 ? true : false]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="NOMBRE">
+					<subreportParameterExpression><![CDATA[$P{NOMBRE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SHOW_COSTO">
+					<subreportParameterExpression><![CDATA[$P{SHOW_COSTO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="mostrardescuento">
+					<subreportParameterExpression><![CDATA[$P{mostrardescuento}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="facturacliente">
+					<subreportParameterExpression><![CDATA[$P{facturacliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="foliointerno">
+					<subreportParameterExpression><![CDATA[$P{foliointerno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="mensajelegal">
+					<subreportParameterExpression><![CDATA[$P{mensajelegal}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="orderno">
+					<subreportParameterExpression><![CDATA[$P{orderno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="isCopy">
+					<subreportParameterExpression><![CDATA[Double.parseDouble($P{COPIAS})>=4?1:0]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="branchcode">
+					<subreportParameterExpression><![CDATA[$P{branchcode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="COPIAS">
+					<subreportParameterExpression><![CDATA[$P{COPIAS}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="MostrarCodigoCliente">
+					<subreportParameterExpression><![CDATA[$P{MostrarCodigoCliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CANCELADO">
+					<subreportParameterExpression><![CDATA[$P{CANCELADO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="LOGO">
+					<subreportParameterExpression><![CDATA[$P{LOGO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="FISCAL">
+					<subreportParameterExpression><![CDATA[$P{FISCAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="logoalterno">
+					<subreportParameterExpression><![CDATA[$P{logoalterno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="emision">
+					<subreportParameterExpression><![CDATA[$P{emision}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="TYPE">
+					<subreportParameterExpression><![CDATA[$P{TYPE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pagares">
+					<subreportParameterExpression><![CDATA[$P{pagares}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="flaglogo">
+					<subreportParameterExpression><![CDATA[$P{flaglogo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)
+$P{REPORT_DATA_SOURCE}).subDataSource("/Comprobante")]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"Facturacion.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement uuid="c8c66aab-b68a-45ff-bd38-10565886a278" x="0" y="13" width="612" height="1">
+					<printWhenExpression><![CDATA[Double.parseDouble($P{COPIAS})>=5]]></printWhenExpression>
+				</reportElement>
+			</break>
+		</band>
+		<band height="15">
+			<printWhenExpression><![CDATA[Double.parseDouble($P{COPIAS})>=5]]></printWhenExpression>
+			<subreport>
+				<reportElement uuid="d1262b1a-49f8-4f52-8c0d-48a2ca0c061e" mode="Transparent" x="0" y="0" width="612" height="13" isRemoveLineWhenBlank="true" forecolor="#010101">
+					<printWhenExpression><![CDATA[$P{facturacliente} == 0 ? true : false]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="NOMBRE">
+					<subreportParameterExpression><![CDATA[$P{NOMBRE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SHOW_COSTO">
+					<subreportParameterExpression><![CDATA[$P{SHOW_COSTO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="mostrardescuento">
+					<subreportParameterExpression><![CDATA[$P{mostrardescuento}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="facturacliente">
+					<subreportParameterExpression><![CDATA[$P{facturacliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="foliointerno">
+					<subreportParameterExpression><![CDATA[$P{foliointerno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="mensajelegal">
+					<subreportParameterExpression><![CDATA[$P{mensajelegal}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="orderno">
+					<subreportParameterExpression><![CDATA[$P{orderno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="branchcode">
+					<subreportParameterExpression><![CDATA[$P{branchcode}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="isCopy">
+					<subreportParameterExpression><![CDATA[1]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="COPIAS">
+					<subreportParameterExpression><![CDATA[$P{COPIAS}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="MostrarCodigoCliente">
+					<subreportParameterExpression><![CDATA[$P{MostrarCodigoCliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CANCELADO">
+					<subreportParameterExpression><![CDATA[$P{CANCELADO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="FISCAL">
+					<subreportParameterExpression><![CDATA[$P{FISCAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="LOGO">
+					<subreportParameterExpression><![CDATA[$P{LOGO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="logoalterno">
+					<subreportParameterExpression><![CDATA[$P{logoalterno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="emision">
+					<subreportParameterExpression><![CDATA[$P{emision}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="TYPE">
+					<subreportParameterExpression><![CDATA[$P{TYPE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pagares">
+					<subreportParameterExpression><![CDATA[$P{pagares}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="flaglogo">
+					<subreportParameterExpression><![CDATA[$P{flaglogo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)
+$P{REPORT_DATA_SOURCE}).subDataSource("/Comprobante")]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"Facturacion.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<noData>
+		<band height="50">
+			<staticText>
+				<reportElement uuid="8bdff798-777d-4074-9c3e-f1b54e365d16" x="247" y="17" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Sin Datos]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptEgresosProveedores" language="groovy" pageWidth="1300" pageHeight="612" orientation="Landscape" columnWidth="1260" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="d531e0dc-a985-4664-906a-da63898bf529">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="459"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "estiloTablaJasper.jrtx"]]></template>
+	<style name="bordesNegros" forecolor="#000000" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="1.0"/>
+			<topPen lineWidth="1.0"/>
+			<leftPen lineWidth="1.0"/>
+			<bottomPen lineWidth="1.0"/>
+			<rightPen lineWidth="1.0"/>
+		</box>
+	</style>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="fechainicio" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 00:00:00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafin" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 23:59:59"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagenEstado" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/juan/Trabajo/ap_grp_de/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaIniText" class="java.lang.String"/>
+	<parameter name="fechaFinText" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+suppliers.supplierid as pos,
+0 as c1,
+0 as tp,
+0 as gcp,
+tb_botones_status.sn_nombre_secundario as hisPed,
+DATE_FORMAT(purchorders.orddate, '%d-%m-%Y') as fechaDoc,
+stockmaster.stockid as material,
+purchorderdetails.itemdescription as txtBreve,
+purchorderdetails.itemcode as gpoArt,
+0 as b,
+0 as p,
+0 as i,
+0 as noNec,
+purchorderdetails.quantityord as cantidad,
+stockmaster.units as ump,
+purchorderdetails.quantityord as cantidad2,
+stockmaster.units as uma,
+(purchorderdetails.unitprice * purchorderdetails.quantityord) as precNeto,
+(supptransdetails.price * supptransdetails.qty) as valorNeto,
+purchorders.currcode as mon,
+0 as por,
+0 as estadoLib,
+0 as lib,
+purchorders.realorderno as docCompra,
+0 as estr
+FROM supptrans
+JOIN suppliers ON suppliers.supplierid = supptrans.supplierno
+LEFT JOIN tb_cat_entidad_federativa ON tb_cat_entidad_federativa.id_nu_entidad_federativa = suppliers.id_nu_entidad_federativa
+JOIN supptransdetails ON supptransdetails.supptransid = supptrans.id
+JOIN grns ON grns.grnno = supptransdetails.grns
+JOIN purchorderdetails ON purchorderdetails.podetailitem = grns.podetailitem
+JOIN purchorders ON purchorders.orderno = purchorderdetails.orderno
+JOIN stockmaster ON purchorderdetails.itemcode = stockmaster.stockid
+JOIN locations ON purchorders.intostocklocation = locations.loccode
+JOIN tb_botones_status ON purchorders.status= tb_botones_status.statusname AND (tb_botones_status.sn_funcion_id= '1371' OR (tb_botones_status.sn_funcion_id=2265))
+WHERE supptrans.type = 20 AND purchorders.orddate BETWEEN $P{fechainicio} AND $P{fechafin};]]>
+	</queryString>
+	<field name="pos" class="java.lang.String"/>
+	<field name="c1" class="java.lang.String"/>
+	<field name="tp" class="java.lang.String"/>
+	<field name="fechaDoc" class="java.lang.String"/>
+	<field name="noNec" class="java.lang.String"/>
+	<field name="ump" class="java.lang.String"/>
+	<field name="precNeto" class="java.lang.Double"/>
+	<field name="valorNeto" class="java.lang.Double"/>
+	<field name="mon" class="java.lang.String"/>
+	<field name="por" class="java.lang.String"/>
+	<field name="estadoLib" class="java.lang.String"/>
+	<field name="estr" class="java.lang.String"/>
+	<field name="gcp" class="java.lang.String"/>
+	<field name="hisPed" class="java.lang.String"/>
+	<field name="material" class="java.lang.String"/>
+	<field name="cantidad2" class="java.lang.String"/>
+	<field name="uma" class="java.lang.String"/>
+	<field name="lib" class="java.lang.String"/>
+	<field name="docCompra" class="java.lang.String"/>
+	<field name="b" class="java.lang.String"/>
+	<field name="p" class="java.lang.String"/>
+	<field name="i" class="java.lang.String"/>
+	<field name="gpoArt" class="java.lang.String"/>
+	<field name="cantidad" class="java.lang.String"/>
+	<field name="txtBreve" class="java.lang.String"/>
+	<variable name="totalNeto" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{precNeto}]]></variableExpression>
+	</variable>
+	<variable name="totalNeto2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorNeto}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="98">
+			<image>
+				<reportElement uuid="0008ca43-f2bb-40e5-8234-b06ce98ef9e5" x="10" y="11" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="1e73b338-cfc0-40bb-b971-08db2ec956cd" x="153" y="11" width="963" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Municipio de Tampico, Tam."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c40e8418-468e-46a8-81c8-fe59b1c32cca" x="152" y="31" width="964" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="687cebad-a90c-4719-af76-20272ee4ed35" x="1116" y="11" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="b9b91e6b-8954-4b17-871a-f428f7a38e27" x="152" y="45" width="964" height="22" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Reporte de Pedidos por Proveedor"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="09aa2816-fc21-46cc-b8d1-8dd67d76e8cc" x="152" y="67" width="964" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DEL "+$P{fechaIniText}+"\nAL "+$P{fechaFinText}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="70" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="aedc9ad6-cde8-4e71-a459-b7f3d3cb1c78" x="243" y="2" width="66" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FECHA DOC."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="5f0ef922-e582-40fe-926c-35c93b1b11b8" x="75" y="2" width="24" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TP"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="11638abe-21b1-4f88-8387-563fcff316f9" x="52" y="2" width="23" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["C1."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="0e25de18-c23f-48eb-ac67-b3b4eff43acc" x="2" y="2" width="50" height="38" backcolor="#FFFFFF">
+					<property name="net.sf.jasperreports.export.xls.auto.filter" value="Start"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["POS."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="19d8b4c1-41f5-472a-8abd-48f82ee834b5" x="738" y="2" width="49" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["UMP"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="5689d5ef-30e4-475c-b999-e09fd560c9b0" x="1044" y="2" width="26" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["POR"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="42bcb3de-a1d5-4423-92ba-669f5b2e32cd" x="1011" y="2" width="33" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MON"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="f16893b1-ce63-4f00-8005-3a685810a60f" x="890" y="2" width="54" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PRC. NETO"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="23f147f1-0b41-47cc-8825-c06226048cd7" x="1070" y="2" width="50" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ESTADLIB"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="a20a89a1-a928-4510-a94b-a9646b751c82" x="1145" y="2" width="68" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DOC. COMPR"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="4984edbb-325b-4fb0-8c74-27390c182653" x="1213" y="2" width="45" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ESTR."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="c12b3039-8e94-4574-938b-f3861488592d" x="1120" y="2" width="25" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["LIB"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="579cae32-0fb8-4fe6-b7ec-83f74bf9979e" x="610" y="2" width="75" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["N0. NEC"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3ea42c4f-f70f-41d3-885a-abd395ea113e" x="480" y="2" width="63" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["GPO. ART."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="62f14ff9-9b06-42c9-b135-7e49c614c236" x="685" y="2" width="53" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CANTIDAD"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="5110bd9c-62ce-4873-bfca-ca6225d1fdaf" x="99" y="2" width="30" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["GCP."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="0debd8db-a8ed-4e19-a9e5-e4b063ddea80" x="129" y="2" width="114" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["HIST. PED."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="34b0ecfa-520d-43dd-b491-31ec8af919a7" x="309" y="2" width="66" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MATERIAL"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="0132214a-e0d0-4715-a324-21d7846dd90f" x="375" y="2" width="105" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TEXTO BREVE"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="d816115e-cce5-41fa-afc2-455af7201491" x="543" y="2" width="22" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["B"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="f370202d-0664-4e76-abab-e9b7abee6042" x="565" y="2" width="22" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["P"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="0a72e28b-a03a-4986-b6f1-6d5370b1d6aa" x="588" y="2" width="22" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["I"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="e05d2ebd-d6c1-41a8-87fc-e76ced5e10a2" x="840" y="2" width="49" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["UMA"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="f62945e4-149b-4400-ac38-9b1310b75843" x="787" y="2" width="53" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CANTIDAD"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="c882bf10-9006-49a3-abb3-2752a072124c" x="944" y="2" width="67" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["VALOR NETO"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3a3520ed-3069-4590-b654-bda1d36ef704" x="2" y="40" width="50" height="14" isPrintInFirstWholeBand="true" backcolor="#FFFFFF">
+					<property name="net.sf.jasperreports.export.xls.auto.filter" value="Start"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["**"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="381954b6-d330-40cc-898f-b8a3cc1d9ab3" x="2" y="55" width="357" height="14" isPrintInFirstWholeBand="true" backcolor="#FFFFFF">
+					<property name="net.sf.jasperreports.export.xls.auto.filter" value="Start"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Proveedor/centro suministrador 104848        INTEGRADORA DIGITAL TECNICA"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="f823f121-99cf-4cdb-ab39-a616431b70c6" x="2" y="3" width="50" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pos}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="430d04f9-50a2-4abc-8b1b-88eb7475fa4f" x="52" y="3" width="23" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="e5a8edb2-16b4-4f2c-8a90-cd939e1aaefc" x="75" y="3" width="24" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tp}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="4e4d83e0-d01a-4293-be74-285d040cf16f" x="243" y="3" width="66" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaDoc}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="058c473e-a7f1-4b4e-8b63-2d914790f022" x="480" y="3" width="63" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gpoArt}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="e4d7beb9-ccbc-4fd5-ad3b-4d577a673389" x="610" y="3" width="75" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{noNec}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="c1634e3d-b20f-4f4e-b149-a0a674d99bb9" x="685" y="3" width="53" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="36b56af6-7323-49d6-93e1-8a298f7e9cba" x="738" y="3" width="49" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ump}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+				<reportElement uuid="52067de5-38eb-41b9-ab59-753904e65966" x="890" y="3" width="54" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{precNeto}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="b35423c3-a27c-41e4-b581-90b59b9a2173" x="1011" y="3" width="33" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mon}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="e0d96edd-6a93-4ce5-8a10-ed25c0aaed85" x="1044" y="3" width="26" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{por}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="b6972938-1c7a-4868-90b4-2ba58c6edb83" x="1070" y="3" width="50" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estadoLib}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+				<reportElement uuid="42dda44a-d8c7-48f6-8714-cb35dd84ed52" x="1213" y="3" width="45" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estr}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="906c1496-cc1c-48c0-9358-e8263c875b14" x="99" y="3" width="30" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gcp}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="dca50bea-d18a-4102-bddd-7f8bb10e5da7" x="129" y="3" width="114" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hisPed}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="78c342ac-d1a3-443e-a365-9fc036088a16" x="309" y="3" width="66" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{material}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="787fe23b-beeb-412b-9a35-fe999c9f8acd" x="375" y="3" width="105" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{txtBreve}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="1ccd7ef7-eeae-4cae-8fbb-8d767546a2e8" x="787" y="3" width="53" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="86b0bf72-f8f4-43c2-bedc-f3131792bea0" x="840" y="3" width="49" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{uma}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="7caba071-dc68-44eb-9c45-0e31078a0d14" x="1120" y="3" width="25" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lib}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="b1288eaa-d38c-400e-91cd-ebcc393252de" x="1145" y="3" width="68" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{docCompra}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="76e840a2-8dfd-4a9f-b18e-a43ad2866797" x="565" y="3" width="22" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{p}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3ef6330f-f62f-4af3-970a-eeef56f46a29" x="587" y="3" width="22" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{i}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="b2adf34f-dfec-4100-9b49-9eecc2016d8b" x="543" y="3" width="22" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{b}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+				<reportElement uuid="a2bd1587-69dc-49d6-8232-d183def9ca93" x="944" y="3" width="67" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorNeto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="26" splitType="Immediate">
+			<textField>
+				<reportElement uuid="3ea076a4-e81e-4883-bee7-d84fd1c3f857" x="890" y="0" width="54" height="13"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalNeto}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="bde17792-b5e9-4b7e-a8a7-07df5dfa0dcf" x="1011" y="0" width="33" height="14" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MXN"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="27b698ec-d33e-4b5b-91d4-578e033d20c6" x="944" y="0" width="67" height="14"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalNeto2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

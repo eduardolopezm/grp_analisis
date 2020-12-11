@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_conciliacion_bancaria" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0673b0e4-3fe2-48a7-b0cc-ff725a1b30fd">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "estiloTablaJasper.jrtx"]]></template>
+	<parameter name="folio" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT banktrans.transno, CONCAT(tags.tagref, ' - ', tags.tagdescription) AS tagref, CONCAT(tb_cat_unidades_ejecutoras.ue, ' - ', tb_cat_unidades_ejecutoras.desc_ue) AS ln_ue,
+CASE
+  WHEN banktrans.nu_type = 292
+   THEN DATE_FORMAT(stos.fechacambio,'%d-%m-%Y')
+     WHEN banktrans.nu_type = 291
+      THEN DATE_FORMAT(stosM.fechacambio,'%d-%m-%Y')
+  ELSE
+    DATE_FORMAT(estadoscuentabancarios.fechacambio,'%d-%m-%Y')
+END AS fechaemision,
+DATE_FORMAT(banktrans.transdate,'%d-%m-%Y') AS fecha, bankaccounts.bankaccountname AS nombreBanco, bankaccounts.bankaccountnumber AS cuentaClabe, IFNULL(gltrans.nu_folio_ue,'') AS poliza, IFNULL(supptrans.txt_clave_rastreo,'') AS rastreo, IFNULL(abs(banktrans.amount),0) AS Saldo_FIRCO,
+CASE
+  WHEN banktrans.nu_type = 292
+   THEN
+    CASE
+      WHEN stos.depositos = 0
+      THEN stos.Retiros
+    ELSE
+      IFNULL(stos.depositos,0)
+    END
+  WHEN banktrans.nu_type = 291
+   THEN
+    CASE
+      WHEN stosM.depositos = 0
+      THEN stosM.Retiros
+    ELSE
+      IFNULL(stosM.depositos,0)
+    END
+    WHEN banktrans.nu_type != 291 OR banktrans.nu_type != 292
+      THEN
+      CASE
+        WHEN estadoscuentabancarios.depositos = 0
+        THEN estadoscuentabancarios.Retiros
+      ELSE
+       IFNULL(estadoscuentabancarios.depositos,0)
+      END
+END AS Saldo_BANCO,
+banktrans.nu_type,
+CASE
+  WHEN banktrans.nu_type = 292
+   THEN tb_radicacion.num_transferencia
+     WHEN banktrans.nu_type = 291
+      THEN tb_ministracion.num_transferencia
+  ELSE
+    supptrans.txt_referencia
+END AS referencia, DATE_FORMAT(tb_conciliacion_bancaria.fecha_inicio,'%d-%m-%Y') AS fecha_inicio, DATE_FORMAT(tb_conciliacion_bancaria.fecha_fin,'%d-%m-%Y') AS fecha_fin, tb_elaboro.firmante AS elaboro, tb_valido.V_firmante AS valido, tb_autorizo.A_firmante AS autorizo, DATE_FORMAT(tb_conciliacion_bancaria.fecha_captura,'%d-%m-%Y') AS fecha_captura
+FROM banktrans
+LEFT JOIN gltrans ON gltrans.typeno = banktrans.transno AND gltrans.type = banktrans.nu_type
+LEFT JOIN bankaccounts ON bankaccounts.accountcode = banktrans.bankact
+LEFT JOIN supptrans ON supptrans.transno = banktrans.transno AND supptrans.type = banktrans.nu_type
+LEFT JOIN tb_radicacion ON tb_radicacion.folio = banktrans.transno AND banktrans.nu_type = 292
+LEFT JOIN tb_ministracion ON tb_ministracion.folio = banktrans.transno AND banktrans.nu_type = 291
+LEFT JOIN estadoscuentabancarios ON estadoscuentabancarios.nu_referencia = supptrans.txt_referencia
+LEFT JOIN estadoscuentabancarios stos ON stos.nu_referencia = tb_radicacion.num_transferencia
+LEFT JOIN estadoscuentabancarios stosM ON stosM.nu_referencia = tb_ministracion.num_transferencia
+LEFT JOIN tags ON tags.tagref = banktrans.tagref
+LEFT JOIN tb_cat_unidades_ejecutoras ON tb_cat_unidades_ejecutoras.ue = banktrans.ln_ue
+LEFT JOIN tb_conciliacion_bancaria ON tb_conciliacion_bancaria.estado_id = banktrans.batchconciliacion
+LEFT JOIN (
+SELECT  tb_detalle_firmas.id_nu_detalle_firmas as id,CONCAT(tb_detalle_firmas.titulo,' ',tb_empleados.ln_nombre,' ',tb_empleados.sn_primer_apellido ,' ',tb_empleados.sn_segundo_apellido) as firmante, tb_detalle_firmas.informacion, tb_reporte_firmas.id_dafault,tb_conf_firmas.ur
+FROM tb_cat_reportes_conac tb_cat_firmas
+LEFT JOIN tb_reportes_conac_firmas tb_conf_firmas on tb_cat_firmas.id_nu_reportes_conac = tb_conf_firmas.id_nu_reportes_conac and tb_conf_firmas.ur = 'I6L'
+LEFT JOIN tb_reporte_firmas on tb_conf_firmas.id_nu_reportes_conac_firmas = tb_reporte_firmas.id_nu_reportes_conac_firmas
+LEFT JOIN tb_detalle_firmas on tb_reporte_firmas.id_nu_detalle_firmas  = tb_detalle_firmas.id_nu_detalle_firmas
+LEFT JOIN tb_empleados ON tb_detalle_firmas.id_nu_empleado = tb_empleados.id_nu_empleado
+WHERE sn_tipo = 'conciliacion-elaboro'
+) AS tb_elaboro
+ON tags.tagref = tb_elaboro.ur
+LEFT JOIN (
+SELECT  tb_detalle_firmas.id_nu_detalle_firmas as id,CONCAT(tb_detalle_firmas.titulo,' ',tb_empleados.ln_nombre,' ',tb_empleados.sn_primer_apellido ,' ',tb_empleados.sn_segundo_apellido) as V_firmante, tb_detalle_firmas.informacion, tb_reporte_firmas.id_dafault, tb_conf_firmas.ur
+FROM tb_cat_reportes_conac tb_cat_firmas
+LEFT JOIN tb_reportes_conac_firmas tb_conf_firmas on tb_cat_firmas.id_nu_reportes_conac = tb_conf_firmas.id_nu_reportes_conac and tb_conf_firmas.ur = 'I6L'
+LEFT JOIN tb_reporte_firmas on tb_conf_firmas.id_nu_reportes_conac_firmas = tb_reporte_firmas.id_nu_reportes_conac_firmas
+LEFT JOIN tb_detalle_firmas on tb_reporte_firmas.id_nu_detalle_firmas  = tb_detalle_firmas.id_nu_detalle_firmas
+LEFT JOIN tb_empleados ON tb_detalle_firmas.id_nu_empleado = tb_empleados.id_nu_empleado
+WHERE sn_tipo = 'conciliacion-valido'
+) AS tb_valido
+ON tags.tagref = tb_valido.ur
+LEFT JOIN (
+SELECT  tb_detalle_firmas.id_nu_detalle_firmas as id,CONCAT(tb_detalle_firmas.titulo,' ',tb_empleados.ln_nombre,' ',tb_empleados.sn_primer_apellido ,' ',tb_empleados.sn_segundo_apellido) as A_firmante, tb_detalle_firmas.informacion, tb_reporte_firmas.id_dafault, tb_conf_firmas.ur
+FROM tb_cat_reportes_conac tb_cat_firmas
+LEFT JOIN tb_reportes_conac_firmas tb_conf_firmas on tb_cat_firmas.id_nu_reportes_conac = tb_conf_firmas.id_nu_reportes_conac and tb_conf_firmas.ur = 'I6L'
+LEFT JOIN tb_reporte_firmas on tb_conf_firmas.id_nu_reportes_conac_firmas = tb_reporte_firmas.id_nu_reportes_conac_firmas
+LEFT JOIN tb_detalle_firmas on tb_reporte_firmas.id_nu_detalle_firmas  = tb_detalle_firmas.id_nu_detalle_firmas
+LEFT JOIN tb_empleados ON tb_detalle_firmas.id_nu_empleado = tb_empleados.id_nu_empleado
+WHERE sn_tipo = 'conciliacion-autorizo'
+) AS tb_autorizo
+ON tags.tagref = tb_autorizo.ur
+WHERE banktrans.batchconciliacion = $P{folio}
+GROUP BY banktrans.transno]]>
+	</queryString>
+	<field name="tagref" class="java.lang.String"/>
+	<field name="ln_ue" class="java.lang.String"/>
+	<field name="fechaemision" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="nombreBanco" class="java.lang.String"/>
+	<field name="cuentaClabe" class="java.lang.String"/>
+	<field name="poliza" class="java.lang.String"/>
+	<field name="referencia" class="java.lang.String"/>
+	<field name="rastreo" class="java.lang.String"/>
+	<field name="Saldo_FIRCO" class="java.lang.Double"/>
+	<field name="Saldo_BANCO" class="java.lang.Double"/>
+	<field name="fecha_captura" class="java.lang.String"/>
+	<field name="fecha_inicio" class="java.lang.String"/>
+	<field name="fecha_fin" class="java.lang.String"/>
+	<field name="elaboro" class="java.lang.String"/>
+	<field name="valido" class="java.lang.String"/>
+	<field name="autorizo" class="java.lang.String"/>
+	<variable name="direfencia" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{Saldo_FIRCO} + $F{Saldo_BANCO}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="115" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="fce5d76b-19d7-4bfb-bbe2-088aeb30f432" x="0" y="2" width="572" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE CONCILIACION BANCARIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9606e1cd-b559-45af-8a53-48c1ae1a6502" x="394" y="31" width="90" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Emisión: ]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement uuid="02530599-beaf-400b-8064-c1ca2973d7bc" x="0" y="54" width="572" height="58"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="52350a7d-b555-4b53-a55f-8114f011316f" x="12" y="67" width="28" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UR :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0486a35a-27e1-463d-9391-18ce80721828" x="12" y="87" width="28" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UE :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b7df29a9-f378-453a-b49b-caef49b56fd7" x="392" y="67" width="69" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Inicial :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="51541591-a329-4c26-9c7c-25c0f520bee7" x="392" y="87" width="69" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Corte :]]></text>
+			</staticText>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement uuid="56c4ef78-30d3-48db-9d3e-8be83a5ad0dc" x="30" y="0" width="55" height="50"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="5f208d68-f3db-4a29-b93e-7978a4c5ceed" x="484" y="31" width="87" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_captura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="38c7845c-6f8c-49e9-ba70-9716af9b99ab" x="40" y="67" width="253" height="13"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tagref}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="559fbdf4-0b96-402f-8929-58d458c7c8af" x="40" y="87" width="253" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ln_ue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="79e5bbee-4054-4ef3-bfd2-8e02d66f9c45" x="461" y="67" width="100" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_inicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="843dbddd-7b8d-4e3d-87ed-3fb59c79c51e" x="461" y="87" width="100" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_fin}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="68" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ae2c6d5c-a32f-408d-b159-f63b7506213a" x="12" y="4" width="93" height="13"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Institución Bancaria:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b55c801f-7a0c-49d3-8763-cc3576ec4915" x="12" y="20" width="93" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Cuenta CLABE:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="13fb377a-95ee-408c-be7c-9baa4e871b88" x="105" y="4" width="406" height="13"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreBanco}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9fac869a-66dd-4938-845d-75297c2092be" x="105" y="20" width="277" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuentaClabe}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="d639aedd-a17f-4b11-a33d-cf45431ed10e" style="th" x="0" y="40" width="62" height="28"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4856f7d2-e5ea-4ac0-87e8-bd0bd1f78a30" style="th" x="62" y="40" width="68" height="28"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[FIRCO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6db8fbcf-345c-4679-acdc-ff011d53c596" style="th" x="130" y="40" width="85" height="28"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Institución Bancaria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ee78b6ff-4dfd-48e2-877d-379243876c4c" style="th" x="215" y="40" width="79" height="28"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Referencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1cf241a0-73eb-4434-bb61-6e17be328397" style="th" x="294" y="40" width="85" height="28"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Clave de Rastreo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c22edfec-4e4e-4932-b646-b770478614a4" style="th" x="379" y="40" width="69" height="28"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Saldo FIRCO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="af73577a-7e40-4415-818d-b6babc0f3968" style="th" x="448" y="40" width="63" height="28"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Saldo BANCO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="430ab9f8-cb4d-42f2-8ab3-3a968d54274c" style="th" x="511" y="40" width="61" height="28"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Diferencia]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<line>
+				<reportElement uuid="5d46e870-6ac6-4a53-b091-b8a282329ad9" x="0" y="0" width="1" height="24"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="77c8b2e1-7f09-4624-899e-388abd9743ef" x="62" y="0" width="1" height="24"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="371a60c6-9448-4fc2-891f-571f9b7c8aff" x="129" y="0" width="1" height="24"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="7b94ada4-35c1-4b3f-8e48-805c59fc751e" x="214" y="0" width="1" height="24"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="e3067aca-facb-4eb0-9095-234a7d9178d4" x="293" y="0" width="1" height="24"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="afbac786-a7a3-4536-927f-948fa032c199" x="378" y="0" width="1" height="24"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="69059799-b154-457e-8ddb-01140abc2c2f" x="447" y="0" width="1" height="24"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="e685fa9f-2a47-4949-99f5-59fcd4de1667" x="511" y="0" width="1" height="24"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="ed21f3f4-d91b-47f7-ab72-82908192e2d5" x="571" y="0" width="1" height="24"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement uuid="1668cbe9-e699-47db-bbea-7b6c44334c30" x="1" y="0" width="61" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8ca5cea8-94ba-4995-a894-7b806d5191d6" x="130" y="0" width="83" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreBanco}]]></textFieldExpression>
+			</textField>
+			<elementGroup>
+				<textField>
+					<reportElement uuid="3144cb9f-7cd9-416b-9b10-2e7679fb3f8e" x="63" y="0" width="66" height="24"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{poliza}]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<textField>
+				<reportElement uuid="b2e3dbed-f0d9-4b1b-bc24-786a4c80c246" x="215" y="0" width="78" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{referencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cf6cc16a-2c25-49ac-a14c-12734a7c9f1e" x="294" y="0" width="83" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rastreo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="c63a04b5-ae64-417d-869c-75362db16218" x="380" y="0" width="66" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Saldo_FIRCO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="75b5033c-07ae-4dda-b945-df9b104049e1" x="448" y="0" width="63" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Saldo_BANCO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="4129cf60-e702-4326-a3e4-eae96e368047" x="512" y="0" width="59" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Saldo_FIRCO} - $F{Saldo_BANCO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="100" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="a0218f23-8bf3-4d05-8cdf-6b0ed5fa55e1" x="0" y="1" width="572" height="99"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
+			<line>
+				<reportElement uuid="c6e587cd-1501-4656-8fea-9f2959be6be7" x="0" y="0" width="572" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</line>
+			<rectangle radius="6">
+				<reportElement uuid="483ba75c-772b-4e7e-9f51-01756ef21926" x="63" y="7" width="193" height="40"/>
+			</rectangle>
+			<rectangle radius="6">
+				<reportElement uuid="31b7a6db-2e54-436c-b76d-fb0196c10945" x="324" y="7" width="193" height="40"/>
+			</rectangle>
+			<rectangle radius="6">
+				<reportElement uuid="db0c5422-f531-4a44-a117-f8cf2387a623" x="193" y="55" width="193" height="40"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="64e2db77-dc86-4b6f-af8a-4ea4354d40b4" x="63" y="34" width="193" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Elaboró]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="444edb0a-df1d-439e-a96c-d9f70abadf94" x="324" y="34" width="193" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Validó]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="695d0fae-1ec1-491e-910a-2b9c75fd9866" x="193" y="81" width="193" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Autorizó]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="26972c62-334a-4f82-be5a-5a7ae4d35f06" x="63" y="34" width="193" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="6721ac74-bcaa-47b6-8041-08c3201de016" x="68" y="24" width="182" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{elaboro}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="fc46ed6c-b109-4d3c-9e27-b59ed1640cc1" x="324" y="34" width="193" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="fe919ce1-7901-4a93-beb8-a3884cc93403" x="326" y="24" width="188" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valido}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="ac3c369e-7cb9-441d-ade5-ec706eff5a80" x="193" y="81" width="193" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="d17cb31a-56ad-4e39-96ba-7661106b6c6e" x="193" y="71" width="191" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{autorizo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

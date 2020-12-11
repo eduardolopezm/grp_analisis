@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="conceptos_balanza" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f9637e2-f2a0-485d-88a7-595074e9a6bd">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="xPath">
+		<![CDATA[/Balanza/Ctas]]>
+	</queryString>
+	<field name="NumCta" class="java.lang.String">
+		<fieldDescription><![CDATA[@NumCta]]></fieldDescription>
+	</field>
+	<field name="Desc" class="java.lang.String">
+		<fieldDescription><![CDATA[@Desc]]></fieldDescription>
+	</field>
+	<field name="Debe" class="java.lang.String">
+		<fieldDescription><![CDATA[@Debe]]></fieldDescription>
+	</field>
+	<field name="Haber" class="java.lang.String">
+		<fieldDescription><![CDATA[@Haber]]></fieldDescription>
+	</field>
+	<field name="SaldoFin" class="java.lang.String">
+		<fieldDescription><![CDATA[@SaldoFin]]></fieldDescription>
+	</field>
+	<field name="SaldoIni" class="java.lang.String">
+		<fieldDescription><![CDATA[@SaldoIni]]></fieldDescription>
+	</field>
+	<field name="Natur" class="java.lang.String">
+		<fieldDescription><![CDATA[@Natur]]></fieldDescription>
+	</field>
+	<field name="Código Agrupador" class="java.lang.String">
+		<fieldDescription><![CDATA[@CodAgrup]]></fieldDescription>
+	</field>
+	<variable name="deudora_inicial" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{Natur}=="D" ? Double.parseDouble($F{SaldoIni}) : 0]]></variableExpression>
+	</variable>
+	<variable name="acredora_inicial" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{Natur}=="A" ? Double.parseDouble($F{SaldoIni}) : 0]]></variableExpression>
+	</variable>
+	<variable name="debe" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[Double.parseDouble($F{Debe})]]></variableExpression>
+	</variable>
+	<variable name="haber" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[Double.parseDouble($F{Haber})]]></variableExpression>
+	</variable>
+	<variable name="deudora_final" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{Natur}=="D" ? Double.parseDouble($F{SaldoFin}) : 0]]></variableExpression>
+	</variable>
+	<variable name="acredora_final" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{Natur}=="A" ? Double.parseDouble($F{SaldoFin}) : 0]]></variableExpression>
+	</variable>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="d7fd8143-d286-440e-81cb-d334b323fd90" x="1" y="1" width="571" height="20" forecolor="#CCCCCC" backcolor="#05669C"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="d918927a-8f7c-48e5-9a7b-1d067d77bb77" x="53" y="11" width="71" height="10" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Código Cuenta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5ff37f61-2ed1-4c75-b477-2209e53c4544" x="127" y="11" width="163" height="10" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nombre de la Cuenta]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="caea75c2-b2e3-4791-9451-dfe5b1ef2461" x="125" y="1" width="1" height="20" forecolor="#CCCCCC"/>
+			</line>
+			<line>
+				<reportElement uuid="b7ba964f-86b0-4d40-bfd4-29288e040157" x="291" y="1" width="1" height="20" forecolor="#CCCCCC"/>
+			</line>
+			<line>
+				<reportElement uuid="35ca09cc-333f-4a4b-bd6e-e97e07d30668" x="381" y="1" width="1" height="20" forecolor="#CCCCCC"/>
+			</line>
+			<line>
+				<reportElement uuid="b6a6a8ed-f179-4065-89e1-94925ea2cd70" x="292" y="11" width="280" height="1" forecolor="#CCCCCC"/>
+			</line>
+			<staticText>
+				<reportElement uuid="9e7a59b7-6679-4546-adab-a672d28fa092" x="292" y="1" width="89" height="10" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Saldo Inicial]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="afe2effd-6eb5-4082-ad47-490b8314bc9a" x="336" y="12" width="1" height="9" forecolor="#CCCCCC"/>
+			</line>
+			<staticText>
+				<reportElement uuid="91600f20-b4f3-449a-9bdc-a9b96215d133" x="382" y="11" width="44" height="10" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cargos]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="052dba6f-0203-4bc3-bf22-5cb17f63a780" x="471" y="1" width="1" height="20" forecolor="#CCCCCC"/>
+			</line>
+			<staticText>
+				<reportElement uuid="3dc7dd96-9aeb-4ad9-8e76-9d866d1b38cf" x="427" y="11" width="44" height="10" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Abonos]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="c16275b8-ecc7-443e-9234-a2a9f4f7a2b3" x="426" y="12" width="1" height="9" forecolor="#CCCCCC"/>
+			</line>
+			<staticText>
+				<reportElement uuid="481f92e2-164b-4fbe-a953-673b5d0ec538" x="382" y="1" width="88" height="10" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Movimientos del Periodo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="49517328-7539-4e2f-b91a-e8e31777cfeb" x="472" y="1" width="100" height="10" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Saldo Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="286f30e1-efa9-40ba-b65b-a3af6225ff50" x="337" y="11" width="44" height="10" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Acreedora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="49b0ecd4-368b-478b-ae90-53a5a6d5b234" x="292" y="11" width="44" height="10" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Deudora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8eacc775-f893-486f-9ff2-1bc3340c2c75" x="528" y="11" width="44" height="10" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Acreedora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b16b6652-b553-4f84-80b0-a13b9546a0f0" x="472" y="11" width="44" height="10" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Deudora]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="e5b0c059-a7db-4e41-9619-9851f395f1cc" x="522" y="12" width="1" height="9" forecolor="#CCCCCC"/>
+			</line>
+			<line>
+				<reportElement uuid="f4f8de52-efcb-47ea-99ab-efc91725f209" x="1" y="20" width="571" height="1" forecolor="#CCCCCC"/>
+			</line>
+			<line>
+				<reportElement uuid="1ddb619e-1cae-46d3-90b4-1ba53a3ead8c" x="51" y="1" width="1" height="20" forecolor="#CCCCCC"/>
+			</line>
+			<staticText>
+				<reportElement uuid="1b34d0f2-4534-4da0-a66c-a6a7523f0d5e" x="2" y="1" width="49" height="19" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Código Agrupador]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<frame>
+				<reportElement uuid="ac8216d2-ad9e-443d-a3c7-cc4711f83368" x="1" y="0" width="571" height="16"/>
+				<rectangle>
+					<reportElement uuid="556e1b6e-56e8-4dee-81f8-28df08b9ee25" mode="Opaque" x="0" y="0" width="571" height="16" forecolor="#FFFFFF" backcolor="#EEEEEE">
+						<printWhenExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==1)]]></printWhenExpression>
+					</reportElement>
+				</rectangle>
+				<textField>
+					<reportElement uuid="635130e6-652c-4799-87f1-a7eab94a5fdb" x="57" y="1" width="66" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{NumCta}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="06e40ff2-9b77-4fe3-9fc7-fd6570f1cc09" x="127" y="1" width="150" height="15"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Desc}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="919e4730-61c2-4a72-89ef-3e6ecb0e30a0" x="124" y="0" width="1" height="16" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement uuid="1a849007-a75f-47ef-9235-8cecd82ab117" x="290" y="0" width="1" height="16" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement uuid="d03501b1-7163-4ac1-bdee-7beb434eeaef" x="380" y="0" width="1" height="16" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement uuid="03b20314-8b31-4edc-8dd5-92d0a11875f4" x="335" y="0" width="1" height="16" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement uuid="cfafd888-9889-495b-b6b0-1328802a833c" x="470" y="0" width="1" height="16" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement uuid="434595fc-c7ee-4fc8-a6da-d44af69f8b1c" x="521" y="0" width="1" height="16" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement uuid="a6a5a887-9931-4650-abf4-e6a46b01ca26" x="425" y="0" width="1" height="16" forecolor="#CCCCCC"/>
+				</line>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement uuid="ca82b1cf-8e9e-4cf6-ae76-fe69c4b0405e" x="381" y="1" width="44" height="14"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[Double.parseDouble($F{Debe})]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="5cf42fe9-a1d6-4fc0-a24c-e4a8dc2b3eb5" x="426" y="1" width="44" height="14"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[Double.parseDouble($F{Haber})]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="98e9b117-74b6-44a4-a09a-ba25eb6eee58" x="291" y="1" width="45" height="14">
+						<printWhenExpression><![CDATA[$F{Natur}=="D"]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[Double.parseDouble($F{SaldoIni})]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="8201b821-fce3-44ec-b3fd-276eadead138" x="336" y="1" width="44" height="14">
+						<printWhenExpression><![CDATA[$F{Natur}=="A"]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[Double.parseDouble($F{SaldoIni})]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="d55ea8c3-71ea-4b4d-8138-6cc61dbd10cf" x="471" y="1" width="50" height="14">
+						<printWhenExpression><![CDATA[$F{Natur}=="D"]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[Double.parseDouble($F{SaldoFin})]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="d28655c1-4ae8-445c-b422-c6413868ff79" x="522" y="1" width="48" height="14">
+						<printWhenExpression><![CDATA[$F{Natur}=="A"]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[Double.parseDouble($F{SaldoFin})]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="27a13c79-784b-4d53-ae9f-52c4e9405a15" stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="16" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement uuid="eec5658c-cbaf-4eab-9c84-a0407e84b47b" stretchType="RelativeToBandHeight" x="570" y="0" width="1" height="16" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement uuid="c422f40f-7ad6-437e-b65f-baf23333c50e" x="1" y="15" width="570" height="1" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement uuid="1ba4b2c1-285b-4581-ad29-f2b919a14687" x="50" y="0" width="1" height="16" forecolor="#CCCCCC"/>
+				</line>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="e232d422-5e44-4cd7-815f-f37e248f01fb" x="1" y="1" width="49" height="14"/>
+					<textElement verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Código Agrupador}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<summary>
+		<band height="149">
+			<textField pattern="#,##0.00">
+				<reportElement uuid="9bd6d7d0-a0b4-447c-bb79-2701eae8ce76" x="291" y="0" width="45" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{deudora_inicial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="6e55b1d5-9f72-431a-8eb0-9fcdaafbce6b" x="336" y="20" width="44" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{acredora_inicial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="c5b2e00b-c8d8-4917-badc-7134d89ec0d3" x="381" y="0" width="44" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{debe}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="b22148d6-4162-4961-b12c-79f8f29f8220" x="426" y="20" width="44" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{haber}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="d189f31a-1219-42e8-9589-43b897179f45" x="471" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{deudora_final}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="a6368790-103c-407d-9463-e366dcec54ca" x="522" y="20" width="48" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{acredora_final}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c8ef2407-6687-424b-a582-8a23cb52aae1" x="2" y="0" width="126" height="20" forecolor="#3366FF"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Verificacion de Totales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="15cef761-2e48-4c7d-abc5-5ca5d4556212" x="2" y="20" width="126" height="20" forecolor="#3366FF"/>
+				<textElement>
+					<font isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Verificacion de Totales]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

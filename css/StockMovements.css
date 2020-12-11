@@ -1,0 +1,128 @@
+	@charset "utf-8";
+/* CSS Document      */
+
+#idMainContentStockMove{
+	overflow: scroll;
+	height: auto;
+	border-bottom: solid 1px #DDDDDD;
+	text-align: center;
+}
+
+#idMainContentStockMove form{
+	padding: 0px;
+	margin: 0px;
+}
+#idMainContentStockMove table td{
+	padding: 5px;
+}
+
+#idMainTableStockMove{
+	overflow: scroll;
+}
+
+#idBtnImpExcelStockMoves{
+	background-color: #1B693F !important;
+	text-align: right;
+}
+
+#idTableItemStockMove{
+	-webkit-border-radius: 5px 5px 0 0px !important;
+	-moz-border-radius: 5px 5px 0 0px !important;
+	-o-border-radius: 5px 5px 0 0px !important;
+	border-radius: 5px 5px 0 0px !important;
+}
+#idTableItemStockMove th{
+	height: 20px;
+	background-color: #1B693F !important;
+	color: #FFFFFF;
+	padding: 5px;
+	text-align: center; 
+}
+#idTableItemStockMove td{
+	padding: 5px;
+}
+#idTopStockMove{
+	height: 35px;
+	padding-top: 10px;
+}
+#idHeadStockMove{
+	width: 100%;
+	padding: 5px;
+	text-align: center;
+}
+/*#idHeadStockMove{
+	width: 30%;
+	padding: 5px 0px 5px 5px;
+	margin-left: 20%;
+	float: left;
+	text-align: right;
+}
+#idHeadStockMove span, input, select{
+	float: left;
+	width: 50% !important;
+	margin-bottom: 5px;
+}
+#idNoSerie{
+	width: 30%;
+	padding: 5px;
+	margin-right: 20%;
+	float: left;
+	text-align: left;
+}
+#idNoSerie span, input, select{
+	text-align: right;
+	float: left;
+	width: 50% !important;
+	margin-bottom: 5px;
+
+}*/
+#idMovInvProd{
+	margin: 0px;
+	padding: 0px;
+	border: solid 1px #DDDDDD;
+}
+#idCodeStockMove{
+	width: 50%;
+	margin: 0px;
+	padding: 5px;
+	float: left;
+}
+#idNoSerie{
+	width: 50%;
+	margin: 0px;
+	padding: 5px 100px 5px 5px;
+	float: left;
+}
+#idDatesStockMoves{
+	margin:0;
+	padding: 5px;
+	width: 100%;
+}
+.formatSpanStockMoves{
+	width: 50%;
+	float: left;
+	margin-bottom: 10px;
+	padding-right: 5px;
+	font-weight: 700;
+}
+.formatSelectStockMoves{
+	width: 50%;
+	float: left;
+	margin-bottom: 10px;
+}
+
+/*#idHeadStockMove input, select{
+	padding: 5px;
+	margin-top: 5px;
+	margin-left: 50% !important;
+	width: 50% !important;
+}
+#idNoSerie input, select{
+	padding: 5px;
+	margin-top: 5px;
+	margin-left: 0px;
+	width: 50% !important;
+}*/
+
+
+

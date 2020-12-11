@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="impuestos_locales" language="groovy" pageWidth="100" pageHeight="400" columnWidth="100" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="481914d3-f324-43fc-9626-41df25699bf7">
+	<property name="ireport.zoom" value="8.0"/>
+	<property name="ireport.x" value="29"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="xPath">
+		<![CDATA[/Comprobante/Complemento/ImpuestosLocales/RetencionesLocales]]>
+	</queryString>
+	<field name="TotaldeTraslados" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/ImpuestosLocales/@TotaldeTraslados]]></fieldDescription>
+	</field>
+	<field name="TotaldeRetenciones" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/ImpuestosLocales/@TotaldeRetenciones]]></fieldDescription>
+	</field>
+	<field name="ImpLocRetenido" class="java.lang.String">
+		<fieldDescription><![CDATA[@ImpLocRetenido]]></fieldDescription>
+	</field>
+	<field name="Importe" class="java.lang.String">
+		<fieldDescription><![CDATA[@Importe]]></fieldDescription>
+	</field>
+	<field name="TasadeRetencion" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/ImpuestosLocales/RetencionesLocales/@TasadeRetencion]]></fieldDescription>
+	</field>
+	<field name="ImpLocTrasladado" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/ImpuestosLocales/TrasladosLocales/@ImpLocTrasladado]]></fieldDescription>
+	</field>
+	<field name="Importe2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/ImpuestosLocales/TrasladosLocales/@Importe]]></fieldDescription>
+	</field>
+	<field name="TasadeTraslado" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/ImpuestosLocales/TrasladosLocales/@TasadeTraslado]]></fieldDescription>
+	</field>
+	<title>
+		<band height="11">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="2884ec9d-1751-41e4-a08b-c05ff2804a19" positionType="Float" x="0" y="0" width="100" height="10" forecolor="#062D7C"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Impuestos Locales"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="b04c65ec-dae3-46b1-90b0-33454e95273b" positionType="Float" x="0" y="-1" width="100" height="8" forecolor="#062D7C">
+					<printWhenExpression><![CDATA[$F{ImpLocTrasladado}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ImpLocTrasladado}+" "+$F{TasadeTraslado}+"%"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="$ #,##0.00##" isBlankWhenNull="true">
+				<reportElement uuid="8b30a948-d4c9-48cb-af7f-8155e4d549c2" positionType="Float" x="0" y="8" width="100" height="1" isPrintWhenDetailOverflows="true">
+					<printWhenExpression><![CDATA[$F{ImpLocTrasladado}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Double.parseDouble($F{TotaldeTraslados})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="57c99891-c2a0-4f31-93aa-b5f3828398b5" positionType="Float" x="0" y="7" width="100" height="8" forecolor="#062D7C">
+					<printWhenExpression><![CDATA[$F{ImpLocRetenido}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ImpLocRetenido}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="$ #,##0.00##" isBlankWhenNull="true">
+				<reportElement uuid="fd28eeed-e27a-4a01-a171-a7ff2ab33f4f" positionType="Float" x="0" y="16" width="100" height="1">
+					<printWhenExpression><![CDATA[$F{ImpLocRetenido}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Double.parseDouble($F{Importe})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

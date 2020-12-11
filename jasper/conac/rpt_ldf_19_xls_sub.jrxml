@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subrptsituacionfinanciera" language="groovy" pageWidth="782" pageHeight="20" columnWidth="782" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b1f49ba7-74ab-47ca-bb74-c0ca8bf23ced">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "../estiloTablaJasper.jrtx"]]></template>
+	<parameter name="id_funcion" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="tagref" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaIni" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2019-12-01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaFin" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2019-12-19"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anioreporte" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ue" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["-1"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+tb_ldf_conf_ingresos_detallado3.ln_etiqueta,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='253',`cdbl`.`qty`,0)) AS `Ampliacion`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='254',`cdbl`.`qty`,0)) AS `Reduccion`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='309',`cdbl`.`qty`,0)) AS `Original`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='310',(IF(`cdbl`.`qty` < 0, `cdbl`.`qty`, 0) * systypescat.naturalezacontable),0)) AS `Devengado`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='311',(`cdbl`.`qty` * systypescat.naturalezacontable),0)) AS `Pagado`
+FROM tb_ldf_conf_ingresos_detallado3
+LEFT JOIN tb_ldf_detalle3_cri ON tb_ldf_detalle3_cri.idDeta3 = tb_ldf_conf_ingresos_detallado3.idDeta3
+LEFT JOIN chartdetailsbudgetbytag ON chartdetailsbudgetbytag.rtc = tb_ldf_detalle3_cri.rtc
+AND chartdetailsbudgetbytag.rtc IS NOT NULL
+LEFT JOIN chartdetailsbudgetlog AS cdbl ON chartdetailsbudgetbytag.accountcode = cdbl.cvefrom
+AND (CASE WHEN $P{tagref} = '' THEN 1 = 1 ELSE  `cdbl`.`tagref` IN ($P{tagref}) END)
+AND `cdbl`.`datemov` >= $P{fechaIni}
+AND `cdbl`.`datemov` <= $P{fechaFin}
+AND `chartdetailsbudgetbytag`.`anho` = $P{anioreporte}
+AND (CASE WHEN $P{ue} = '-1' THEN 1 = 1 ELSE `cdbl`.`ln_ue` IN ($P{ue}) END)
+LEFT JOIN systypescat ON systypescat.typeid = cdbl.nu_tipo_movimiento
+
+WHERE tb_ldf_conf_ingresos_detallado3.idDeta2 = $P{id_funcion}
+GROUP BY tb_ldf_conf_ingresos_detallado3.idDeta3]]>
+	</queryString>
+	<field name="ln_etiqueta" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Ampliacion" class="java.lang.Double"/>
+	<field name="Reduccion" class="java.lang.Double"/>
+	<field name="Original" class="java.lang.Double"/>
+	<field name="Devengado" class="java.lang.Double"/>
+	<field name="Pagado" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="11">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="f5fa2f37-027a-496e-9de9-5c76bf686e9b" stretchType="RelativeToBandHeight" x="19" y="0" width="163" height="11"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ln_etiqueta}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="22b464b3-2ccc-4d5f-8038-e92affb1239a" x="182" y="0" width="100" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Original}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="e3f7b7f5-5b81-47e4-ac99-06ad2dd47e0c" x="282" y="0" width="100" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Ampliacion}+$F{Reduccion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="b9084b1b-1a7e-47e6-ba33-bb3405d24d64" mode="Transparent" x="382" y="0" width="100" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Original}+$F{Ampliacion}+$F{Reduccion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="06852d99-754f-4410-a82a-4b4cfa7fa0df" x="482" y="0" width="100" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Devengado}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="3be03dda-59c1-4843-ad66-3a2cd3edc61b" x="582" y="0" width="100" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Pagado}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="400f8dba-c244-4f6e-9eaf-0b63c3e43146" x="682" y="0" width="100" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{Original}+$F{Ampliacion}+$F{Reduccion})-$F{Devengado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

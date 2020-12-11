@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptestadovariacionhaciendapublica" language="groovy" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="974" leftMargin="20" rightMargin="14" topMargin="20" bottomMargin="20" uuid="4db7879c-8b17-4fdb-a794-918039e3a565">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="parEntePublico" class="java.lang.String"/>
+	<parameter name="parRangoDeFechas" class="java.lang.String"/>
+	<parameter name="tagref" class="java.lang.String"/>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="imagenEstado" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[Select 1]]>
+	</queryString>
+	<variable name="varEntePublico" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="63" splitType="Stretch">
+			<textField>
+				<reportElement uuid="ef5c1985-915c-45cd-90d3-8fa0b13c08aa" x="140" y="18" width="694" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{parEntePublico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="6e08db26-61d7-4b7b-93ca-05de5bea3be9" x="140" y="31" width="694" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Informe Analítico de Obligaciones Diferentes de Financiamiento]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="6dd5d7f7-0df2-4741-b103-ffde72d196ca" x="140" y="44" width="694" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{parRangoDeFechas}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="39c87749-7aa5-422b-bc7f-13a999cd414b" x="5" y="0" width="135" height="57"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="b995b7f1-dbfc-4b9d-83c0-0b01bf63662c" x="834" y="0" width="140" height="57"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="ec759eac-ada2-41ef-a0e5-c9479804c048" x="140" y="-2" width="694" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MUNICIPIO DE TAMPICO, TAMAULIPAS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="70" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="542cb386-8515-42d2-8d22-04d37cc3a5eb" x="0" y="0" width="968" height="69" forecolor="#003300" backcolor="#757575"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="90692722-1cfa-4fa2-a3c6-6f400c5cbafa" x="5" y="3" width="134" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Denominación de las Obligaciones Diferentes de Financiamiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="41a8fb77-628b-4d5d-a01b-6c0cd96c8756" x="327" y="0" width="60" height="67" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Fecha de Inicio de Operaciones del  Proyecto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8e7af007-e49a-4348-b8c9-105f551efc04" x="395" y="1" width="60" height="67" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Fecha de vencimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="80ae9b11-389d-4c70-b50a-d06ab14cd0c8" x="455" y="1" width="60" height="67" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Monto de la inversión pactado ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0b241c91-d61d-4472-9414-f2aa325ff24f" x="530" y="1" width="60" height="67" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Plazo pactado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6249f057-013c-4506-bf12-3b7774a175e8" x="604" y="1" width="50" height="65" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Monto promedio mensual del pago de la contraprestación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="924f2f91-b6a6-4bca-9029-de0b73ab2e80" x="680" y="0" width="66" height="67" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Conto promedio mensual del pago de la contraprestación correspondiente al pago de inversión]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="262c2a9d-4238-4165-b284-ac010da4aa7a" x="834" y="0" width="63" height="67" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Monto pagado de la inversión actualizado al XX de XXXX de 20XN (l)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0782756d-79ee-4aa5-864c-3432ca43e84c" x="913" y="2" width="55" height="65" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Saldo pendiente por pagar de la inversión al XX de XXXX de 20XN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6c52e958-d522-49d9-894d-fba4bec53586" x="763" y="0" width="64" height="67" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Monto pagado de la inversión al XX de XXXX de 20XN ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="626f191b-c362-4112-b7bf-ec6a40d28cf4" x="266" y="3" width="60" height="67" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Fecha de contrato]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="233" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="2528bef7-2789-47e2-9b39-afa4f34d263a" x="5" y="30" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[A. Asociaciones Público Privadas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f5963122-0f85-4787-8553-00d9985112b6" x="10" y="45" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[a) APP 1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0be1f294-ae37-45b7-ba19-128295a40501" x="10" y="61" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[b) APP 2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0cf5602f-e24e-4350-bebd-167febded446" x="10" y="77" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[c) APP 3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="362a64fc-f4db-4741-b5f1-575ba6f1c75c" x="10" y="123" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[a) Otro Instrumento 1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c44505c0-0e29-4871-b742-54cee2f31e2c" x="10" y="147" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[c) Otro Instrumento 3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8842ac4c-a201-4856-a5ff-e344e926da0e" x="10" y="135" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[b) Otro Instrumento  2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="640d1f2e-6273-484b-babd-96819aab2811" x="10" y="159" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[d) Otro Instrumento XX]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f56c0c4a-1c6a-4357-a651-7606a2daac7b" x="5" y="107" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[B. Otros Instrumentos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6c10f3cd-b530-47ad-80a8-5508ae21b85e" x="5" y="209" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[C. Total de Obligaciones Diferentes de Financiamiento]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="53" splitType="Stretch"/>
+	</columnFooter>
+</jasperReport>

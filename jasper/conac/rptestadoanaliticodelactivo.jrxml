@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptestadoanaliticodelactivo" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fc46fd7a-f4ce-46b0-85c2-7a76b9668c4f">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="removeEmptySpaceBetweenRows" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anioreporte" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2018]]></defaultValueExpression>
+	</parameter>
+	<parameter name="parEntePublico" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["nada"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="parRangoDeFechas" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["asdfasdf"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tagref" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["I6L"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="fechainicial" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2018-09-1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafinal" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2018-10-10"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ue" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["09"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT tb_gl_grupo.nu_clave, tb_gl_grupo.txt_descripcion, '0.0.0' AS accountcode, 'subtotal' AS cuenta_mayor,
+IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0)  AS 'PERIODO1',
+IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 - 1 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0)  AS 'PERIODO2',
+IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 - 2 THEN CASE WHEN gltrans.amount < 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0)  AS 'PERIODO3',
+IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) + IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 - 1 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) - IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 - 2 THEN CASE WHEN gltrans.amount < 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) AS saldofinal,
+(IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) + IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 - 1 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) - IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 - 2 THEN CASE WHEN gltrans.amount < 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0)) - IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) AS variacion
+FROM config_reportes_
+INNER JOIN chartmaster ON config_reportes_.valor= chartmaster.accountcode
+LEFT JOIN gltrans ON config_reportes_.valor= gltrans.account AND gltrans.tag = $P{tagref} AND gltrans.posted = 1 AND CASE WHEN $P{ue} = '' THEN 1 = 1 ELSE gltrans.ln_ue IN ($P{ue}) END
+LEFT JOIN chartmaster cuentas ON substr(config_reportes_.valor, 1, 5)= cuentas.accountcode
+LEFT JOIN tb_gl_grupo ON substr(config_reportes_.valor, 1, 3)= tb_gl_grupo.nu_clave
+WHERE (config_reportes_.valor LIKE '1.1%' OR config_reportes_.valor LIKE '1.2%')
+AND config_reportes_.tagref = $P{tagref}
+GROUP BY tb_gl_grupo.nu_clave, tb_gl_grupo.txt_descripcion, '0.0.0', 'subtotal'
+UNION
+SELECT tb_gl_grupo.nu_clave, tb_gl_grupo.txt_descripcion, cuentas.accountcode, cuentas.accountname AS cuenta_mayor,
+IFNULL(SUM(case when year(trandate) = 2018 then CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END else 0 end), 0)  as 'PERIODO1',
+IFNULL(SUM(case when year(trandate) = 2018 - 1 then CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END else 0 end), 0)  as 'PERIODO2',
+IFNULL(SUM(case when year(trandate) = 2018 - 2 then CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END else 0 end), 0)  as 'PERIODO3',
+IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) + IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 - 1 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) - IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 - 2 THEN CASE WHEN gltrans.amount < 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) AS saldofinal,
+(IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) + IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 - 1 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) - IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 - 2 THEN CASE WHEN gltrans.amount < 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0)) - IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) AS variacion
+FROM config_reportes_
+INNER JOIN chartmaster ON config_reportes_.valor= chartmaster.accountcode
+LEFT JOIN gltrans ON config_reportes_.valor= gltrans.account AND gltrans.tag = $P{tagref} AND gltrans.posted = 1 AND CASE WHEN $P{ue} = '' THEN 1 = 1 ELSE gltrans.ln_ue IN ($P{ue}) END
+LEFT JOIN chartmaster cuentas ON substr(config_reportes_.valor, 1, 5)= cuentas.accountcode
+LEFT JOIN tb_gl_grupo ON substr(config_reportes_.valor, 1, 3)= tb_gl_grupo.nu_clave
+WHERE config_reportes_.valor LIKE '1.1%'
+and config_reportes_.tagref = $P{tagref}
+GROUP BY tb_gl_grupo.nu_clave, tb_gl_grupo.txt_descripcion, cuentas.accountcode, cuentas.accountname
+UNION
+SELECT '1.1', '', '1.1.99', '', '', '','','',''
+UNION
+SELECT tb_gl_grupo.nu_clave, tb_gl_grupo.txt_descripcion, cuentas.accountcode, cuentas.accountname AS cuenta_mayor,
+IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0)  AS 'PERIODO1',
+IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 - 1 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0)  AS 'PERIODO2',
+IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 - 2 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0)  AS 'PERIODO3',
+IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) + IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 - 1 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) - IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 - 2 THEN CASE WHEN gltrans.amount < 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) AS saldofinal,
+(IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) + IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 - 1 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) - IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 - 2 THEN CASE WHEN gltrans.amount < 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0)) - IFNULL(SUM(CASE WHEN YEAR(trandate) = 2018 THEN CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END ELSE 0 END), 0) AS variacion
+FROM config_reportes_
+INNER JOIN chartmaster ON config_reportes_.valor= chartmaster.accountcode
+LEFT JOIN gltrans ON config_reportes_.valor= gltrans.account AND gltrans.tag = $P{tagref} AND gltrans.posted = 1 AND CASE WHEN $P{ue} = '' THEN 1 = 1 ELSE gltrans.ln_ue IN ($P{ue}) END
+LEFT JOIN chartmaster cuentas ON substr(config_reportes_.valor, 1, 5)= cuentas.accountcode
+LEFT JOIN tb_gl_grupo ON substr(config_reportes_.valor, 1, 3)= tb_gl_grupo.nu_clave
+WHERE config_reportes_.valor LIKE '1.2%'
+AND config_reportes_.tagref = $P{tagref}
+GROUP BY tb_gl_grupo.nu_clave, tb_gl_grupo.txt_descripcion, cuentas.accountcode, cuentas.accountname
+ORDER BY nu_clave, accountcode]]>
+	</queryString>
+	<field name="cuenta_mayor" class="java.lang.String"/>
+	<field name="PERIODO1" class="java.lang.String"/>
+	<field name="PERIODO2" class="java.lang.String"/>
+	<field name="PERIODO3" class="java.lang.String"/>
+	<field name="accountcode" class="java.lang.String"/>
+	<field name="saldofinal" class="java.lang.String"/>
+	<field name="variacion" class="java.lang.String"/>
+	<field name="nu_clave" class="java.lang.String"/>
+	<field name="txt_descripcion" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="62" splitType="Stretch">
+			<textField>
+				<reportElement uuid="ee52c0af-f3bf-4d09-894b-be72c1ec6d07" x="109" y="2" width="463" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{parEntePublico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="f75fef84-1a20-4ed9-8ddd-169093829169" x="109" y="22" width="463" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Estado Analítico del Activo]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="d6bf3407-bda2-4167-baa9-2cc026fb937c" x="109" y="42" width="463" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[" DESDE " + new SimpleDateFormat("dd/MM/yyyy").format( new SimpleDateFormat("yyyy-MM-dd").parse($P{fechainicial}) )
++" HASTA "+ new SimpleDateFormat("dd/MM/yyyy").format( new SimpleDateFormat("yyyy-MM-dd").parse($P{fechafinal}) )]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="c510abd4-fc13-4b96-9812-15285c1ad427" x="0" y="0" width="109" height="62"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="55" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="511fcd97-77f7-4d88-93e3-07bf1b20afa8" mode="Opaque" x="0" y="10" width="109" height="20" forecolor="#FFFFFF" backcolor="#006633"/>
+				<textElement/>
+				<text><![CDATA[Concepto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f4a37f49-fdc2-4e60-aa74-8baee277ebcb" mode="Opaque" x="231" y="10" width="68" height="20" forecolor="#FFFFFF" backcolor="#006633"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Saldo Inicial 1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="58ff943b-b7d4-45b6-82ad-518f5065935f" mode="Opaque" x="299" y="10" width="69" height="20" forecolor="#FFFFFF" backcolor="#006633"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cargos del Periodo 2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6c5299e4-60d1-4afc-9407-c86a56a06c8f" mode="Opaque" x="368" y="10" width="68" height="20" forecolor="#FFFFFF" backcolor="#006633"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Abonos del Periodo 3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="30d4fba4-c9bd-45c6-b182-b74b8a076359" mode="Opaque" x="504" y="10" width="68" height="20" forecolor="#FFFFFF" backcolor="#006633"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Variación del Periodo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4b2206e1-b716-42b9-8ebc-ef4d3c198716" mode="Opaque" x="436" y="10" width="68" height="20" forecolor="#FFFFFF" backcolor="#006633"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Saldo Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="177892ef-9baa-4720-863b-eddc62e4ec84" mode="Transparent" x="0" y="30" width="109" height="25" backcolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[ACTIVO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9eb67dd7-b7a8-46ab-bbf9-af4042f1f8b7" mode="Opaque" x="109" y="10" width="122" height="20" forecolor="#FFFFFF" backcolor="#006633"/>
+				<textElement/>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="e8412c77-4248-45de-a91c-791dc8513bce" x="0" y="2" width="231" height="14">
+					<printWhenExpression><![CDATA[$F{cuenta_mayor} != "subtotal" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta_mayor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="b8630a65-a9fd-418c-8ecc-ae1a5b2e848e" x="231" y="2" width="68" height="14">
+					<printWhenExpression><![CDATA[$F{cuenta_mayor} != "subtotal" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO1} != "" ? Double.parseDouble($F{PERIODO1}) : ""]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="0ae87aa3-9b68-4a97-9ed8-42346b24dd52" x="299" y="2" width="69" height="14">
+					<printWhenExpression><![CDATA[$F{cuenta_mayor} != "subtotal" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO2} != "" ? Double.parseDouble($F{PERIODO2}) : ""]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="360c5954-aff9-479b-835a-91dc493be5ec" x="368" y="2" width="68" height="14">
+					<printWhenExpression><![CDATA[$F{cuenta_mayor} != "subtotal" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO3} != "" ? Double.parseDouble($F{PERIODO3}) : ""]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="4bcf8035-7c31-4b4a-bacb-531143b39541" x="436" y="2" width="68" height="14">
+					<printWhenExpression><![CDATA[$F{cuenta_mayor} != "subtotal" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldofinal} != "" ? Double.parseDouble($F{saldofinal}) : ""]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="123ba4cb-d488-4e21-8ab0-f958be4f3e7e" x="504" y="2" width="68" height="14">
+					<printWhenExpression><![CDATA[$F{cuenta_mayor} != "subtotal" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{variacion} != "" ? Double.parseDouble($F{variacion}) : ""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="9607f367-5b78-4ee9-92c3-49f13b3d1133" x="0" y="2" width="231" height="14">
+					<printWhenExpression><![CDATA[$F{cuenta_mayor} == "subtotal" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{txt_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="f9ff62ee-e357-4756-a74b-5786d10f14fe" x="231" y="2" width="68" height="14">
+					<printWhenExpression><![CDATA[$F{cuenta_mayor} == "subtotal" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO1} != "" ? Double.parseDouble($F{PERIODO1}) : ""]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="59b0027d-86ec-4d8a-82b7-c1227de9f481" x="299" y="2" width="69" height="14">
+					<printWhenExpression><![CDATA[$F{cuenta_mayor} == "subtotal" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO2} != "" ? Double.parseDouble($F{PERIODO2}) : ""]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="228ef953-2125-4d19-ba95-f7c402553726" x="368" y="2" width="68" height="14">
+					<printWhenExpression><![CDATA[$F{cuenta_mayor} == "subtotal" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO3} != "" ? Double.parseDouble($F{PERIODO3}) : ""]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="035a9241-cefb-40dd-9634-eff84de0c4d4" x="436" y="2" width="68" height="14">
+					<printWhenExpression><![CDATA[$F{cuenta_mayor} == "subtotal" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldofinal} != "" ? Double.parseDouble($F{saldofinal}) : ""]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="f356d0bd-7d6a-4cbf-b68a-4aea5e00429c" x="504" y="2" width="68" height="14">
+					<printWhenExpression><![CDATA[$F{cuenta_mayor} == "subtotal" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{variacion} != "" ? Double.parseDouble($F{variacion}) : ""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

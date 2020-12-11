@@ -1,0 +1,221 @@
+/*============================================================================
+			RESPONSIVE CSS WITH MEDIA 
+=============================================================================*/
+
+/*=============  MEDIA 1200px   =============*/
+@media(min-width:1200px) and (max-width:1400px) {
+.as-black .btn {
+	padding: 10px 30px;
+	font-size: 20px;
+	margin-top: 30px;
+}
+.as-black p {
+	font-size: 20px;
+	font-size: 20px;
+	line-height: 30px;
+}
+}
+
+/*=============  MEDIA 1024px   =============*/
+@media(max-width:1024px) {
+}
+
+/*=============  MEDIA 992px - 1199px   =============*/
+@media(min-width:992px) and (max-width:1199px) {
+.multi-images li {
+	width: 49.5%;
+}
+footer li.inst a img {
+	width: 80%;
+}
+}
+
+/*=============  MEDIA 768px - 991px   =============*/
+@media(min-width:768px) and (max-width:991px) {
+.multi-images li {
+	width: 49.5%;
+}
+.also-like {
+	padding-left: 25px;
+}
+.also-like li {
+	margin-bottom: 20px !important;
+}
+.also-like:before {
+	display: none !important;
+}
+.nav{
+	margin-left:60px;
+}
+.nav > li > a{
+	padding:0px 10px;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+}
+
+/*=============  MEDIA 767px   =============*/
+@media(max-width:767px) {
+.multi-images li {
+	width: 49.5%;
+}
+.also-like {
+	padding: 25px;
+}
+.also-like:before {
+	display: none;
+}
+.post article .date {
+	display: inline-block;
+	width: 45%;
+}
+.nav > li {
+	width: 100%;
+}
+.navbar-header {
+}
+.navbar-default .navbar-collapse {
+}
+header .menu ul.social_icons {
+}
+.navbar-toggle {
+}
+.navbar-nav {
+	margin: 0px;
+    margin-top: -1px;
+}
+ul.navbar-nav {
+}
+.navbar-nav > li > a {
+	width: 100%;
+}
+
+
+
+/*
+.dropdown:hover .dropdown-menu {
+	text-align: center;
+	background: #fff;
+	padding: 0px;
+}
+*/
+.form-horizontal .form-group .col-sm-10 {
+	padding: 0px;
+}
+.form-horizontal .form-group .col-sm-3 {
+	padding: 0px;
+}
+.form-horizontal .form-group .col-sm-2 {
+	padding: 0px;
+}
+.also-like li {
+	margin-bottom: 30px;
+}
+ul.social_icons {
+	margin-top: 20px;
+}
+header .menu ul.social_icons {
+	margin: 0px;
+}
+.post li img {
+	/*width: 100% !important;*/
+}
+.img-responsive, .thumbnail > img, .thumbnail a > img, .carousel-inner > .item > img, .carousel-inner > .item > a > img {
+	display: inline-block;
+	width: 100%;
+}
+.as-horizontal .as-panels {
+	width: 700px !important;
+}
+.as-horizontal .as-panel {
+	width: 50%;
+}
+}
+
+/*=============  MEDIA 600px   =============*/
+@media (max-width:600px) {
+#carousel li {
+	width: 80px!important;
+    margin: 0px;
+}
+
+.admin-info li {
+	width: 100%;
+	margin-bottom: 10px;
+}
+.admin-info li li {
+	width: auto;
+}
+.comments li {
+	width: 100%;
+}
+.comments li img {
+	margin-bottom: 20px;
+}
+.comments li li {
+	width: auto;
+}
+.leav-reply .form-horizontal .control-label {
+	padding: 0px !important;
+}
+.leav-reply .col-sm-12 {
+	width: 100% !important;
+	padding: 0px;
+}
+}
+
+/*=============  MEDIA 540px   =============*/
+@media(max-width:540px) {
+.post article .date {
+	width: 43%;
+}
+.multi-images li {
+	width: 49%;
+}
+}
+@media (max-width:370px) {
+    #carousel li {width: 50px!important;}
+}
+/*=============  MEDIA 400px   =============*/
+@media(max-width:400px) {
+.multi-images li {
+	width: 100%;
+}
+.post article .date {
+	width: 40%;
+}
+.navbar-header {
+	/*margin-top: 50px;*/
+}
+}
+
+/*=============  MEDIA 320px   =============*/
+@media(max-width:320px) {
+.post article .date {
+	width: 40%;
+}
+.admin-info li {
+	width: 100%;
+}
+.admin-info .social_icons li {
+	width: auto;
+}
+}
+
+
+/* NAVBAR */
+
+@media (min-width: 768px){
+.navbar-default, .menu-usuario>div {
+    width: 750px;
+}}
+
+@media (min-width: 992px){
+.navbar-default, .menu-usuario>div {
+    width: 970px;
+}}
+
+@media (min-width: 1200px){
+.navbar-default, .menu-usuario>div {
+    width: 1170px;
+}}

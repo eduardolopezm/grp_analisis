@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="formato_entrega_solicitud" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7be21170-4d58-4d46-be66-992c50d4e69a">
+	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="th" mode="Opaque" forecolor="#FFFFFF" backcolor="#727378" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="style1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#F2F2F2" fill="Solid"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="imagenEstado" class="java.lang.String"/>
+	<parameter name="idContrato" class="java.lang.String"/>
+	<parameter name="folioRecibo" class="java.lang.String"/>
+	<parameter name="placa" class="java.lang.String"/>
+	<parameter name="modelo" class="java.lang.String"/>
+	<parameter name="color" class="java.lang.String"/>
+	<parameter name="folioPase" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+MIN(tb_administracion_contratos.id_periodo) as Min,
+SUBSTRING(MIN(tb_administracion_contratos.id_periodo), 1, 4) as anioMin,
+SUBSTRING(MIN(tb_administracion_contratos.id_periodo), 5, 6) as mesMin,
+MAX(tb_administracion_contratos.id_periodo) as Max,
+SUBSTRING(MAX(tb_administracion_contratos.id_periodo), 1, 4) as anioMax,
+SUBSTRING(MAX(tb_administracion_contratos.id_periodo), 5, 6) as mesMax,
+(SELECT mes FROM cat_Months WHERE u_mes = SUBSTRING(MIN(tb_administracion_contratos.id_periodo), 5, 6)) as mesLetraMin,
+(SELECT mes FROM cat_Months WHERE u_mes = SUBSTRING(MAX(tb_administracion_contratos.id_periodo), 5, 6)) as mesLetraMax
+FROM tb_administracion_contratos
+WHERE
+tb_administracion_contratos.id_contrato = $P{idContrato}
+AND tb_administracion_contratos.pase_cobro = $P{folioPase}
+AND tb_administracion_contratos.folio_recibo = $P{folioRecibo}]]>
+	</queryString>
+	<field name="anioMin" class="java.lang.String"/>
+	<field name="mesMin" class="java.lang.String"/>
+	<field name="anioMax" class="java.lang.String"/>
+	<field name="mesMax" class="java.lang.String"/>
+	<field name="mesLetraMin" class="java.lang.String"/>
+	<field name="mesLetraMax" class="java.lang.String"/>
+	<field name="Min" class="java.lang.String"/>
+	<field name="Max" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="1" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="2" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="2" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="514" splitType="Stretch">
+			<textField>
+				<reportElement uuid="597badcf-b05d-4817-9cf0-0a5f4434d4f2" style="style1" x="399" y="265" width="331" height="100"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["VIGENCIA\n"+$F{mesLetraMin}+" "+$F{anioMin}
++
+($F{Min} != $F{Max} ? " A "+$F{mesLetraMax}+" "+$F{anioMax} : "")]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="7952ff0c-50e3-4f17-a6d7-5e5855374cb7" x="399" y="10" width="102" height="93"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<rectangle radius="5">
+				<reportElement uuid="fba50784-5bcd-401c-8dec-7029347a2927" stretchType="RelativeToTallestObject" mode="Transparent" x="4" y="4" width="351" height="499" isRemoveLineWhenBlank="true" forecolor="#999999"/>
+			</rectangle>
+			<rectangle radius="5">
+				<reportElement uuid="4dc09dcd-6317-489c-b099-9103e20e785e" stretchType="RelativeToTallestObject" mode="Transparent" x="389" y="4" width="351" height="499" isRemoveLineWhenBlank="true" forecolor="#999999"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="41bd86b8-d102-42cb-823f-7e32bdbf412b" style="style1" x="15" y="58" width="328" height="45"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["- ESTE DOCUMENTO TIENE UNA VIGENCIA DE MES DE CALENDARIO."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cda0d9c3-31f3-442a-b3b8-1a1a07343b52" style="style1" x="15" y="139" width="328" height="45"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["- DEBERÁ PERMANECER DENTRO DEL VEHÍCULO FRENTE AL PARABRISAS Y DE FORMA VISIBLE."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="483c3088-6695-4e7c-93a4-46e1c254fbde" style="style1" x="15" y="231" width="328" height="45"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["- EN CASO DE NO DEJARLO A LA VISTA DE LOS SUPERVISORES, CAUSARÁ EL COBRO DE LA INFRACCIÓN IMPUESTA CONFORME A LA TARIFA ESTIPULADA."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="49af05a7-d221-43e4-9658-3a5a1d94fb22" style="style1" x="15" y="320" width="328" height="45"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["- SU MAL USO, PROVOCARÁ SU CANCELACIÓN."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c658dd21-eb0e-4fc6-84db-b6de67ec07fc" style="style1" x="15" y="398" width="328" height="45"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["- ESTE PERMISO ES PERSONAL E INSTRANSFERIBLE."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="054a2c6a-bd36-42c1-938e-cbd44ef917ac" style="style1" x="501" y="10" width="215" height="57"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TESORERIA MUNICIPAL \n SUBDIRECCIÓN DE INGRESOS \n 2018-2021"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3ce85312-8627-461a-abdd-aef0bd5acd2a" style="style1" x="449" y="107" width="214" height="57"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="28" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{placa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cccd57d9-8052-4ada-9a67-9680c76d2034" style="style1" x="412" y="166" width="168" height="87"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="SansSerif" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MODELO: \n"+$P{modelo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1a8208d7-b809-4325-94fe-13fc88d65170" style="style1" x="592" y="166" width="124" height="87"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="SansSerif" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["COLOR: \n"+$P{color}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="75514b6c-202a-4dba-9fba-f10e57c914d0" style="style1" x="580" y="71" width="160" height="36"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{idContrato}+"/"+$F{anioMin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="17454e35-bfea-44f0-a585-85d08a0adfcb" style="style1" x="399" y="388" width="331" height="65"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PERMISO MENSUAL CON FUNDAMENTO EN EL ART. 23 FRACCION VI, DE ACUERDO A LA LEY DE INGRESOS VIGENTE PARA EL MUNICIPIO DE TAMPICO EJERCICIO "+$F{anioMin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8869ded8-5d19-47a0-805c-da2604861eb9" style="style1" x="399" y="457" width="331" height="30"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["NO. RECIBO: "+$P{folioRecibo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="3" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

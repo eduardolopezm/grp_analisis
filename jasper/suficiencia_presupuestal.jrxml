@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="formato_entrega_solicitud" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7be21170-4d58-4d46-be66-992c50d4e69a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "estiloTablaJasper.jrtx"]]></template>
+	<style name="style1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#F2F2F2" fill="Solid"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="transno" class="java.lang.String"/>
+	<parameter name="type" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+chartdetailsbudgetlog.type,
+chartdetailsbudgetlog.transno,
+chartdetailsbudgetlog.cvefrom,
+ROUND(ABS(chartdetailsbudgetlog.qty), 2) as qty,
+chartdetailsbudgetlog.period,
+DATE_FORMAT(chartdetailsbudgetlog.fecha_captura, '%d-%m-%Y') as fecha_captura,
+CONCAT(tags.tagref, ' - ', tags.tagname) as tagname,
+legalbusinessunit.legalname,
+tb_suficiencias_cat.sn_nombre as tipoSuficiencia,
+periods.lastdate_in_period,
+DATE_FORMAT(periods.lastdate_in_period, '%Y') as anio,
+cat_Months.mes as mesName,
+www_users.realname,
+systypescat.typename,
+tb_botones_status.statusname
+FROM chartdetailsbudgetlog
+LEFT JOIN tags ON tags.tagref = chartdetailsbudgetlog.tagref
+LEFT JOIN legalbusinessunit ON legalbusinessunit.legalid = tags.legalid
+LEFT JOIN tb_suficiencias ON tb_suficiencias.nu_type = chartdetailsbudgetlog.type AND tb_suficiencias.nu_transno = chartdetailsbudgetlog.transno
+LEFT JOIN tb_suficiencias_cat ON tb_suficiencias_cat.nu_tipo = tb_suficiencias.nu_tipo
+LEFT JOIN www_users ON www_users.userid = tb_suficiencias.sn_userid
+LEFT JOIN periods ON periods.periodno = chartdetailsbudgetlog.period
+LEFT JOIN cat_Months ON cat_Months.u_mes = DATE_FORMAT(periods.lastdate_in_period, '%m')
+LEFT JOIN systypescat ON systypescat.typeid = chartdetailsbudgetlog.nu_tipo_movimiento
+LEFT JOIN tb_botones_status ON tb_botones_status.statusid = tb_suficiencias.nu_estatus AND tb_botones_status.sn_funcion_id = tb_suficiencias.sn_funcion_id
+WHERE
+chartdetailsbudgetlog.type = $P{type}
+AND chartdetailsbudgetlog.transno = $P{transno}
+AND chartdetailsbudgetlog.qty < 0
+AND chartdetailsbudgetlog.nu_tipo_movimiento = '263'
+ORDER BY chartdetailsbudgetlog.cvefrom ASC, periods.lastdate_in_period ASC, chartdetailsbudgetlog.qty DESC]]>
+	</queryString>
+	<field name="cvefrom" class="java.lang.String"/>
+	<field name="qty" class="java.lang.String"/>
+	<field name="period" class="java.lang.String"/>
+	<field name="tagname" class="java.lang.String"/>
+	<field name="legalname" class="java.lang.String"/>
+	<field name="tipoSuficiencia" class="java.lang.String"/>
+	<field name="mesName" class="java.lang.String"/>
+	<field name="realname" class="java.lang.String"/>
+	<field name="fecha_captura" class="java.lang.String"/>
+	<field name="statusname" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="74" splitType="Stretch">
+			<textField>
+				<reportElement uuid="1015e28f-2059-4c12-8fc9-20941b8762e1" x="143" y="0" width="422" height="34"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{legalname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b42fdad3-3b26-415f-846e-fdffe7989f13" x="143" y="34" width="422" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tagname}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="295705d6-b343-426b-a047-74d25d14262a" x="2" y="2" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="ba38521d-f943-40be-941a-09a0509ccd46" x="624" y="25" width="182" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["PÁGINA "+$V{PAGE_NUMBER}+" DE"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="db393110-dd6e-410f-85e7-44fb7d4e3982" x="693" y="25" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="442d9478-5cf3-4e3d-ae0e-d7943dc8d7ea" x="624" y="45" width="47" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["FOLIO: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="838185f7-3e07-4826-9846-a9a180964a26" x="671" y="45" width="80" height="20"/>
+				<textElement>
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{transno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="adbc3ed7-c16a-45a8-8eac-4f13e2838762" x="624" y="2" width="106" height="20"/>
+				<textElement textAlignment="Left">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_captura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="43" splitType="Stretch">
+			<textField>
+				<reportElement uuid="99aac5a3-7198-446d-b5ca-870a94a130ed" x="192" y="0" width="328" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoSuficiencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="102cfe0b-f9e2-4956-9881-c9671c2c6304" x="57" y="21" width="276" height="20"/>
+				<textElement>
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{statusname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9839adfc-0c99-4764-83df-6fe41d1b4474" x="2" y="21" width="55" height="20"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Estatus: "]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="b6c39cc4-d132-4cb1-bbde-1701e4aa3180" style="th" x="0" y="0" width="520" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[CLAVE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="48c7c6ee-fe63-4340-a9ab-aed2ffdfb7ac" style="th" x="635" y="0" width="116" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[IMPORTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ccd9b93e-203e-4b83-9dbd-ed6013456018" style="th" x="520" y="0" width="115" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[MES]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement uuid="f4350648-1b1a-49f8-b096-a978a563026e" style="style1" x="520" y="0" width="115" height="27"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{mesName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b466a557-377d-461a-8da3-adec32f4ab15" style="style1" x="635" y="0" width="116" height="27"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e56b279b-8e17-4d7b-9baa-9b6df007b45a" style="style1" x="2" y="0" width="518" height="27"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cvefrom}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="67" splitType="Stretch">
+			<textField>
+				<reportElement uuid="72aca643-d2a7-4dc7-9e4e-eaa26e7d8e76" x="1" y="33" width="101" height="20"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["USUARIO SOLICITUD: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="503f1876-16f5-459e-ba31-5428d1b7bb29" x="103" y="33" width="217" height="20"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{realname}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement uuid="daae237a-042a-4ac7-a973-622793e8cb4f" x="228" y="11" width="343" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["PÁGINA "+ $V{PAGE_NUMBER} +" DE " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

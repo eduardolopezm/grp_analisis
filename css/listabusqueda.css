@@ -1,0 +1,49 @@
+/** Esta clase hace que la tabla contenedora ocupe toda la pantalla  */
+/**/
+
+.callout_main
+{
+    width: 100%;
+    z-index:99999 !important;
+}
+
+.informacion-compra {
+	background-color: #f6f6f6;
+	margin: 10px auto;
+	border-radius: 10px;
+	z-index:99999 !important;
+}
+
+/*PARA el Combo de Producto*/
+
+.ui-autocomplete {
+	max-height: 200px;
+	overflow-y: auto;
+	/* prevent horizontal scrollbar */
+	overflow-x: hidden;
+	z-index:99999 !important;
+}
+/* IE 6 doesn't support max-height
+* we use height instead, but this forces the menu to always be this tall
+*/
+* html .ui-autocomplete {
+	height: 200px;
+	z-index:99999 !important;
+}
+
+.ui-autocomplete li
+{
+	border-bottom: 0px solid;
+	border: 0px;
+	z-index:99999 !important;
+}
+
+.ui-autocomplete li:nth-child(even) {
+	background: #eee;
+	z-index:99999 !important;
+}
+
+.ui-autocomplete li:nth-child(odd) {
+	background: #FFF;
+	z-index:99999 !important;
+}

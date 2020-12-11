@@ -1,0 +1,223 @@
+/*.*/
+@media only screen and ( max-width: 320px ) {
+.panel { width: 95%; margin: 0 auto; }
+.column05, .column10, .column15, .column20, .column25, .column30, .column35, .column40, .column45, .column50,
+.column55, .column60, .column65, .column70, .column75, .column80, .column85, .column90, .column95, .column100 { width: 100%; }
+/*==========*/
+.col05, .col10, .col15, .col20, .col25, .col30, .col33, .col35, .col40, .col45, .col50,
+.col55, .col60, .col65, .col70, .col75, .col80, .col85, .col90, .col95, .col100 { width: 100%; }
+/*==========*/
+.cell05, .cell10, .cell15, .cell20, .cell25, .cell30, .cell33, .cell35, .cell40, .cell45, .cell50,
+.cell55, .cell60, .cell65, .cell66, .cell70, .cell75, .cell80, .cell85, .cell90, .cell95, .cell100 { width: 100%; }
+/*==========*/
+._header-one { float: none; display: block; }
+._header-one li { display: block; vertical-align: top; text-align: center; }
+._header-one li img { max-height: 64px; margin: 0 24px 0 8px; }
+._header-one li h1 { margin: 0; padding: 18px 0 4px 0; border: 0; font-size: 180%; }
+/*==========*/
+._process ._process-head i { display: block; }
+._process ._process-foot i { display: none; }
+/*==========*/
+._instances {  }
+._instance {  }
+._instance-head {  }
+._instance-body {  }
+/*==========*/
+._state { float: left; display: inline-block; width: 100%; }
+._state-body-process, ._state-body-date { float: left; display: inline-block; width: 50%; }
+._date-start, ._date-end { display: inline-block; width: 50%; text-align: right; }
+}
+@media only screen and ( min-width: 321px ) and ( max-width: 480px ) {
+.panel { width: 95%; margin: 0 auto; }
+.column05, .column10, .column15, .column20, .column25, .column30, .column35, .column40, .column45, .column50,
+.column55, .column60, .column65, .column70, .column75, .column80, .column85, .column90, .column95, .column100 { width: 100%; }
+/*==========*/
+.col05, .col10, .col15, .col20, .col25, .col30, .col33, .col35, .col40, .col45, .col50,
+.col55, .col60, .col65, .col70, .col75, .col80, .col85, .col90, .col95, .col100 { width: 100%; }
+/*==========*/
+.cell05, .cell10, .cell15, .cell20, .cell25, .cell30, .cell33, .cell35, .cell40, .cell45, .cell50,
+.cell55, .cell60, .cell65, .cell66, .cell70, .cell75, .cell80, .cell85, .cell90, .cell95, .cell100 { width: 100%; }
+/*==========*/
+._header-one { float: none; display: block; }
+._header-one li { display: block; vertical-align: top; text-align: center; }
+._header-one li img { max-height: 64px; margin: 0 24px 0 8px; }
+._header-one li h1 { margin: 0; padding: 18px 0 4px 0; border: 0; font-size: 180%; }
+/*==========*/
+._processes { padding: 16px 12px 8px 12px; }
+._process ._process-head i { display: block; }
+._process ._process-foot i { display: none; }
+/*==========*/
+._instances {  }
+._instance {  }
+._instance-head {  }
+._instance-body {  }
+/*==========*/
+._state { float: left; display: inline-block; width: 100%; }
+._state-body-process, ._state-body-date { float: left; display: inline-block; width: 50%; }
+._date-start, ._date-end { display: inline-block; width: 50%; text-align: right; }
+}
+@media only screen and ( min-width: 481px ) and ( max-width: 640px ) {
+.panel { width: 95%; margin: 0 auto; }
+.column05, .column10, .column15, .column20, .column25, .column30, .column35, .column40, .column45, .column50,
+.column55, .column60, .column65, .column70, .column75, .column80, .column85, .column90, .column95, .column100 { width: 100%; }
+.col50, .cell50 { width: 50%; }
+/*==========*/
+.col05, .col10, .col15, .col20, .col25, .col30, .col33, .col35, .col40, .col45, /*.col50,*/
+.col55, .col60, .col65, .col70, .col75, .col80, .col85, .col90, .col95, .col100 { width: 100%; }
+/*==========*/
+.cell05, .cell10, .cell15, .cell20, .cell25, .cell30, .cell33, .cell35, .cell40, .cell45, /*.cell50,*/
+.cell55, .cell60, .cell65, .cell66, .cell70, .cell75, .cell80, .cell85, .cell90, .cell95, .cell100 { width: 100%; }
+/*==========*/
+._header-one { float: none; display: block; }
+._header-one li { display: block; vertical-align: top; text-align: center; }
+._header-one li img { max-height: 64px; margin: 0 24px 0 8px; }
+._header-one li h1 { margin: 0; padding: 18px 0 4px 0; border: 0; font-size: 180%; }
+/*==========*/
+._processes { padding: 16px 12px 8px 12px; }
+._process ._process-head i { display: block; }
+._process ._process-foot i { display: none; }
+/*==========*/
+._instances {  }
+._instance {  }
+._instance-head {  }
+._instance-body {  }
+/*==========*/
+._state { float: left; display: inline-block; width: 100%; }
+._state-body-process, ._state-body-date { float: left; display: inline-block; width: 50%; }
+._date-start, ._date-end { display: inline-block; width: 50%; text-align: right; }
+}
+@media only screen and ( min-width: 641px ) and ( max-width: 768px ) {
+.panel { width: 95%; margin: 0 auto; }
+.column05, .column10, .column15, .column20, .column25, .column30, .column35, .column40, .column45, .column50,
+.column55, .column60, .column65, .column70, .column75, .column80, .column85, .column90, .column95, .column100 { width: 100%; }
+/*==========*/
+.col05, .col10, .col15, .col20, .col25, .col30, .col33, .col35, .col40, .col45, .col50,
+.col55, .col60, .col65, .col70, .col75, .col80, .col85, .col90, .col95, .col100 { width: 100%; }
+/*==========*/
+.cell05, .cell10, .cell15, .cell20, .cell25, .cell30, .cell33, .cell35, .cell40, .cell45, .cell50,
+.cell55, .cell60, .cell65, .cell66, .cell70, .cell75, .cell80, .cell85, .cell90, .cell95, .cell100 { width: 100%; }
+/*==========*/
+._header-one { float: none; display: block; }
+._header-one li { display: block; vertical-align: top; text-align: center; }
+._header-one li img { max-height: 64px; margin: 0 24px 0 8px; }
+._header-one li h1 { margin: 0; padding: 18px 0 4px 0; border: 0; font-size: 180%; }
+/*==========*/
+._processes { padding: 16px 12px 8px 12px; }
+._process ._process-head i { display: block; }
+._process ._process-foot i { display: none; }
+/*==========*/
+._instances {  }
+._instance {  }
+._instance-head {  }
+._instance-body {  }
+/*==========*/
+._state { float: left; display: inline-block; width: 100%; }
+._state-body-process, ._state-body-date { float: left; display: inline-block; width: 50%; }
+._date-start, ._date-end { display: inline-block; width: 50%; text-align: right; }
+}
+@media only screen and ( min-width: 769px ) and ( max-width: 1024px ) {
+.panel { width: 976px; margin: 0 auto; }
+.col50, cell50 { width: 100%; }
+/*==========*/
+._header-one { float: left; display: inline-block; }
+._header-one li { display: inline-block; vertical-align: top; text-align: left; }
+._header-one li img { max-height: 80px; margin: 0 24px 0 8px; }
+._header-one li h1 { margin: 0; padding: 18px 0 4px 0; border: 0; font-size: 180%; }
+/*==========*/
+._processes { padding: 16px 8px 8px 8px; }
+._process { float: left; display: inline-block; width: 50%; }
+._process ._process-head, ._process ._process-foot { padding: 0 8px; }
+._process ._process-body { padding: 8px 8px; }
+._process ._process-head i { display: block; }
+._process ._process-foot i { display: none; }
+/*==========*/
+._instances {  }
+._instance {  }
+._instance-head {  }
+._instance-body {  }
+/*==========*/
+._state { float: left; display: inline-block; width: 100%; }
+._state-body-process, ._state-body-date { float: none; display: block; width: 100%; }
+}
+/*========= ========= ========= ========= ========= ========= ========= ========= ========= =========*/
+@media only screen and ( min-width: 1025px ) and ( max-width: 1408px ) {
+.panel { width: 1248px; margin: 0 auto; }
+/*==========*/
+._header-one { float: left; display: inline-block; }
+._header-one li { display: inline-block; vertical-align: top; text-align: left; }
+._header-one li img { max-height: 80px; margin: 0 24px 0 8px; }
+._header-one li h1 { margin: 0; padding: 18px 0 4px 0; border: 0; font-size: 180%; }
+/*==========*/
+._programs { width: 100%; }
+._components {  }
+._sections {  }
+/*==========*/
+._processes { padding: 16px 8px 16px 8px; }
+._process { float: left; display: inline-block; width: 14%; }
+._process ._process-head, ._process ._process-foot { padding: 0 8px; }
+._process ._process-head { height: 36px; }
+._process ._process-body { padding: 8px 8px; }
+._process ._process-head i { display: none; } 
+._process ._process-foot i { display: block; }
+/*==========*/
+._instances {  }
+._instance {  }
+._instance-head {  }
+._instance-body {  }
+/*==========*/
+._state { float: left; display: inline-block; width: 50%; }
+._state-body-process, ._state-body-date { float: none; display: block; width: 100%; }
+}
+/*========= ========= ========= ========= ========= ========= ========= ========= ========= =========*/
+@media only screen and ( min-width: 1409px ) {
+.panel { width: 1376px; margin: 0 auto; }
+/*==========*/
+._header-one { float: left; display: inline-block; }
+._header-one li { display: inline-block; vertical-align: top; text-align: left; }
+._header-one li img { max-height: 80px; margin: 0 24px 0 8px; }
+._header-one li h1 { margin: 0; padding: 18px 0 4px 0; border: 0; font-size: 180%; }
+/*==========*/
+._programs { width: 100%; }
+._components {  }
+._sections {  }
+/*==========*/
+._processes { padding: 16px 8px 16px 8px; }
+._process { float: left; display: inline-block; width: 14%; }
+._process ._process-head, ._process ._process-foot { padding: 0 8px; }
+._process ._process-head { height: 36px; }
+._process ._process-body { padding: 8px 8px; }
+._process ._process-head i { display: none; } 
+._process ._process-foot i { display: block; } 
+/*==========*/
+._instances {  }
+._instance {  }
+._instance-head {  }
+._instance-body {  }
+/*==========*/
+._state { float: left; display: inline-block; width: 50%; }
+._state-body-process, ._state-body-date { float: none; display: block; width: 100%; }
+}
+
+
+/*------- seguimiento solicitudes v1_0----------*/
+.label-action{
+	color: #1B693F;
+	cursor: pointer;
+}
+.label-action:hover{
+	color: green;
+}
+
+/*
+._programs { -webkit-column-count: 1; -moz-column-count: 1; column-count: 1; }
+._body-processes { -webkit-column-count: 7; -moz-column-count: 7; column-count: 7;  }
+._body-processes ._process ._process-head p { height: 32px; }
+.processes { -webkit-column-count: 7; -moz-column-count: 7; column-count: 7; }
+.processes .process .process-head p { height: 32px; }
+.processes .process .process-head i { display: none; } 
+.states { -webkit-column-count: 1; -moz-column-count: 1; column-count: 1; }
+.states .state .state-body .body-process,
+.states .state .state-body .body-dates { float: none; display: block; width: 100%; border-bottom: 1px solid #CCCCCC; }
+.states .state .state-body .body-dates .date-start,
+.states .state .state-body .body-dates .date-end { text-align: left; }
+*/

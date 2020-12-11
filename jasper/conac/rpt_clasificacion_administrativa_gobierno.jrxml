@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_clasificacion_administrativa_gobierno" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="75e2adaf-14ac-47a2-8fde-4a6f328cfdf1">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="75" splitType="Stretch">
+			<textField>
+				<reportElement uuid="188e4c1f-7674-42dd-957d-caf3ab9832d3" x="24" y="12" width="552" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$P{entepublico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="4afd7b82-49de-4223-8dfc-c05eae73d599" x="24" y="26" width="552" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Estado Analítico del Ejercicio del Presupuesto de Egresos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fb61bda9-90aa-4151-afcd-038cb6e34392" x="24" y="41" width="552" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Clasificación Administrativa]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="4b9c75b3-e2fb-458b-a341-281736abaf3b" x="24" y="55" width="552" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["DESDE " + $P{fechainicial} + " HASTA "+ $P{fechafinal}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="1337c91f-f88e-4ce5-8459-db7931e979b8" x="-11" y="10" width="140" height="57"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="42" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="2da695b0-96d0-477d-99bb-15636aae0cde" x="-11" y="2" width="593" height="40" forecolor="#003300" backcolor="#1B693F"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="1cb4cefb-63fd-408b-a96f-21dad8fe9464" x="101" y="26" width="85" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aprobado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4d6f8d4b-91db-471d-858b-50bbac8c7c32" x="191" y="20" width="80" height="22" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Ampliaciones / (Reducciones)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a7c7f925-37fc-4cfa-902a-9a80b5c0252e" x="273" y="26" width="88" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Modificado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ad92e80c-05ac-48c0-aaa5-ed2849d4205d" x="362" y="26" width="64" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Devengado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c5423086-f8f9-4b19-993f-f9fdc65cdb29" x="428" y="26" width="70" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pagado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f7deaa3a-a0bd-4fb6-9027-2012345e7a24" x="514" y="19" width="55" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Subejercicio]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="59f30ac2-7741-4f3f-9ab5-97ec5a73ba0d" stretchType="RelativeToBandHeight" x="498" y="2" width="1" height="40"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="be3a7ea1-55df-485a-a957-24f2de626db2" stretchType="RelativeToBandHeight" x="190" y="17" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="e9646e54-e454-41e9-8bb1-0d1e09ad4fb6" stretchType="RelativeToBandHeight" x="361" y="17" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="642e45bd-d628-4caf-ab2f-78da2a46aa30" stretchType="RelativeToBandHeight" x="427" y="17" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="1a408bb9-2f20-46d3-9531-78c63587450a" stretchType="RelativeToBandHeight" x="272" y="17" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="a16e77eb-2085-49bf-947a-4b65c65af928" stretchType="RelativeToBandHeight" x="100" y="2" width="1" height="40"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement uuid="81b9cabd-1a23-4750-bedc-f1fd903877bd" x="101" y="17" width="399" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="2e6cbf0f-3ed2-4c4c-8fc6-0183aec886a6" x="169" y="4" width="348" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Egresos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7d407540-3d78-44db-8bb2-98b11e4e4e10" x="-10" y="2" width="109" height="38" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Concepto]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_estado_de_actividades" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="429e7bfa-471e-42f3-9f81-ab272a9e7a49">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "../estiloTablaJasper.jrtx"]]></template>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/alfredob/Projects/grp/ap_grp/jasper/conac/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anioreporte" class="java.lang.String">
+		<defaultValueExpression><![CDATA[2017]]></defaultValueExpression>
+	</parameter>
+	<parameter name="entepublico" class="java.lang.String"/>
+	<parameter name="tagref" class="java.lang.String"/>
+	<parameter name="fechainicial" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2017-1-1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafinal" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2018-1-1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="descripcionUE" class="java.lang.String"/>
+	<parameter name="fechaReporteNew" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2018-01-01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechainicialnew" class="java.lang.String"/>
+	<parameter name="fechafinalnew" class="java.lang.String"/>
+	<parameter name="otrosOrigenesInversion1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="otrosOrigenesInversion2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="otrosAplicacionesInversion1" class="java.lang.String">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="otrosAplicacionesInversion2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="totalInicioEjercicio1" class="java.lang.String"/>
+	<parameter name="totalInicioEjercicio2" class="java.lang.String"/>
+	<parameter name="totalCuentas1" class="java.lang.String"/>
+	<parameter name="totalCuentas2" class="java.lang.String"/>
+	<parameter name="usuario" class="java.lang.String">
+		<defaultValueExpression><![CDATA[desarrollo]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ue" class="java.lang.String"/>
+	<parameter name="imagenEstado" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT *
+FROM
+  ( select n.*, d.descripcion, d.clasificacionid
+    from  (select c.clasificacionid grupo1id,
+          c.descripcion grupo1desc, b.clasificacionid as grupo2id, b.descripcion as grupo2desc,
+          c.reporte
+        from tb_cat_guia_cumplimiento c
+        left outer join tb_cat_guia_cumplimiento b on b.padreid = c.clasificacionid and c.reporte = b.reporte
+
+        where c.padreid is null and (c.reporte =  'Flujo de efectivo' or b.reporte = 'Flujo de efectivo') and c.descripcion not like 'Flujos Netos%' and b.clasificacionid is not null) n
+        left outer join tb_cat_guia_cumplimiento d on d.padreid = n.grupo2id and d.reporte = n.reporte) gg
+        left outer join (SELECT cuentas.accountcode, cuentas.accountname AS cuenta_mayor,
+                    gltrans.Periodo1  as 'PERIODO1',
+                    gltrans.Periodo2  as 'PERIODO2',
+                    case when SUBSTRING_INDEX(cuentas.accountcode, '.', '1') = '1' then gltrans.Periodo1Abono else 0 end  as 'PERIODO1ABONO',
+                    case when SUBSTRING_INDEX(cuentas.accountcode, '.', '1') = '1' then gltrans.Periodo2Abono else 0 end  as 'PERIODO2ABONO',
+                    case when SUBSTRING_INDEX(cuentas.accountcode, '.', '1') = '1' then gltrans.Periodo1Cargos else 0 end as 'PERIODO1CARGO',
+                    case when SUBSTRING_INDEX(cuentas.accountcode, '.', '1') = '1' then gltrans.Periodo2Cargos else 0 end as 'PERIODO2CARGO'
+                 FROM config_reportes_
+                 INNER JOIN chartmaster ON config_reportes_.valor= chartmaster.accountcode
+                  -- LEFT JOIN gltrans ON config_reportes_.valor= gltrans.account and gltrans.tag = config_reportes_.tagref
+                 LEFT JOIN (SELECT SUBSTRING_INDEX(account, '.', "3") as account,
+                          IFNULL(SUM(case when trandate between $P{fechainicialnew} and $P{fechafinalnew}   then gltrans.amount else 0 end), 0)  as Periodo1,
+                          IFNULL(SUM(case when trandate between date_add($P{fechainicialnew}, INTERVAL -1 year) and date_add($P{fechafinalnew}, INTERVAL -1 year) then gltrans.amount else 0 end), 0)  as Periodo2,
+
+IFNULL(SUM(case when trandate between $P{fechainicialnew} and $P{fechafinalnew}  and gltrans.amount<0 and gltrans.type !=0 then gltrans.amount else 0 end), 0)  as Periodo1Abono,
+                          IFNULL(SUM(case when trandate between date_add($P{fechainicialnew}, INTERVAL -1 year) and date_add($P{fechafinalnew}, INTERVAL -1 year) and gltrans.amount<0 and gltrans.type !=0 then gltrans.amount else 0 end), 0)  as Periodo2Abono,
+
+                          IFNULL(SUM(case when trandate between $P{fechainicialnew} and $P{fechafinalnew}  and gltrans.amount >=0 and gltrans.type !=0 then gltrans.amount else 0 end), 0)  as Periodo1Cargos,
+                          IFNULL(SUM(case when trandate between date_add($P{fechainicialnew}, INTERVAL -1 year) and date_add($P{fechafinalnew}, INTERVAL -1 year) and gltrans.amount>=0 and gltrans.type !=0 then gltrans.amount else 0 end), 0)  as Periodo2Cargos
+                      FROM  gltrans
+                      INNER JOIN sec_unegsxuser ON gltrans.tag = sec_unegsxuser.tagref AND sec_unegsxuser.userid = $P{usuario}
+                      INNER JOIN (SELECT SUBSTRING_INDEX(config_reportes_.valor, '.', 3)  AS valor
+                                FROM config_reportes_
+                                WHERE reporte ='FlujoEfectivo'
+                                GROUP BY SUBSTRING_INDEX(config_reportes_.valor, '.', 3)
+                                ) configReport ON SUBSTRING_INDEX(account, '.', "3") = configReport.valor
+                      WHERE gltrans.account != ''
+                            AND CASE WHEN $P{tagref} = '' THEN 1 = 1 ELSE gltrans.tag IN ('$P!{tagref}') END
+                            AND CASE WHEN $P{ue} = '' THEN 1 = 1 ELSE gltrans.ln_ue IN ('$P!{ue}') END
+                            AND gltrans.account != ''
+                              AND gltrans.posted = 1
+                          AND gltrans.periodno not LIKE '%.5'
+                          GROUP BY SUBSTRING_INDEX(account, '.', "3")
+                      ) gltrans ON SUBSTRING_INDEX(config_reportes_.valor, '.', 3) = gltrans.account
+                 LEFT JOIN chartmaster cuentas ON substr(config_reportes_.valor, 1, 5)= cuentas.accountcode
+                 WHERE config_reportes_.reporte = 'FlujoEfectivo' and CASE WHEN $P{tagref} = '' THEN 1 = 1 ELSE config_reportes_.tagref IN ('$P!{tagref}') END
+                 GROUP BY substr(config_reportes_.valor, 1, 5), cuentas.accountcode, cuentas.accountname) b on b.cuenta_mayor = gg.descripcion
+ORDER BY 1, 3, 7;]]>
+	</queryString>
+	<field name="cuenta_mayor" class="java.lang.String"/>
+	<field name="Periodo1" class="java.lang.Double"/>
+	<field name="Periodo2" class="java.lang.Double"/>
+	<field name="grupo1id" class="java.lang.Integer"/>
+	<field name="grupo1desc" class="java.lang.String"/>
+	<field name="grupo2id" class="java.lang.Integer"/>
+	<field name="grupo2desc" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="PERIODO1ABONO" class="java.lang.Double"/>
+	<field name="PERIODO2ABONO" class="java.lang.Double"/>
+	<field name="PERIODO1CARGO" class="java.lang.Double"/>
+	<field name="PERIODO2CARGO" class="java.lang.Double"/>
+	<variable name="variableSecciones" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="sumaGrupo1Period1" class="java.lang.Double" resetType="Group" resetGroup="grupo1" calculation="Sum">
+		<variableExpression><![CDATA[$F{Periodo1}]]></variableExpression>
+	</variable>
+	<variable name="sumaGrupo2Periodo1" class="java.lang.Double" resetType="Group" resetGroup="grupo2" calculation="Sum">
+		<variableExpression><![CDATA[$F{Periodo1}]]></variableExpression>
+	</variable>
+	<variable name="sumaGrupo1Period2" class="java.lang.Double" resetType="Group" resetGroup="grupo1" calculation="Sum">
+		<variableExpression><![CDATA[$F{Periodo2}]]></variableExpression>
+	</variable>
+	<variable name="SumaGrupo1Abono" class="java.lang.Double" resetType="Group" resetGroup="grupo1" calculation="Sum">
+		<variableExpression><![CDATA[$F{PERIODO1ABONO}]]></variableExpression>
+	</variable>
+	<variable name="sumaGrupo2Abonos" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{PERIODO1ABONO}]]></variableExpression>
+	</variable>
+	<variable name="sumaGrupo2Cargos" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{PERIODO1CARGO}]]></variableExpression>
+	</variable>
+	<variable name="sumaGrupo2Abonos2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{PERIODO2ABONO}]]></variableExpression>
+	</variable>
+	<variable name="sumaGrupo2Cargos2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{PERIODO2CARGO}]]></variableExpression>
+	</variable>
+	<group name="grupo1">
+		<groupExpression><![CDATA[$F{grupo1desc}]]></groupExpression>
+		<groupHeader>
+			<band height="15">
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="6320cc64-5e12-4418-95b3-7e166c4018f4" mode="Opaque" x="0" y="0" width="572" height="15" forecolor="#000000" backcolor="#F6F2F2"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $F{grupo1desc}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="15">
+				<textField>
+					<reportElement uuid="335779f5-b4b6-4a36-a868-e1cc0e250450" x="0" y="0" width="371" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Netos de " + $F{grupo1desc}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="a18bc013-2a3c-4e31-b0fe-f53e9a109b97" x="371" y="0" width="100" height="15">
+						<printWhenExpression><![CDATA[$F{grupo1id} != 31 ? true : false]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumaGrupo1Period1} == null ? "0.00" : ($V{sumaGrupo1Period1} * -1)]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="ebf5dd99-56df-4128-8bdb-afe5266c5aaf" x="472" y="0" width="100" height="15">
+						<printWhenExpression><![CDATA[$F{grupo1id} != 31 ? true : false]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumaGrupo1Period2} == null ? "0.00" : ($V{sumaGrupo1Period2} * -1)]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="bae5f673-1db4-4464-99bc-cc7961a74d84" x="371" y="0" width="100" height="15">
+						<printWhenExpression><![CDATA[$F{grupo1id} == 31 ? true : false]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(($V{sumaGrupo2Abonos}+ Double.valueOf($P{otrosOrigenesInversion1})) + ($V{sumaGrupo2Cargos} + Double.valueOf($P{otrosAplicacionesInversion1}))) * -1]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="804bd3e9-e6dc-4e15-a189-b45a948c6ce5" x="472" y="0" width="100" height="15">
+						<printWhenExpression><![CDATA[$F{grupo1id} == 31 ? true : false]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(($V{sumaGrupo2Abonos2} + Double.valueOf($P{otrosOrigenesInversion2})) + ($V{sumaGrupo2Cargos2} + Double.valueOf($P{otrosAplicacionesInversion2}))) * -1]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="grupo2">
+		<groupExpression><![CDATA[$F{grupo2desc}]]></groupExpression>
+		<groupHeader>
+			<band height="15">
+				<printWhenExpression><![CDATA[!$F{grupo2desc}.isEmpty()]]></printWhenExpression>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="4f6f37b2-295a-4364-84f1-918982dc086a" mode="Opaque" x="6" y="0" width="566" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{grupo2desc}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="2"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="100" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="faa03ba2-f07b-49c5-8840-db89a901197e" x="106" y="47" width="359" height="23"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Flujo de Efectivo]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="b145ad77-414a-4880-9204-032621056e74" x="105" y="22" width="360" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{entepublico}]]></textFieldExpression>
+			</textField>
+			<image isUsingCache="false">
+				<reportElement uuid="1047c014-ffea-41c8-bc68-8a8e5fbb5c89" x="0" y="0" width="96" height="52"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="2c7c307d-ad00-4cc1-8579-b4480627c053" x="106" y="70" width="359" height="15"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{descripcionUE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="18cb7820-217d-4d86-8a4e-2d5a64b076fb" x="105" y="85" width="360" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{fechaReporteNew}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="9a73fe08-4c25-4f94-b0db-386a05c6e5df" x="105" y="0" width="360" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MUNICIPIO DE TAMPICO, TAMAULIPAS]]></text>
+			</staticText>
+			<image isUsingCache="false">
+				<reportElement uuid="e458b814-c75a-468d-8c24-c70464ddcd4e" x="465" y="0" width="106" height="52"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="21">
+			<textField>
+				<reportElement uuid="3d84e2ca-21b5-4307-97d7-0040d201c304" style="th" x="0" y="0" width="371" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Descripción"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4b7e972e-0b7e-4f32-b0ec-6b95f1baeacc" style="th" x="371" y="0" width="100" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{anioreporte}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c8951f2d-a421-43d1-bcc5-720ab18f6628" style="th" x="471" y="0" width="101" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Integer.valueOf($P{anioreporte}) - 1]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$F{descripcion}.isEmpty()]]></printWhenExpression>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="b2b7b43d-0d73-4547-8b79-b486c16525bf" x="371" y="0" width="100" height="13">
+					<printWhenExpression><![CDATA[$F{grupo1id} != 31 ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Periodo1}==null ? 0 : Math.abs($F{Periodo1})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="c265bc83-894a-4dbf-ac7c-dfa1ce72a6b3" x="472" y="0" width="100" height="13">
+					<printWhenExpression><![CDATA[$F{grupo1id} != 31 ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Periodo2}==null?0: Math.abs($F{Periodo2})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="ceb8da61-af9a-436b-adf0-af2e39406ba8" x="10" y="0" width="361" height="13"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="2ecaeb91-f08c-45d0-93ed-77ecef1bb6fb" x="371" y="0" width="100" height="13">
+					<printWhenExpression><![CDATA[$F{grupo1id} == 31 && $F{grupo2id} == 32 && $F{cuenta_mayor} != null ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO1ABONO}==null?0: Math.abs($F{PERIODO1ABONO})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="f5fffb78-8076-4ac4-80d1-85a608d8e1c7" x="472" y="0" width="100" height="13">
+					<printWhenExpression><![CDATA[$F{grupo1id} == 31 && $F{grupo2id} == 32 && $F{cuenta_mayor} != null ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO2ABONO}==null?0:Math.abs($F{PERIODO2ABONO})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="4e35e531-fc5b-46a2-90e4-e8610673be94" x="371" y="0" width="100" height="13">
+					<printWhenExpression><![CDATA[$F{grupo1id} == 31 && $F{grupo2id} == 36 && $F{cuenta_mayor} != null ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO1CARGO}==null?0:$F{PERIODO1CARGO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="52c524b6-482d-49f9-aca0-8ca664729533" x="472" y="0" width="100" height="13">
+					<printWhenExpression><![CDATA[$F{grupo1id} == 31 && $F{grupo2id} == 36 && $F{cuenta_mayor} != null ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO2CARGO}==null?0:$F{PERIODO2CARGO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="c12ea5de-83f5-43dd-b3f8-e10591289025" x="371" y="0" width="100" height="13">
+					<printWhenExpression><![CDATA[$F{grupo1id} == 31 && $F{grupo2id} == 32 && $F{cuenta_mayor} == null ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.abs(Double.valueOf($P{otrosOrigenesInversion1}))]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="018da5c8-e114-4748-b6c5-c637589536ef" x="371" y="0" width="100" height="13">
+					<printWhenExpression><![CDATA[$F{grupo1id} == 31 && $F{grupo2id} == 36 && $F{cuenta_mayor} == null ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Double.valueOf($P{otrosAplicacionesInversion1})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="2402d0b8-2850-4ec0-877e-b49b6a5a5c49" x="472" y="0" width="100" height="13">
+					<printWhenExpression><![CDATA[$F{grupo1id} == 31 && $F{grupo2id} == 32 && $F{cuenta_mayor} == null ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.abs(Double.valueOf($P{otrosOrigenesInversion2}))]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="c761024c-12c3-4433-9737-350b92fbfe63" x="472" y="0" width="100" height="13">
+					<printWhenExpression><![CDATA[$F{grupo1id} == 31 && $F{grupo2id} == 36 && $F{cuenta_mayor} == null ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Double.valueOf($P{otrosAplicacionesInversion2})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="8afe9eec-fbce-4cdf-bc56-0aa9f214d8ad" x="0" y="18" width="371" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Efectivo y Equivalentes al Efectivo al Inicio del Ejercicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="82dd6bc0-806f-4745-8f40-c112de1f5b6d" x="0" y="2" width="371" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incremento/Disminución Neta en el Efectivo y Equivalentes al Efectivo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="823af11e-2b1d-4b76-b090-f706256cde4a" x="0" y="33" width="371" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Efectivo y Equivalentes al Efectivo al Final del Ejercicio]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="315cfd52-0a15-4053-a340-a0d69f2e7468" x="371" y="18" width="100" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Double.valueOf($P{totalInicioEjercicio1})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="4a380ce6-0d4d-4d65-93d6-0beceb5d08fd" x="471" y="18" width="100" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Double.valueOf($P{totalInicioEjercicio2})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="a823a7db-eeb0-4a37-86bf-a84c54588a92" x="372" y="2" width="99" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(Double.valueOf($P{totalCuentas1}) * -1)]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="7bb59e51-3e99-473c-9f26-f4912b73548d" x="472" y="2" width="100" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(Double.valueOf($P{totalCuentas2}) * -1)]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="efe5d6dc-1778-498a-842e-5dfcf5047347" x="371" y="33" width="100" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(Double.valueOf($P{totalCuentas1}) * -1) + Double.valueOf($P{totalInicioEjercicio1})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="c60fb7e0-dd66-49c0-b5c8-ee9c5a556abc" x="471" y="33" width="100" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(Double.valueOf($P{totalCuentas2}) * -1) + Double.valueOf($P{totalInicioEjercicio2})]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

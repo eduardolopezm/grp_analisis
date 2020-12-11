@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="detail.v3.nivel.0" language="groovy" pageWidth="572" pageHeight="792" columnWidth="572" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="595bdc8d-2670-4a1d-a00c-e5b1c8937b20">
+	<property name="ireport.zoom" value="4.0"/>
+	<property name="ireport.x" value="440"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Bg" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[($V{REPORT_COUNT}%2) == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#EAEBE9"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="dataset1" uuid="361c0548-bf1e-4d8a-800e-7ce2d11b2501"/>
+	<subDataset name="dataset2" uuid="f54139e3-2a8b-437c-a50e-fcc80b9c880f"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/Alejandro/Documents/Dropbox/Portalito/Desarrollo/Repos/erpdistribucionv2/jasper/facturacion/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="facturacliente" class="java.lang.String">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nombre" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Recibo"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="xPath">
+		<![CDATA[/Comprobante/Conceptos/Concepto]]>
+	</queryString>
+	<field name="IdDocumento" class="java.lang.String">
+		<fieldDescription><![CDATA[@IdDocumento]]></fieldDescription>
+	</field>
+	<field name="Folio" class="java.lang.String">
+		<fieldDescription><![CDATA[@Folio]]></fieldDescription>
+	</field>
+	<field name="MonedaDR" class="java.lang.String">
+		<fieldDescription><![CDATA[@MonedaDR]]></fieldDescription>
+	</field>
+	<field name="TipoCambioDR" class="java.lang.String">
+		<fieldDescription><![CDATA[@TipoCambioDR]]></fieldDescription>
+	</field>
+	<field name="MetodoDePagoDR" class="java.lang.String">
+		<fieldDescription><![CDATA[@MetodoDePagoDR]]></fieldDescription>
+	</field>
+	<field name="NumParcialidad" class="java.lang.String">
+		<fieldDescription><![CDATA[@NumParcialidad]]></fieldDescription>
+	</field>
+	<field name="ImpSaldoAnt" class="java.lang.String">
+		<fieldDescription><![CDATA[@ImpSaldoAnt]]></fieldDescription>
+	</field>
+	<field name="ImpPagado" class="java.lang.String">
+		<fieldDescription><![CDATA[@ImpPagado]]></fieldDescription>
+	</field>
+	<field name="ImpSaldoInsoluto" class="java.lang.String">
+		<fieldDescription><![CDATA[@ImpSaldoInsoluto]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="12" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="fce48085-3c6b-4939-b0da-04ae68ea104d" x="2" y="1" width="111" height="10" forecolor="#062D7C"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Id. Documento"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="8138a0ee-f26f-400a-9247-9223c0d851ec" positionType="Float" x="0" y="11" width="572" height="1" forecolor="#999999"/>
+			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="f70dfa44-7aa7-4f61-aa7c-b6156b1cf416" x="155" y="1" width="35" height="10" forecolor="#062D7C"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Moneda"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="1623b01b-c8f9-434e-b9ad-a902c3a2f2d0" x="190" y="1" width="66" height="10" forecolor="#062D7C"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tipo Cambio"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="ecfc447a-ef68-4188-8a34-79152c495283" x="256" y="1" width="70" height="10" forecolor="#062D7C"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Metodo de Pago"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="7db32103-0a40-4c29-8b61-84e5981ab1fc" x="326" y="1" width="32" height="10" forecolor="#062D7C"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["No. P"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="7a22716e-0e0d-4d1a-94ee-6af4bb550ba5" x="359" y="1" width="72" height="10" forecolor="#062D7C"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Importe Anterior"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="a184d6b7-ec77-4b87-9235-44c7e104cc69" x="430" y="1" width="73" height="10" forecolor="#062D7C"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Importe Pagado"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="092e5e59-55a4-43b3-80b8-66ea83c7ec5e" x="502" y="1" width="70" height="10" forecolor="#062D7C"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Importe Insoluto"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="ae60994a-08c4-4e63-bb7f-b0f9de5d892e" x="113" y="1" width="42" height="10" forecolor="#062D7C"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Folio"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Prevent">
+			<frame>
+				<reportElement uuid="76a5834e-fd46-4c40-96b8-2e5a6b6d7979" style="Bg" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="2" width="572" height="10" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+			</frame>
+			<textField isStretchWithOverflow="true" pattern="#,##0.####" isBlankWhenNull="true">
+				<reportElement uuid="4b33d803-7b5a-441d-86ca-c1aa207f6ff1" x="2" y="1" width="111" height="8"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IdDocumento}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.####" isBlankWhenNull="true">
+				<reportElement uuid="aae984ce-0b5f-4e9d-9222-e85eb12aa5cc" x="155" y="2" width="35" height="8"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MonedaDR}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.####" isBlankWhenNull="true">
+				<reportElement uuid="dd9e262c-7a21-46de-84a9-73906f5b3f3c" x="190" y="2" width="66" height="8"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TipoCambioDR}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.####" isBlankWhenNull="true">
+				<reportElement uuid="336be27b-edd6-4253-93d6-b37fba1598f4" x="256" y="2" width="70" height="8"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MetodoDePagoDR}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.####" isBlankWhenNull="true">
+				<reportElement uuid="2f2e90d8-9e7d-449a-8517-5035532f88c1" x="326" y="2" width="32" height="8"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NumParcialidad}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.####" isBlankWhenNull="true">
+				<reportElement uuid="438cbcb5-b0d0-47fe-a908-2ed138154fce" x="359" y="2" width="72" height="8"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ImpSaldoAnt}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.####" isBlankWhenNull="true">
+				<reportElement uuid="7972d808-abb2-47bd-b4d4-502e4dbd58e5" x="431" y="2" width="72" height="8"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ImpPagado}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.####" isBlankWhenNull="true">
+				<reportElement uuid="efb17b47-58cf-43de-9330-d76c4379eb9d" x="502" y="2" width="70" height="8"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ImpSaldoInsoluto}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.####" isBlankWhenNull="true">
+				<reportElement uuid="69f006fb-83de-47a9-a28e-8873b67d5b3e" x="113" y="2" width="42" height="8"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Folio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_situacion_financiera" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bc12df56-9df5-4c59-9964-f635b74f3224">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/juan/Trabajo/ap_grp/jasper/conac/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cuenta_mayor" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["1.1%"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="titulo_reporte" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["ACTIVO 2"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select 1 as dato]]>
+	</queryString>
+	<field name="dato" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="3" width="551" height="13" uuid="536a249b-4147-43f8-bd67-95edf2be556b"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Nombre del Ente Público de prueba]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="13" width="551" height="13" uuid="da11579a-adae-475e-bde7-a02559ca2cfb"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Estado de Situación Financiera]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="56">
+			<subreport>
+				<reportElement x="0" y="0" width="258" height="52" uuid="7c18d742-5226-41dd-b56a-469e2b8ed611"/>
+				<subreportParameter name="titulo_reporte">
+					<subreportParameterExpression><![CDATA[$P{titulo_reporte}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cuenta_mayor">
+					<subreportParameterExpression><![CDATA[$P{cuenta_mayor}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="$P{SUBREPORT_DIR}">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"rpt_sfactivocirculante.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23"/>
+	</detail>
+</jasperReport>

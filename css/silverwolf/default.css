@@ -1,0 +1,912 @@
+/* ARCHIVO MODIFICADO POR: Desarrollador*/
+/* CAMBIOS:*/
+/* 3-DIC-2009 :desarrollo/ DOCUMENTACION Y CAMBIO DE COLORES */
+/* 6-DIC-2009 :desarrollo/ APLICACION DE NUEVOS COLORES DEL MUNDIAL SUD AFRICA */
+/* FIN DE CAMBIOS*/
+
+body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	background-color: #fff;
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right: 0px;
+	padding: 0px;
+}
+
+img {border:none;}
+
+/* DEFINE EL COLOR DE TODAS LAS LIGAS DEL SISTEMA ANTES DE SER SELECCIONADAS */
+a {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 12px;
+	font-weight: normal;
+	text-decoration: none;
+	color: #0000ff;
+}
+
+/* DEFINE LAS FLECHAS O BULLETS DE TODAS LAS OPCIONES DE FUNCIONES X MENU*/
+li {
+	list-style-image: none; /*url(bullet.jpg);*/
+	list-style-type: none;
+}
+
+/* DEFINE EL COLOR DE TODAS LAS LIGAS CUANDO EL MOUSE PASA SOBRE ELLAS */
+a:hover {
+	color: #d04a36; /*#0000AA;*/
+	/* text-decoration: underline; */
+}
+
+/* DEFINE EL COLOR DEL FONDO DE TODAS LAS TABLAS DEL SISTEMA */
+table {
+  margin: 0 auto;
+}
+
+
+div.centre {
+  margin: 0 auto;
+  text-align:center;
+}
+
+/*table detail items default format */
+td {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 12px;
+	text-align: left;
+}
+
+td.peque {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10px;
+	text-align: left;
+}
+
+td.pequenum {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10px;
+	text-align: right;
+}
+
+td.norm {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: left;
+}
+
+td.normnum {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: right;
+}
+.GroupTableRows {
+	background-color: #a8e2ff;
+}
+
+/******************************************************/
+/* DEFINICIONES PARA EL POP UP DE SELECCION DE FECHAS */
+
+.dpTbl {
+	border: solid navy 4px;
+}
+.dpTD {
+	border: 0;
+	width:20px;
+	background-color: #EEEEEE;	
+	text-align:right;
+	cursor:pointer;	
+}
+.dpDayHighlight {
+	border: 0;
+	width:20px;
+	background-color: yellow;
+	text-align:right;
+	cursor:pointer;	
+}
+.dpTDHover {
+	border: 0;
+	width:20px;
+	background-color: #CCCCCC;
+	text-align:right;
+	cursor:pointer;	
+}
+/******************************************************/
+
+td.number {
+	text-align: right;
+}
+
+td.text {
+	text-align: left;
+}
+
+div.error {
+	background-color:#ffd1a8;
+	color: red;
+	border: 1px solid red;
+}
+
+div.warn {
+	background-color:#ffff9f;
+	color: #ff8000;
+	border: 1px solid maroon;
+}
+
+div.success {
+	background-color:#b9ecb4;
+	color: #000080;
+	border: 1px solid #000080;
+}
+
+div.info {
+	background-color:#c7ccf6;
+	color: navy;
+	border: 1px solid navy;
+}
+
+.EvenTableRows {
+	background-color: #CCCCCC;
+}
+
+.OddTableRows {
+	background-color: #EEEEEE;
+}
+
+th {
+	font-weight: normal;
+	background-color: #cccce5;
+	font-size: 12px;
+	color: #330000;
+	text-align: center;
+}
+
+input {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 12px;
+}
+
+input.number{
+	text-align: right;
+}
+
+select {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 12px;
+}
+
+#topMenu {
+	width: 100%;
+	color: black;
+	background-color: white;
+	border: none;
+}
+
+#trim {
+	background: white;
+}
+
+#page {
+	width: 100%;
+	color: black;
+	font-size: 10px;
+	white-space: nowrap;
+	border: none;
+}
+
+#menuImg {
+	vertical-align: top;
+	text-align: center;
+	margin: 0px;
+	padding: 10px;
+}
+
+#mainMenu {
+	width: 100%;
+	color: black;
+	background-color: white;
+	border: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+.header {
+	background-image: url("");
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	border: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+.login {
+	background-color: white;
+	border: none;
+}
+
+.callout_main {
+	font-family: Verdana, Arial, Helvetica;
+	background-color: white;
+	border: none;
+	width: 1000px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.main_page {
+	background-color: white;
+	border: none;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+ 	font-size: 12px;
+}
+
+/*****************clase legalunit*************************/
+/*******ESTA CLASE SE UTILIZA EN CUSTOMERRECEIPT*********/
+/********************************************************/
+.clslegalunit{
+	background-color:#0066CC;
+	color:white;
+}
+
+/*****************clase anticipo*************************/
+/*******ESTA CLASE SE UTILIZA EN CUSTOMERRECEIPT*********/
+/********************************************************/
+.clsanticipo{
+	background-color:#F8F8F8;
+	color:navy;
+	font-weight:bold;
+}
+/*****************clase clstotales*************************/
+/*******ESTA CLASE SE UTILIZA EN CUSTOMERRECEIPT*********/
+/********************************************************/
+.clstotales{
+	background-color:#f6e00b;
+	color:navy;
+	font-weight:bold;
+}
+/*****************clase clsseparador*************************/
+/*******ESTA CLASE SE UTILIZA EN CUSTOMERRECEIPT*********/
+/********************************************************/
+.clsseparador{
+	height:5px;
+	background-color:#f6e00b;
+}
+
+/*****************clase clstitulostabla*************************/
+/*******ESTA CLASE SE UTILIZA EN CUSTOMERRECEIPTCORTECAJA*********/
+/********************************************************/
+.clstitulostabla{
+	background-color:navy;
+	color:white;
+}
+
+/*****************clase clstotales*************************/
+/*******ESTA CLASE SE UTILIZA EN CUSTOMERRECEIPTCORTECAJA*********/
+/********************************************************/
+.clstotalestabla{
+	background-color:gray;
+	color:white;
+	font-weight:bold;
+}
+
+/*****************clase clstotales*************************/
+/*******ESTA CLASE SE UTILIZA EN CUSTOMERRECEIPTCORTECAJA*********/
+/********************************************************/
+.clstotaltotalestabla{
+	background-color:silver;
+	color:navy;
+	font-weight:bold;
+}
+
+
+/*****************clase clstotales*************************/
+/*******ESTA CLASE SE UTILIZA EN CUSTOMERRECEIPTCORTECAJA*********/
+/********************************************************/
+.facturacontado{
+	background-color:yellow;
+	color:navy;
+	font-weight:bold;
+}
+
+/*****************clase clsbtnimportante*************************/
+/*******ESTA CLASE SE UTILIZA PARA RESALTAR MAS ALGUNOS BOTONES*/
+/*******IMPORTANTES EN EL USO DEL SISTEMA*********************/
+.clsbtnimportante{
+	background-color:#f6e00b;
+	color:navy;
+	font-size:10pt;
+	font-weight:bold;
+	width:180px;
+	height:40px;
+	border-color:gray;
+	border:thick;
+}
+
+.clsbtnimportante2{
+	background-color:#f6e00b;
+	color:navy;
+	font-size:10pt;
+	font-weight:bold;
+	width:180px;
+	height:30px;
+	border-color:gray;
+	border:thick;
+}
+/*****************clase clslbltitulotablas*************************/
+/*******ESTA CLASE SE UTILIZA EN TITULOS DE TABLAS ***********/
+/*******EN ARCHIVO CustomerReceipt Corte Caja*****************/
+
+.clslbltitulotablas{
+	text-align:center;
+	color:navy;
+	font-size:12pt;
+	font-weight:bold;
+}
+
+/*****************clase clsbtnselect*************************/
+/*******ESTA CLASE SE UTILIZA EN LOS BOTONES DE SELECT ***********/
+/*******EJ. EN ARCHIVO CustomerReceipt.php*****************/
+
+.clsbtnselect{
+	font-size:9px;
+	height:25px;
+	width:150px;
+}
+
+
+
+/********************************************************************************/
+/* DEFINE MENU PARTE DE LA IZQUIERDA DEL MENU RAPIDO HASTA EL LOGO DE LA EMPRESA*/
+
+/* DEFINE EL AREA DE TABLA DEL LOGO Y NOMBRE DE LA EMPRESA */
+.quick_menu {
+	background-color: rgb(1,53,105);
+	border: solid 6px;
+	margin: 0px;
+	padding: 0px;
+ 	color: #f6e00b; /* COLOR DEL TEXTO DE LA EMPRESA Y MENU SELECCIONADO */
+	border: none;
+	text-align: right;
+	/* position: relative;
+	top: 3px; */
+}
+
+/*MARCO DEL MENU SUPERIOR CON LINEA DE SEPARACION DE ABAJO DEL MENU*/
+#quick_menu{
+	width: 100%;
+	background-color: rgb(1,53,105); /*rgb(2,48,94); rgb(11,33,56) url(images/menu_bg_grey.png) 0px 0px repeat-x;*/
+	border-bottom: solid 6px rgb(1,53,105); /*#e0bf00;*/
+	border-top: solid rgb(1,53,105);
+}
+
+
+/* DEFINE LOS COLORES DEL TITULO DE LA EMPRESA Y EL MENU SELECCIONADO */
+.quick_menu_left {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 12px;
+	font-weight: bold;
+	border: none;
+	white-space: nowrap;
+	margin: 0px;
+	padding-left: 5px;
+	color: #f6e00b; 
+	background-color: rgb(1,53,105); /* DEFINE EL COLOR DE LA LINEA DEL MARCO DEL LADO IZQUIERDO DEL LOGO DE LA EMPRESA */
+}
+
+.quick_menu_left a{
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 12px;
+	font-weight: normal;
+	text-decoration: underline;
+	color: white;
+}
+.quick_menu_left a:hover{
+	color: white;
+	font-weight: bold;
+}
+/********************************************************************************/
+
+/************************************/
+/* DEFINE MENU RAPIDO DE LA DERECHA */
+.quick_menu_tabs {
+	background-color: rgb(1,53,105);
+	white-space: nowrap;
+	border: none;
+	margin: 0px;
+	padding: 0px;
+	text-align: right;
+}
+
+.quick_menu_tab{
+	background: rgb(52,88,124); /*rgb(52,88,124); */
+	height:29pt;
+	white-space: nowrap;
+	border-left: solid 1px #aaa;
+	border-right: solid 1px #aaa;
+	border:  3px outset rgb(18,60,102);
+	padding-left: 8px;
+	padding-right: 8px;
+	text-align: right;
+}
+
+.quick_menu_tab a{
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+	color: rgb(255,193,14);
+}
+
+.quick_menu_tab a:hover{
+	color: white;
+}
+/************************************/
+
+
+/***********************************************************************/
+/* TODAVIA NO SE QUE DEFINEN...YA SALTARA EL COLORCITO VERDE POR AHI ! */
+.system_menu_tabs {
+	background-color: #00ff00;
+	white-space: nowrap;
+	border: none;
+	margin-left: 6px;
+	margin-right: 6px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding: 0px;
+	text-align: center;
+}
+
+.system_menu_tabs a {
+	font-size: 12px;
+   	color: black;
+}
+
+.system_menu_tabs a:hover {
+	font-size: 10px;
+	color: black;
+}
+/***********************************************************************/
+
+
+
+.main_area {
+	border: none;
+	width: 100%;
+	background-color: green;
+}
+
+
+/******************************************/
+/*     MENU GENERAL DE MODULOS          ! */
+.main_menu {
+	border: none;
+}
+
+.main_menu table {
+	margin-top:0px;
+	border: 0px;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+/******BOTON SIN SELECCIONAR*******/
+.main_menu_unselected {
+	background: rgb(246,197,0); /* url(images/menu_bg.png) 0px -10px repeat-x; */
+	border: 4px groove rgb(153,106,0);
+/*	position: relative; */
+	text-align: center;
+	white-space: nowrap;
+	height: 16pt;
+	width: 150px;
+}
+
+.main_menu_unselected:hover{
+	background: white; /*url(images/menu_bg_dblue.png) 0px -10px repeat-x;*/
+	color: rgb(52,88,124);
+	font-weight: bold;
+}
+
+.main_menu_unselected a{
+	font-size: 11px;
+	color: #000;
+	font-weight: bold;
+}
+
+.main_menu_unselected a:hover{
+	color: rgb(52,88,124);
+	text-decoration: none;
+}
+/******FIN BOTON SIN SELECCIONAR*******/
+
+/******BOTON SELECCIONADO**************/
+.main_menu_selected {
+	background: white; /*url(images/menu_bg_blue.png) 0px -10px repeat-x;*/
+	border: 4px outset rgb(153,106,0);
+	margin-left: 2px;
+	margin-right: 2px;
+/*	position: relative; */ 
+	text-align: center;
+	white-space: nowrap;
+	font-weight: bold;
+	width: 150px;
+}
+
+.main_menu_selected a{
+	font-size: 11px;
+	color: #000;
+	font-weight: bold;
+}
+
+.main_menu_selected a:hover{
+	color: rgb(52,88,124);
+	text-decoration: none;
+}
+
+span.main_menu_nolink {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 12px;
+	font-weight: bold;
+	color: #00ff40;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+/*     FIN MENU GENERAL DE MODULOS      ! */
+/******************************************/
+
+
+.menu_group_img {
+	background-color: #00ff80;
+	text-align: center;
+	width: 190px;
+	position: relative;
+	left: 3px;
+	border: dashed;
+}
+
+.menu_group_img img{
+	position: relative;
+	top: 210px;
+}
+
+/*******************************************/
+/*     INICIA MENU DE FUNCIONES DETALLADO  */
+
+
+/*???*/
+.menu_group_area {
+	border: dashed;
+}
+
+/*???*/
+.blank_area table {
+	border: dashed;
+	width: 100%;
+}
+
+/*TABLA QUE DEFINE EL CONTORNO DEL MENU DETALLADO*/
+.menu_group_headers {
+	border: none; /*4px outset #d69785;*/
+	background-color: rgb(0,113,171);	
+}
+
+/*TABLA QUE DEFINE EL CONTORNO DEL MENU DETALLADO DENTRO DE GROUP HEADERS*/
+.table_index{
+	background-color: rgb(0,113,171); /*url(images/menu_bg_white.png) 0px -3px repeat-x;*/
+	border: none;
+}
+
+/* TABLA ALREADEDOR DE LOS BOTONES DE UNA COLUMNA DE CATEGORIA */
+.submenu_group_headers{
+	background-color: rgb(0,113,171);
+	border: none;
+}
+
+/* TABLA DEL TITULO DE CATEGORIA*/
+.menu_group_headers_cat_table {
+  border: none;
+  background-color: rgb(0,113,171);
+  padding: 0px;
+}
+
+/* TD DEL TITULO DE CATEGORIA*/
+.menu_group_headers_cat {
+  border: 2px outset rgb(94,94,94); /*#aaaaaa;*/
+  width: 25%;
+  background-color: rgb(216,218,220);
+  padding: 0px;
+}
+
+.menu_group_headers_text {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 12px;
+	font-weight: bold;
+	color: red;
+}
+
+.menu_group_items {
+	vertical-align: top;
+	border: none;
+	padding: 10px;
+}
+
+.menu_group_item {
+	width: 250px;
+	border: 2px outset rgb(165,132,1); /*rgb(238,133,0);*/
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+/**************************************/
+/* BOTONES DEL MENU DE REPORTES ADHOC */
+.menu_group_item_reports {
+	width: 250px;
+	background-color: rgb(238,133,0);
+	border: 2px outset rgb(165,132,1); /*rgb(238,133,0);*/
+	padding-top: 2px;
+	padding-bottom: 2px;
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10px;
+	font-weight: bold;
+	color: rgb(2,43,85);
+}
+
+/* BOTONES DE OPCIONES DE FUNCIONES */
+.menu_group_item_button{
+	width: 250px;
+	background-color: rgb(251,230,104);
+	border: 3px outset rgb(209,181,19); /* #F4AB76;*/
+	padding-top: 2px;
+	padding-bottom: 2px;
+	text-align: left;
+}
+.button_text{
+	width: 250px;
+	background-color: #ba565e;
+	border: 3px outset #dddddd; /* #F4AB76;*/
+	padding-top: 2px;
+	padding-bottom: 2px;
+	text-align: left;
+}
+.menu_group_item_button:hover{
+	border: 3px outset rgb(238,133,0); /* #F4AB76;*/
+	text-decoration: underline;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	text-align: left;
+}
+.menu_group_item_button a{
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10px;
+	font-weight: bold;
+	color: rgb(2,43,85);
+}
+/*clases para el nuevo diseño de links o referencias */
+.referens{
+	width: 250px;
+	background-color: #515150;
+	border: 0px outset #515150; /* #F4AB76;*/
+	padding-top: 3px;
+	padding-bottom: 3px;
+	text-align: left;
+}
+.referens a{
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10px;
+	font-weight: bold;
+	color: #ffffff;
+}
+
+/* BOTONES DE INDICE DE OPCIONES DE FUNCIONES */
+.menu_group_itemFx_button{
+	width: 30px;
+	background-color: rgb(251,230,104);
+	border: none; /* #F4AB76;*/
+	padding-top: 2px;
+	padding-bottom: 2px;
+	text-align: center;
+}
+.menu_group_itemFx_button:hover{
+	border: 3px outset rgb(238,133,0); /* #F4AB76;*/
+	text-decoration: underline;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	text-align: center;
+}
+.menu_group_itemFx_button a{
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10px;
+	font-weight: bold;
+	color: rgb(2,43,85);
+}
+/**************************************/
+
+
+span.menu_group_nolink {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 12px;
+	font-weight: normal;
+	color: #777777;
+	text-decoration: none;
+}
+
+.menu_group_item a {
+}
+
+.menu_group_items a:hover {
+	color: #0000aa;
+	background:url(images/inputh.png) 0px -2px repeat-x;
+	text-decoration: none;
+}
+
+
+/*   FIN DE MENU DE FUNCIONES DETALLADO    */
+/*******************************************/
+
+
+#footer {
+	border-top: ridge 10px rgb(0,113,171);
+	border-bottom: solid 1px #aaa;
+	background: rgb(1,53,105); /*#ccc url(images/menu_bg_grey.png) 0px 0px repeat-x;*/
+	position: relative;
+	float: left;
+	bottom: 0px;
+	width:1000px;
+	color: rgb(255,193,14);
+	text-align: right;
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 8px;
+	font-weight: bold;
+}
+
+.footer {
+	font-family: Verdana, Arial, Helvetica;
+	color: rgb(200,200,200);
+	background-color: #fff5ec;
+	position: relative;
+	float: left;
+	font-weight: normal;
+	font-size: 10px;
+	text-align: right;
+}
+
+.footer img{
+	filter: alpha(opacity=55);
+	opacity:.55;
+	text-align: right;
+}
+
+.legal {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #333333;
+}
+
+.box1 {
+	border-color: #CCCCCC #333333 #333333 #CCCCCC;
+	border-width: medium;
+	border-style: ridge;
+}
+
+.promo {
+	font-family: "Times New Roman", Times, serif;
+	color: #000033;
+}
+
+.titlebar {
+	font-family: "Times New Roman", Times, serif;
+	font-size: 9px;
+	color: white;
+  	background-color: #336699;
+}
+
+.dingbat {
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #99CC99;
+	color: #006666;
+	font-weight: bolder;
+	font-size: medium;
+}
+
+
+input.big {
+	width: 100px;
+}
+
+input.small {
+	width: 50px;
+}
+
+input.inputerror {
+	background-color: #fddbdb;
+}
+
+textarea.texterror {
+	background-color: #fddbdb;
+}
+
+select.selecterror {
+	background-color: #fddbdb;
+}
+
+.tableheader {
+	font-weight: normal;
+	background-color: #cccce5;
+	color: #330000;
+}
+
+.notavailable {
+	font-weight:lighter;
+	font-style:italic;
+	color:#555555;
+}
+.label {
+	font-weight:bold;
+	font-style:normal;
+	font-size:12px;
+	color:black;
+	background-color:#cccccc;
+}
+
+.OsRow {
+	background-color: #234567;
+	color: white;
+}
+
+.page_title_text {
+        font-family: Verdana, Arial, Helvetica;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        font-weight: bold;
+        font-size: 12px;
+        color: black;
+        TEXT-ALIGN:center;
+}
+
+DIV.page_help_text {
+        BORDER: #f54a4a 1px solid;
+        PADDING-LEFT: 3px;
+        Z-INDEX: 1;
+        width: 50%;
+        FLOAT: none;
+        VISIBILITY: visible;
+        MARGIN: 0 auto;
+        POSITION: static;
+        background-color: lightgray;
+        font-family: Verdana, Arial, Helvetica;
+        padding-top: 1px;
+        padding-bottom: 1px;
+        font-weight: normal;
+        font-size: 10px;
+        color: black;
+        TEXT-ALIGN:center;
+}
+
+.titulos_principales {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Sans-serif;
+	font-size: 12;
+	font-weight: bold;
+	text-align: center;
+	color: #fefefe;
+	background-color: #2980b9;
+}
+
+.pie_tabla {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Sans-serif;
+	font-size:19px;
+	font-weight: bold;
+	text-align: center;
+	color: #fefefe;
+	background-color: #1183B0;
+}
+.titulos_sec {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Sans-serif;
+	font-size: 13	px;
+	font-weight: bold;
+	text-align: left;
+	color: #020202;
+}

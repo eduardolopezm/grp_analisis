@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptCorteCajaGeneral" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="d531e0dc-a985-4664-906a-da63898bf529">
+	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="fechainicio" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 00:00:00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafin" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 23:59:59"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagenEstado" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/juan/Trabajo/ap_grp_de/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="razonsocial" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["MUNICIPIO DE TAMPICO, TAM."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechalarga" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["02 DE ENERO DEL 2020"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT rubro_ingreso.clave AS rubro, rubro_ingreso.descripcion AS rubrodesc, tipo_ingreso.clave AS tipoingreso, tipo_ingreso.descripcion AS tipodesc,
+IFNULL(SUM(recibos.importe),0) AS importe,
+0 AS recargos,
+SUM(recibos.descuento) AS bonificacion,
+IFNULL(SUM(recibos.neto),0) AS neto
+FROM rubro_ingreso
+LEFT JOIN tipo_ingreso ON rubro_ingreso.clave=tipo_ingreso.id_rubro AND tipo_ingreso.activo=1
+LEFT JOIN clasificador_ingreso ON tipo_ingreso.id_rubro= clasificador_ingreso.id_rubro AND tipo_ingreso.clave= 1
+LEFT JOIN chartdetailsbudgetbytag ON clasificador_ingreso.rtc= chartdetailsbudgetbytag.rtc
+LEFT JOIN tb_cat_objeto_detalle ON chartdetailsbudgetbytag.accountcode= tb_cat_objeto_detalle.clave_presupuestal
+LEFT JOIN (
+SELECT salesorderdetails.stkcode,
+SUM(salesorderdetails.unitprice * salesorderdetails.quantity) AS importe,
+SUM((salesorderdetails.unitprice * salesorderdetails.quantity) * salesorderdetails.discountpercent) AS descuento,
+SUM(salesorderdetails.unitprice * salesorderdetails.quantity) - SUM((salesorderdetails.unitprice * salesorderdetails.quantity) * salesorderdetails.discountpercent) AS neto
+FROM debtortrans
+JOIN custallocns ON custallocns.transid_allocfrom = debtortrans.id
+JOIN debtortrans debtortransFac ON debtortransFac.id = custallocns.transid_allocto
+JOIN salesorders ON salesorders.orderno = debtortransFac.order_
+JOIN salesorderdetails ON salesorderdetails.orderno = salesorders.orderno
+WHERE debtortrans.type = 12
+AND debtortrans.trandate BETWEEN $P{fechainicio} AND $P{fechafin}
+GROUP BY salesorderdetails.stkcode
+) AS recibos ON tb_cat_objeto_detalle.stockid= recibos.stkcode
+WHERE rubro_ingreso.activo=1
+GROUP BY rubro_ingreso.clave, rubro_ingreso.descripcion, tipo_ingreso.clave, tipo_ingreso.descripcion
+ORDER BY rubro, tipoingreso;]]>
+	</queryString>
+	<field name="rubro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rubrodesc" class="java.lang.String">
+		<fieldDescription><![CDATA[nombre]]></fieldDescription>
+	</field>
+	<field name="tipoingreso" class="java.lang.String">
+		<fieldDescription><![CDATA[Folio de la póliza de cierre]]></fieldDescription>
+	</field>
+	<field name="tipodesc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="importe" class="java.lang.Double"/>
+	<field name="recargos" class="java.lang.Double"/>
+	<field name="bonificacion" class="java.lang.Double"/>
+	<field name="neto" class="java.lang.Double"/>
+	<variable name="totalimporte" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{importe}]]></variableExpression>
+	</variable>
+	<variable name="totalrecargos" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{recargos}]]></variableExpression>
+	</variable>
+	<variable name="totalbonificacion" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{bonificacion}]]></variableExpression>
+	</variable>
+	<variable name="totalneto" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{neto}]]></variableExpression>
+	</variable>
+	<group name="RubroIngreso">
+		<groupExpression><![CDATA[$F{rubro}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="ec02f4a5-696d-4758-b1fd-f21fc9fb45b8" x="0" y="0" width="750" height="20"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{rubro}+". "+$F{rubrodesc}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="TipoIngreso">
+		<groupExpression><![CDATA[$F{tipoingreso}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="148" splitType="Stretch">
+			<image>
+				<reportElement uuid="ce0a9881-3642-4d14-8295-e9fe105c5e08" x="0" y="0" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="370bb989-a8fc-42bd-8305-cc5c851b0e32" x="610" y="0" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="4ab2aa5d-a83a-4455-83ce-5fb898daca41" x="236" y="3" width="286" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{razonsocial}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="62d4d5cc-fddd-41b0-b04b-f1a0152d0fbf" x="318" y="17" width="122" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[TESORERIA MUNICIPAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2e121981-f26f-4e72-bedf-cb4ca5adfb0a" x="318" y="32" width="122" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[2018-2021]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ed0816eb-0f40-48fe-924b-fc718ca0b13b" x="251" y="63" width="257" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CONCENTRADO DE INGRESOS DIARIOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2ae73b13-c1cf-4037-a6ac-734c13af54cd" x="1" y="101" width="141" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CORRESPONDIENTE AL DIA:]]></text>
+			</staticText>
+			<frame>
+				<reportElement uuid="c4cc1caa-e28a-49da-929b-e6dabbc8755b" x="1" y="123" width="751" height="25"/>
+				<staticText>
+					<reportElement uuid="14959a91-1785-41a2-b34b-3a12d2f1b806" x="1" y="3" width="305" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[DESCRIPCION]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="ab36cdcc-3a16-489e-bb33-b3ee22b2d530" x="306" y="3" width="144" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[IMPORTE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="8113f931-68e0-4892-8a75-9599476e661a" x="450" y="3" width="92" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[RECARGOS]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="aad9cf8b-1b38-4fc1-b900-f135679af15e" x="542" y="3" width="80" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[BONIFICACIÓN]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="1e3704f7-c1e3-4063-862f-03c6a9c12909" x="622" y="3" width="127" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[NETO]]></text>
+				</staticText>
+			</frame>
+			<textField pattern="EEEEE dd MMMMM yyyy" isBlankWhenNull="true">
+				<reportElement uuid="5a41dd75-959f-447c-8321-ef463e6485ba" x="142" y="101" width="286" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechalarga}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{tipoingreso} != null ? true : false]]></printWhenExpression>
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="6bb0ee7b-51c2-490e-b64f-5eac9261c1b7" x="451" y="0" width="92" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{recargos})]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="b7b18566-251a-4a2a-94f5-aa48c22d34aa" x="543" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{bonificacion})]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="a4a61644-05c6-4aed-bc05-580aeb8588db" x="623" y="0" width="127" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{neto})]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="da4dffd4-aebb-41f8-955f-9ea0da62eae7" x="307" y="0" width="144" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{importe})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="515c2b3c-0bff-40ac-a56e-6ade3c6f90ca" x="0" y="0" width="307" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rubro}+"."+$F{tipoingreso}+" "+$F{tipodesc}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement uuid="762f7b4d-5675-496f-899d-aaeeaf5c78c9" x="300" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}+" / "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="9119e474-9b8c-4b65-b188-b8805162edbd" x="380" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="232" splitType="Immediate">
+			<staticText>
+				<reportElement uuid="3aa5574d-ce86-41e3-9e70-1c81a5650f8b" x="188" y="4" width="137" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[AUTORIZÓ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="dfc474c6-bf89-4059-a1a5-766fff57267e" x="152" y="45" width="222" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[L.C.P.F. ANTONINO ALONSO SABBATINI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="eb03a8cb-88e0-41a8-91b9-985b6ff60298" x="152" y="59" width="222" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[SECRETARIO DE FINANZAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="db9fdc21-43c0-4258-abf7-152fd3670b34" x="413" y="59" width="222" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[DIRECTORA DE INGRESOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b6e6dcf0-a5df-4fa7-9f69-16f6024242d8" x="413" y="45" width="222" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[L.C. MARÍA DEL PILAR MAR CÓRDOVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c61f5c5f-89a1-44d9-a9a8-e3a5a8c37d86" x="457" y="4" width="137" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[REVISÓ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e5308ad7-9cb0-4c02-b5e5-ff31f90abaec" x="152" y="169" width="222" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[ING. JOSÉ LUIS SANCHEZ GARZA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6cd6d57d-4591-4bf8-866b-66d104aec331" x="140" y="154" width="253" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[LIC. FLAVIA MAGDALENA GUTIERREZ MARTINEZ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9fc6e7fb-194f-40fa-bff3-c835563d6b26" x="196" y="113" width="137" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[VO.BO.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c76e1bd2-09e4-4a0c-8757-38013c3449a4" x="152" y="183" width="222" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[COMISION HACIENDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4dec683a-fc22-4fb2-9e87-c2902fb2e512" x="413" y="154" width="222" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[MARIBEL CRUZ MAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f3edb683-02b4-44dc-b50e-d118e7584ed7" x="457" y="113" width="137" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[CAJERO GENERAL]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="1f3229d0-2584-4804-b234-31e10a00ab2c" x="299" y="204" width="81" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}+" / "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="d77bfe29-308f-4f8a-9cc3-5406a7fa1496" x="379" y="204" width="41" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="31" splitType="Immediate">
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="1c9443cf-cb0c-4d98-a244-02a269f89d92" x="307" y="6" width="133" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalimporte}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="$ #,##0.00">
+				<reportElement uuid="9d71025f-be6e-4f82-bf07-1321600e9038" x="623" y="6" width="127" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalneto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="3f9b20b4-bb98-4086-a7b2-de3113aac8ba" x="451" y="6" width="92" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalrecargos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="fe0f17c5-805f-4d7c-9fd2-9f6eb61c4571" x="2" y="6" width="305" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL GENERAL:]]></text>
+			</staticText>
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="28d02c2f-7a95-468c-90fd-82ee828004af" x="543" y="6" width="80" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalbonificacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

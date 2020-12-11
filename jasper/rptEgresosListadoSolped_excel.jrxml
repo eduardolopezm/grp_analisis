@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptEgresosProveedores" language="groovy" pageWidth="1065" pageHeight="612" orientation="Landscape" columnWidth="1025" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="d531e0dc-a985-4664-906a-da63898bf529">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="954"/>
+	<property name="ireport.y" value="32"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "estiloTablaJasper.jrtx"]]></template>
+	<style name="bordesNegros" forecolor="#000000" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="1.0"/>
+			<topPen lineWidth="1.0"/>
+			<leftPen lineWidth="1.0"/>
+			<bottomPen lineWidth="1.0"/>
+			<rightPen lineWidth="1.0"/>
+		</box>
+	</style>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="fechainicio" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 00:00:00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafin" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 23:59:59"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagenEstado" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/juan/Trabajo/ap_grp_de/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaIniText" class="java.lang.String"/>
+	<parameter name="fechaFinText" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+purchorders.requisitionno as solped,
+DATE_FORMAT(purchorders.orddate, '%d-%m-%Y') as fechaSolp,
+0 as noDeNec,
+locations.locationname as solicitante,
+DATE_FORMAT(purchorders.deliverydate, '%d-%m-%Y') as fechaLib,
+tb_botones_status.sn_nombre_secundario as estatusSolped,
+purchorders.realorderno as pedido,
+(purchorderdetails.unitprice * purchorderdetails.quantityord) as montoPedido,
+0 as verFact,
+DATE_FORMAT(grns.deliverydate, '%d-%m-%Y') as fechaRece,
+(purchorderdetails.unitprice * purchorderdetails.quantityord) as montoSolped,
+(supptransdetails.price * supptransdetails.qty) as montoFact,
+purchorderdetails.itemdescription as txtBreve
+FROM supptrans
+JOIN suppliers ON suppliers.supplierid = supptrans.supplierno
+LEFT JOIN tb_cat_entidad_federativa ON tb_cat_entidad_federativa.id_nu_entidad_federativa = suppliers.id_nu_entidad_federativa
+JOIN supptransdetails ON supptransdetails.supptransid = supptrans.id
+JOIN grns ON grns.grnno = supptransdetails.grns
+JOIN purchorderdetails ON purchorderdetails.podetailitem = grns.podetailitem
+JOIN purchorders ON purchorders.orderno = purchorderdetails.orderno
+JOIN locations ON purchorders.intostocklocation = locations.loccode
+JOIN tb_botones_status ON purchorders.status= tb_botones_status.statusname AND (tb_botones_status.sn_funcion_id= '1371' OR (tb_botones_status.sn_funcion_id=2265))
+WHERE supptrans.type = 20 AND purchorders.orddate BETWEEN $P{fechainicio} AND $P{fechafin}
+;]]>
+	</queryString>
+	<field name="solped" class="java.lang.String"/>
+	<field name="fechaSolp" class="java.lang.String"/>
+	<field name="noDeNec" class="java.lang.String"/>
+	<field name="solicitante" class="java.lang.String"/>
+	<field name="fechaLib" class="java.lang.String"/>
+	<field name="estatusSolped" class="java.lang.String"/>
+	<field name="pedido" class="java.lang.String"/>
+	<field name="montoPedido" class="java.lang.Double"/>
+	<field name="verFact" class="java.lang.String"/>
+	<field name="fechaRece" class="java.lang.String"/>
+	<field name="montoSolped" class="java.lang.Double"/>
+	<field name="montoFact" class="java.lang.Double"/>
+	<field name="txtBreve" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="98">
+			<image>
+				<reportElement uuid="0008ca43-f2bb-40e5-8234-b06ce98ef9e5" x="10" y="11" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="1e73b338-cfc0-40bb-b971-08db2ec956cd" x="153" y="11" width="719" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Municipio de Tampico, Tam."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c40e8418-468e-46a8-81c8-fe59b1c32cca" x="152" y="31" width="720" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="687cebad-a90c-4719-af76-20272ee4ed35" x="872" y="11" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="b9b91e6b-8954-4b17-871a-f428f7a38e27" x="152" y="45" width="720" height="22" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Reporte de Listado de Solped. (Requisiciones)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="09aa2816-fc21-46cc-b8d1-8dd67d76e8cc" x="152" y="67" width="720" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DEL "+$P{fechaIniText}+"\nAL "+$P{fechaFinText}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="42" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="aedc9ad6-cde8-4e71-a459-b7f3d3cb1c78" x="216" y="2" width="72" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SOLICITANTE"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="62f14ff9-9b06-42c9-b135-7e49c614c236" x="498" y="2" width="44" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PEDIDO"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="5f0ef922-e582-40fe-926c-35c93b1b11b8" x="124" y="2" width="92" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["NO. DE NEC"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3ea42c4f-f70f-41d3-885a-abd395ea113e" x="288" y="2" width="58" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FECHA LIB."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="579cae32-0fb8-4fe6-b7ec-83f74bf9979e" x="346" y="2" width="151" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ESTATUS SOLPED"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="11638abe-21b1-4f88-8387-563fcff316f9" x="56" y="2" width="68" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FECHA SOLP"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="0e25de18-c23f-48eb-ac67-b3b4eff43acc" x="0" y="2" width="56" height="38" backcolor="#FFFFFF">
+					<property name="net.sf.jasperreports.export.xls.auto.filter" value="Start"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SOLPED"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="19d8b4c1-41f5-472a-8abd-48f82ee834b5" x="543" y="2" width="77" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MONTO PEDIDO"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="5689d5ef-30e4-475c-b999-e09fd560c9b0" x="739" y="2" width="80" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MONTO SOLPED"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="42bcb3de-a1d5-4423-92ba-669f5b2e32cd" x="678" y="2" width="61" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FECHA RECE"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="f16893b1-ce63-4f00-8005-3a685810a60f" x="619" y="2" width="59" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["VERIF. FAC"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="23f147f1-0b41-47cc-8825-c06226048cd7" x="819" y="2" width="80" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MONTO FACT"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="c12b3039-8e94-4574-938b-f3861488592d" x="899" y="2" width="126" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TEXTO BREVE"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="f823f121-99cf-4cdb-ab39-a616431b70c6" x="0" y="2" width="56" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solped}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="e92898da-8b7c-4fff-bab1-25ce9557348c" x="216" y="2" width="71" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solicitante}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="81ca946c-5aa9-4904-9c6d-a025a27f2156" x="56" y="2" width="68" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaSolp}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="3486f1fa-4b05-4c4f-bf53-db25a9899235" x="288" y="2" width="58" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaLib}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="b6b0368f-a93f-49de-bf0d-bd3cd2ba4abf" x="346" y="2" width="151" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estatusSolped}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="2b7f7d06-8191-406d-a0d0-159875c4460d" x="124" y="2" width="92" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{noDeNec}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="6a79cb79-1048-43c8-a5db-3f6d7288b133" x="498" y="2" width="44" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pedido}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="a71e7177-7ac8-4c77-b371-018d25d4a4fe" x="542" y="2" width="77" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{montoPedido}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="f93fe0fe-6493-4896-a0f1-169091b6aa4e" x="620" y="2" width="58" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{verFact}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="011687cd-bfed-4927-908e-2e9236079445" x="679" y="2" width="60" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaRece}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="e119c0af-8e83-4a7c-9fbc-7d67e3afe4be" x="739" y="2" width="80" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{montoSolped}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="2ad6d726-a12f-4471-a8ee-3c6c128323ea" x="819" y="2" width="80" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{montoFact}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement uuid="1ff40798-4277-46e1-8363-e68a85383dca" x="899" y="2" width="126" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{txtBreve}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="16" splitType="Immediate"/>
+	</summary>
+</jasperReport>

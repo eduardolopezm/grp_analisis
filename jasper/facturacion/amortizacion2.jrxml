@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="impuestos_locales" language="groovy" pageWidth="100" pageHeight="40" columnWidth="1" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="481914d3-f324-43fc-9626-41df25699bf7">
+	<property name="ireport.zoom" value="8.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="xPath">
+		<![CDATA[/Comprobante/Conceptos/Concepto]]>
+	</queryString>
+	<field name="TotaldeTraslados" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/ImpuestosLocales/@TotaldeTraslados]]></fieldDescription>
+	</field>
+	<field name="TotaldeRetenciones" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/ImpuestosLocales/@TotaldeRetenciones]]></fieldDescription>
+	</field>
+	<field name="ImpLocRetenido" class="java.lang.String">
+		<fieldDescription><![CDATA[@ImpLocRetenido]]></fieldDescription>
+	</field>
+	<field name="Importe" class="java.lang.String">
+		<fieldDescription><![CDATA[@Importe]]></fieldDescription>
+	</field>
+	<field name="TasadeRetencion" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/ImpuestosLocales/RetencionesLocales/@TasadeRetencion]]></fieldDescription>
+	</field>
+	<field name="ImpLocTrasladado" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/ImpuestosLocales/TrasladosLocales/@ImpLocTrasladado]]></fieldDescription>
+	</field>
+	<field name="Importe2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/ImpuestosLocales/TrasladosLocales/@Importe]]></fieldDescription>
+	</field>
+	<field name="TasadeTraslado" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/ImpuestosLocales/TrasladosLocales/@TasadeTraslado]]></fieldDescription>
+	</field>
+	<field name="TasadeTraslado_1" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/ImpuestosLocales/TrasladosLocales/@TasadeTraslado]]></fieldDescription>
+	</field>
+	<field name="valorUnitario" class="java.lang.String">
+		<fieldDescription><![CDATA[@valorUnitario]]></fieldDescription>
+	</field>
+	<field name="noIdentificacion" class="java.lang.String">
+		<fieldDescription><![CDATA[@noIdentificacion]]></fieldDescription>
+	</field>
+	<title>
+		<band height="23">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="0" y="0" width="100" height="12" forecolor="#062D7C" uuid="2884ec9d-1751-41e4-a08b-c05ff2804a19"/>
+				<textElement textAlignment="Left">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Desc/Amort"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band splitType="Stretch">
+			<textField pattern="$ #,##0.00##">
+				<reportElement x="29" y="-14" width="89" height="12" uuid="58404031-6cb7-4e18-a7dd-096bedc51272"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{noIdentificacion}=="AM" ? Double.parseDouble($F{valorUnitario}) : ""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

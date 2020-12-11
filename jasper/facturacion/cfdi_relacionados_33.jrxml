@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cfdi_relacionados_33" pageWidth="612" pageHeight="792" columnWidth="610" leftMargin="1" rightMargin="1" topMargin="1" bottomMargin="1" uuid="9e6d2dd2-956e-4143-bad8-51bf32452aa6">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="comprobante"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="9"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="xPath">
+		<![CDATA[/Comprobante/CfdiRelacionados/CfdiRelacionado]]>
+	</queryString>
+	<field name="UUID" class="java.lang.String">
+		<fieldDescription><![CDATA[@UUID]]></fieldDescription>
+	</field>
+	<field name="TipoRelacion" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/CfdiRelacionados/@TipoRelacion]]></fieldDescription>
+	</field>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField>
+				<reportElement uuid="15b1293c-147f-430d-a4f5-8b450d491b77" x="11" y="0" width="290" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(Double.parseDouble($F{TipoRelacion})==7.0 ? "Tipo de Relación: 07 CFDI Por aplicación de anticipo":
+    (Double.parseDouble($F{TipoRelacion})==1.0 ? "Tipo de Relación: 01 Nota de crédito de los documentos relacionados":
+        (Double.parseDouble($F{TipoRelacion})==2.0 ? "Tipo de Relación: 02 Nota de débito de los documentos relacionados":
+            (Double.parseDouble($F{TipoRelacion})==3.0 ? "Tipo de Relación: 03 Devolución de mercancía sobre facturas o traslados previos":
+                (Double.parseDouble($F{TipoRelacion})==4.0 ? "Tipo de Relación: 04 Sustitución de los CFDI previos":
+                    (Double.parseDouble($F{TipoRelacion})==5.0 ? "Tipo de Relación: 05 Traslados de mercancias facturados previamente":
+                        (Double.parseDouble($F{TipoRelacion})==6.0 ? "Tipo de Relación: 06 Factura generada por los traslados previos":
+                            (Double.parseDouble($F{TipoRelacion})==8.0 ? "Tipo de Relación: 08 Factura generada por pagos en parcialidades ":""))))))))]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="1db3bb72-2169-40d2-8874-da6a69cacb4e" x="301" y="0" width="299" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CDFI Relacionado: "+ $F{UUID}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

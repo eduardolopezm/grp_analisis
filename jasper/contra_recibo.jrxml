@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="formato_entrega_solicitud" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7be21170-4d58-4d46-be66-992c50d4e69a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "estiloTablaJasper.jrtx"]]></template>
+	<style name="style1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#F2F2F2" fill="Solid"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+suppcontrarecibo.id,
+suppcontrarecibo.transno,
+suppcontrarecibo.tagref,
+CONCAT(tags.tagref, ' - ', tags.tagname) as tagname,
+suppcontrarecibo.legalid,
+legalbusinessunit.legalname,
+DATE_FORMAT(NOW(),'%d/%m/%Y') as fechaActual,
+DATE_FORMAT(suppcontrarecibo.fechafactura,'%d/%m/%Y') as fechafactura,
+suppcontrarecibo.foliofactura,
+ROUND(ABS(suppcontrarecibo.ovamount + suppcontrarecibo.ovgst), 2) as total,
+CONCAT(suppcontrarecibo.supplierid, ' - ', suppliers.suppname) as suppname,
+suppcontrarecibo.userid,
+www_users.realname,
+suppcontrarecibo.comments
+FROM suppcontrarecibo
+INNER JOIN tags ON tags.tagref = suppcontrarecibo.tagref
+INNER JOIN legalbusinessunit ON legalbusinessunit.legalid = suppcontrarecibo.legalid
+INNER JOIN suppliers ON suppliers.supplierid = suppcontrarecibo.supplierid
+INNER JOIN www_users ON www_users.userid = suppcontrarecibo.userid
+WHERE suppcontrarecibo.id = $P{id}]]>
+	</queryString>
+	<field name="foliofactura" class="java.lang.String"/>
+	<field name="total" class="java.lang.Number"/>
+	<field name="comments" class="java.lang.String"/>
+	<field name="tagname" class="java.lang.String"/>
+	<field name="legalname" class="java.lang.String"/>
+	<field name="fechafactura" class="java.lang.String"/>
+	<field name="realname" class="java.lang.String"/>
+	<field name="fechaActual" class="java.lang.String"/>
+	<field name="suppname" class="java.lang.String"/>
+	<variable name="totalGeneral" class="java.lang.Number" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="74" splitType="Stretch">
+			<textField>
+				<reportElement uuid="1015e28f-2059-4c12-8fc9-20941b8762e1" x="143" y="0" width="422" height="34"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{legalname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b42fdad3-3b26-415f-846e-fdffe7989f13" x="143" y="34" width="422" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tagname}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="295705d6-b343-426b-a047-74d25d14262a" x="2" y="2" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="ba38521d-f943-40be-941a-09a0509ccd46" x="624" y="25" width="182" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["PÁGINA "+$V{PAGE_NUMBER}+" DE"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="db393110-dd6e-410f-85e7-44fb7d4e3982" x="693" y="25" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="442d9478-5cf3-4e3d-ae0e-d7943dc8d7ea" x="624" y="45" width="47" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["FOLIO: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="838185f7-3e07-4826-9846-a9a180964a26" x="671" y="45" width="80" height="20"/>
+				<textElement>
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="adbc3ed7-c16a-45a8-8eac-4f13e2838762" x="624" y="2" width="106" height="20"/>
+				<textElement textAlignment="Left">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaActual}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="43" splitType="Stretch">
+			<textField>
+				<reportElement uuid="99aac5a3-7198-446d-b5ca-870a94a130ed" x="192" y="0" width="328" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Contra Recibo"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="102cfe0b-f9e2-4956-9881-c9671c2c6304" x="83" y="21" width="392" height="20"/>
+				<textElement>
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{suppname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9839adfc-0c99-4764-83df-6fe41d1b4474" x="2" y="21" width="81" height="20"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Recibimos de: "]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="b6c39cc4-d132-4cb1-bbde-1701e4aa3180" style="th" x="0" y="0" width="103" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[FOLIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="392401d8-de58-487a-9621-30965fa48f83" style="th" x="103" y="0" width="427" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[DESCRIPCIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="48c7c6ee-fe63-4340-a9ab-aed2ffdfb7ac" style="th" x="640" y="0" width="111" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[IMPORTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ccd9b93e-203e-4b83-9dbd-ed6013456018" style="th" x="530" y="0" width="110" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement uuid="69f8cd83-56ef-4485-a7aa-81a2d1084a95" style="style1" x="103" y="0" width="427" height="27"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{comments}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f4350648-1b1a-49f8-b096-a978a563026e" style="style1" x="530" y="0" width="110" height="27"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fechafactura}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement uuid="b466a557-377d-461a-8da3-adec32f4ab15" style="style1" x="640" y="0" width="111" height="27"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e56b279b-8e17-4d7b-9baa-9b6df007b45a" style="style1" x="2" y="0" width="100" height="27"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{foliofactura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="82" splitType="Stretch">
+			<textField>
+				<reportElement uuid="72aca643-d2a7-4dc7-9e4e-eaa26e7d8e76" x="258" y="5" width="217" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FIRMA O SELLO DE RECIBO"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="503f1876-16f5-459e-ba31-5428d1b7bb29" x="258" y="51" width="217" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{realname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8edf10f0-00fb-4328-9a09-09cf0ea46008" x="258" y="30" width="217" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["___________________________________________________________"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement uuid="daae237a-042a-4ac7-a973-622793e8cb4f" x="228" y="11" width="343" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["PÁGINA "+ $V{PAGE_NUMBER} +" DE " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement uuid="1d97c275-39eb-44ad-966e-a64568bb4360" x="530" y="4" width="110" height="27"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TOTAL:  "]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement uuid="4fddad2a-0aec-4766-a0e7-c99baa11b5ba" style="style1" x="640" y="4" width="111" height="27"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{totalGeneral}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

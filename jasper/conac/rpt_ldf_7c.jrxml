@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_ldf_7" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="45d8d281-fb53-43fd-a44f-534a690d65db">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="entepublico" class="java.lang.String"/>
+	<parameter name="imagen" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[Select 1]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="8aa74e12-b481-420e-8cfc-faa99bbd202e" x="10" y="23" width="550" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Resultado de Ingresos - LDF]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="770a6384-7bb7-4421-ae72-1d8e575cce0b" x="10" y="10" width="550" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{entepublico}]]></textFieldExpression>
+			</textField>
+			<image isUsingCache="false">
+				<reportElement uuid="4c4625ef-0fdd-4feb-abbd-f8d967b2d260" x="0" y="0" width="140" height="57"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="565" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="638db423-13aa-4a50-8f23-13cfba5cf6ac" x="0" y="0" width="570" height="30" forecolor="#003300" backcolor="#1B693F"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="7ce99b7a-7ded-476c-80a5-2a7de7aa2a42" x="41" y="10" width="100" height="20" forecolor="#FFFFFF"/>
+				<textElement/>
+				<text><![CDATA[Concepto]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="ee0792ba-ec35-42ba-940e-87b15890caef" x="0" y="30" width="572" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="7f8deb33-36de-411c-a8bf-a094d50b99c1" x="10" y="31" width="200" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[1. Ingresos de Libre Disposición]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7940cb88-e7f0-4c87-938b-5da285ef0726" x="22" y="51" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[Impuestos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fba994f6-80d7-46c7-9a74-fcca79acf684" x="22" y="71" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[Cuotas y Aportaciones de Seguridad Social]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8a9019bc-2ea9-4ae7-8532-cdb4a8d93041" x="22" y="91" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[Contribuciones de Mejoras]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e22ebeb4-3c08-4c6e-9cd0-066443330b9c" x="22" y="111" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[Derechos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="223d2b1a-787a-4d9f-b593-46dddc89061b" x="22" y="131" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[Productos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c8a20453-3022-4e6d-a9db-98ff05822559" x="22" y="151" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[Aprovechamientos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="596fdbfe-b4d1-4b5c-8ff3-ab360ae10a68" x="22" y="171" width="216" height="20"/>
+				<textElement/>
+				<text><![CDATA[Ingresos por Ventas de Bienes y Servicios]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="240313a7-7945-49cc-915f-2660802cffaf" x="22" y="191" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[Participaciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="52f63d49-81e4-4cba-a4ec-61eb2e99c9ab" x="22" y="211" width="227" height="20"/>
+				<textElement/>
+				<text><![CDATA[Incentivos Derivados de la Colaboración Fiscal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e83b4257-0ab0-4c47-8c68-c49275473895" x="22" y="231" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[Transferencias]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e4075494-6f5b-46b4-abf0-e468b87e3bdf" x="22" y="251" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[Convenios]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="74b0dbd2-3267-4f6b-ac2c-fb9417db0d3f" x="22" y="271" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[Otros Ingresos de Libre Disposición]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="11361e20-be2b-433a-ae71-36ffe90b1006" x="10" y="297" width="239" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[2. Transferencias Federales Etiquetadas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="21073b49-1048-4561-9598-41ddaef98dac" x="22" y="317" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[Aportaciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7f713651-77ad-42b5-b06d-48ffe183458d" x="22" y="337" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[Convenios]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7395a223-a536-4b72-b621-c9f1799a7a48" x="22" y="357" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[Fondos Distintos de Aportaciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4e17a6ca-a44c-42a2-98c6-e0450d60b043" x="22" y="377" width="227" height="32"/>
+				<textElement/>
+				<text><![CDATA[Transferencias, Subsidios y Subvenciones, y Pensiones y Jubilaciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2e22dbb0-0350-48cd-9187-52610355d44d" x="22" y="409" width="216" height="20"/>
+				<textElement/>
+				<text><![CDATA[Otras Transferencias Federales Etiquetadas]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="123198da-f55c-45b0-9150-170b9469a0d6" x="270" y="0" width="1" height="504"/>
+			</line>
+			<staticText>
+				<reportElement uuid="9271cfa6-632d-4a4c-a792-d099fd44e3c3" x="10" y="429" width="239" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[3. Ingresos Derivados de Financiamiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ec30f271-6c67-465a-86b7-0d2f8e054835" x="22" y="449" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[Ingresos Derivados de Financiamiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="43be60a5-edb2-4168-887b-a3401ffcabcc" x="10" y="469" width="200" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[4 Total de resultados de Ingresos]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="bb665ec3-4d8f-4181-8160-4a91a433a8eb" x="570" y="0" width="1" height="504"/>
+			</line>
+			<line>
+				<reportElement uuid="0ed0d132-60e4-42d9-bad2-60d9624ae769" x="320" y="0" width="1" height="504"/>
+			</line>
+			<line>
+				<reportElement uuid="06aba37f-e801-4204-a0a2-259133e47356" x="370" y="0" width="1" height="504"/>
+			</line>
+			<line>
+				<reportElement uuid="285acde2-fd7c-44c2-877e-c6ceb2a196b4" x="420" y="0" width="1" height="504"/>
+			</line>
+			<line>
+				<reportElement uuid="885bca0c-6000-4614-adeb-c34fb14a06b8" x="470" y="0" width="1" height="504"/>
+			</line>
+			<line>
+				<reportElement uuid="2e6d58d8-6ab8-4a74-93d9-9fb27116a6a8" x="520" y="0" width="1" height="504"/>
+			</line>
+			<staticText>
+				<reportElement uuid="f6ead6a2-e072-40ef-9358-827bd821c8e0" x="321" y="10" width="49" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Año 4]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="720096f1-5f58-41b9-a44f-3635201f16ac" x="419" y="10" width="49" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Año 2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="de8088ea-b18a-4f65-ac91-6347bfa41009" x="370" y="11" width="49" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Año 3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="938c89e0-7196-4911-9f69-2bfa443c667c" x="470" y="10" width="49" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Año 1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7631d9ee-7042-441c-88f1-14403ff50f52" x="523" y="1" width="49" height="29" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Año del Ejercicio Vigente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="340a7b22-e040-4441-ab28-469c928b2f7b" x="272" y="10" width="49" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Año 5]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="aff37b3f-0375-4cb1-be6a-3f7eb4e53f1f" x="0" y="504" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="b56505f3-215b-4fb2-9bac-c2bffd8dba18" x="0" y="0" width="1" height="504"/>
+			</line>
+			<line>
+				<reportElement uuid="aa1eadab-3d67-48e9-b894-620dd7d7c454" x="0" y="0" width="572" height="1"/>
+			</line>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

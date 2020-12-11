@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_ldf_01_xls" language="groovy" pageWidth="612" pageHeight="612" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="4075d947-1797-4622-be7c-e50f7eb03f3c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "../estiloTablaJasper.jrtx"]]></template>
+	<parameter name="tagref" class="java.lang.String"/>
+	<parameter name="ue" class="java.lang.String"/>
+	<parameter name="descripcionUE" class="java.lang.String"/>
+	<parameter name="anioreporte" class="java.lang.String"/>
+	<parameter name="fechaIni" class="java.lang.String"/>
+	<parameter name="fechaFin" class="java.lang.String"/>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="imagenEstado" class="java.lang.String"/>
+	<parameter name="parEntePublico" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT `Numeros`.`ROW`, `mainQuery`.*
+
+FROM
+
+(SELECT @ROW := @ROW + 1 AS ROW
+FROM `chartmaster` t
+JOIN (SELECT @ROW := 0) t2
+LIMIT 57) AS `Numeros`
+CROSS JOIN
+(SELECT `cur`.`tagdescription` AS `UR`,
+CONCAT(SUBSTR($P{fechaIni},9,2)," de ",LOWER(`mesini`.`mes`),IF(SUBSTR($P{fechaIni},1,4)<>SUBSTR($P{fechaFin},1,4),CONCAT(" de ",SUBSTR($P{fechaIni},1,4)),"")) AS `fechaIniTexto`,
+CONCAT(SUBSTR($P{fechaFin},9,2)," de ",LOWER(`mesfin`.`mes`)," de ",SUBSTR($P{fechaFin},1,4)) AS `fechaFinTexto`,
+
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='251' AND SUBSTR(`cr`.`parametro`,1,1)=1,`cdbl`.`qty`,0)) AS `Aprobado1`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='253' AND SUBSTR(`cr`.`parametro`,1,1)=1,`cdbl`.`qty`,0))+SUM(IF(`cdbl`.`nu_tipo_movimiento`='254' AND SUBSTR(`cr`.`parametro`,1,1)=1,`cdbl`.`qty`,0)) AS `Modificado1`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='265' AND SUBSTR(`cr`.`parametro`,1,1)=1,`cdbl`.`qty`,0)) AS `Pagado1`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='251' AND SUBSTR(`cr`.`parametro`,1,1)=2,`cdbl`.`qty`,0)) AS `Aprobado2`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='253' AND SUBSTR(`cr`.`parametro`,1,1)=2,`cdbl`.`qty`,0))+SUM(IF(`cdbl`.`nu_tipo_movimiento`='254' AND SUBSTR(`cr`.`parametro`,1,1)=2,`cdbl`.`qty`,0)) AS `Modificado2`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='265' AND SUBSTR(`cr`.`parametro`,1,1)=2,`cdbl`.`qty`,0)) AS `Pagado2`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='251' AND SUBSTR(`cr`.`parametro`,1,1)=3,`cdbl`.`qty`,0)) AS `Aprobado3`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='253' AND SUBSTR(`cr`.`parametro`,1,1)=3,`cdbl`.`qty`,0))+SUM(IF(`cdbl`.`nu_tipo_movimiento`='254' AND SUBSTR(`cr`.`parametro`,1,1)=3,`cdbl`.`qty`,0)) AS `Modificado3`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='265' AND SUBSTR(`cr`.`parametro`,1,1)=3,`cdbl`.`qty`,0)) AS `Pagado3`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='251' AND SUBSTR(`cr`.`parametro`,1,1)=4,`cdbl`.`qty`,0)) AS `Aprobado4`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='253' AND SUBSTR(`cr`.`parametro`,1,1)=4,`cdbl`.`qty`,0))+SUM(IF(`cdbl`.`nu_tipo_movimiento`='254' AND SUBSTR(`cr`.`parametro`,1,1)=4,`cdbl`.`qty`,0)) AS `Modificado4`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='265' AND SUBSTR(`cr`.`parametro`,1,1)=4,`cdbl`.`qty`,0)) AS `Pagado4`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='251' AND SUBSTR(`cr`.`parametro`,1,1)=5,`cdbl`.`qty`,0)) AS `Aprobado5`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='253' AND SUBSTR(`cr`.`parametro`,1,1)=5,`cdbl`.`qty`,0))+SUM(IF(`cdbl`.`nu_tipo_movimiento`='254' AND SUBSTR(`cr`.`parametro`,1,1)=5,`cdbl`.`qty`,0)) AS `Modificado5`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='265' AND SUBSTR(`cr`.`parametro`,1,1)=5,`cdbl`.`qty`,0)) AS `Pagado5`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='251' AND SUBSTR(`cr`.`parametro`,1,1)=6,`cdbl`.`qty`,0)) AS `Aprobado6`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='253' AND SUBSTR(`cr`.`parametro`,1,1)=6,`cdbl`.`qty`,0))+SUM(IF(`cdbl`.`nu_tipo_movimiento`='254' AND SUBSTR(`cr`.`parametro`,1,1)=6,`cdbl`.`qty`,0)) AS `Modificado6`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='265' AND SUBSTR(`cr`.`parametro`,1,1)=6,`cdbl`.`qty`,0)) AS `Pagado6`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='251' AND SUBSTR(`cr`.`parametro`,1,1)=7,`cdbl`.`qty`,0)) AS `Aprobado7`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='253' AND SUBSTR(`cr`.`parametro`,1,1)=7,`cdbl`.`qty`,0))+SUM(IF(`cdbl`.`nu_tipo_movimiento`='254' AND SUBSTR(`cr`.`parametro`,1,1)=7,`cdbl`.`qty`,0)) AS `Modificado7`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='265' AND SUBSTR(`cr`.`parametro`,1,1)=7,`cdbl`.`qty`,0)) AS `Pagado7`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='251' AND SUBSTR(`cr`.`parametro`,1,1)=8,`cdbl`.`qty`,0)) AS `Aprobado8`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='253' AND SUBSTR(`cr`.`parametro`,1,1)=8,`cdbl`.`qty`,0))+SUM(IF(`cdbl`.`nu_tipo_movimiento`='254' AND SUBSTR(`cr`.`parametro`,1,1)=8,`cdbl`.`qty`,0)) AS `Modificado8`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='265' AND SUBSTR(`cr`.`parametro`,1,1)=8,`cdbl`.`qty`,0)) AS `Pagado8`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='251' AND SUBSTR(`cr`.`parametro`,1,1)=9,`cdbl`.`qty`,0)) AS `Aprobado9`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='253' AND SUBSTR(`cr`.`parametro`,1,1)=9,`cdbl`.`qty`,0))+SUM(IF(`cdbl`.`nu_tipo_movimiento`='254' AND SUBSTR(`cr`.`parametro`,1,1)=9,`cdbl`.`qty`,0)) AS `Modificado9`,
+SUM(IF(`cdbl`.`nu_tipo_movimiento`='265' AND SUBSTR(`cr`.`parametro`,1,1)=9,`cdbl`.`qty`,0)) AS `Pagado9`
+
+FROM `tb_cat_partidaspresupuestales_partidaespecifica` AS `pppe`
+INNER JOIN `tb_cat_partidaspresupuestales_capitulo` AS `c` ON `pppe`.`ccap` = `c`.`ccap`
+INNER JOIN `config_reportes_` AS `cr` ON `cr`.`reporte` LIKE 'rpt_ldf_08' AND `cr`.`valor` = `pppe`.`partidacalculada`
+LEFT JOIN `chartdetailsbudgetlog` AS `cdbl` ON `cdbl`.`partida_esp` = `pppe`.`partidacalculada` AND `cdbl`.`sn_disponible` = 1
+INNER JOIN `chartdetailsbudgetbytag` AS `cdbbt` ON `cdbbt`.`accountcode` = `cdbl`.`cvefrom`
+LEFT JOIN `tags` AS `cur` ON `cur`.`tagref` = `cdbl`.`tagref`
+LEFT JOIN `cat_Months` AS `mesini` ON `mesini`.`u_mes` = SUBSTR($P{fechaIni},6,2)
+LEFT JOIN `cat_Months` AS `mesfin` ON `mesfin`.`u_mes` = SUBSTR($P{fechaFin},6,2)
+
+WHERE ('' LIKE $P{tagref} OR `cdbl`.`tagref` IN ('$P!{tagref}'))
+AND ('-1' LIKE $P{ue} OR `cdbl`.`ln_ue` IN ('$P!{ue}'))
+AND `cdbbt`.`anho` = $P{anioreporte}) AS `mainQuery`;]]>
+	</queryString>
+	<field name="ROW" class="java.lang.Number"/>
+	<field name="UR" class="java.lang.String"/>
+	<field name="fechaIniTexto" class="java.lang.String"/>
+	<field name="fechaFinTexto" class="java.lang.String"/>
+	<field name="Aprobado1" class="java.math.BigDecimal"/>
+	<field name="Modificado1" class="java.math.BigDecimal"/>
+	<field name="Pagado1" class="java.math.BigDecimal"/>
+	<field name="Aprobado2" class="java.math.BigDecimal"/>
+	<field name="Modificado2" class="java.math.BigDecimal"/>
+	<field name="Pagado2" class="java.math.BigDecimal"/>
+	<field name="Aprobado3" class="java.math.BigDecimal"/>
+	<field name="Modificado3" class="java.math.BigDecimal"/>
+	<field name="Pagado3" class="java.math.BigDecimal"/>
+	<field name="Aprobado4" class="java.math.BigDecimal"/>
+	<field name="Modificado4" class="java.math.BigDecimal"/>
+	<field name="Pagado4" class="java.math.BigDecimal"/>
+	<field name="Aprobado5" class="java.math.BigDecimal"/>
+	<field name="Modificado5" class="java.math.BigDecimal"/>
+	<field name="Pagado5" class="java.math.BigDecimal"/>
+	<field name="Aprobado6" class="java.math.BigDecimal"/>
+	<field name="Modificado6" class="java.math.BigDecimal"/>
+	<field name="Pagado6" class="java.math.BigDecimal"/>
+	<field name="Aprobado7" class="java.math.BigDecimal"/>
+	<field name="Modificado7" class="java.math.BigDecimal"/>
+	<field name="Pagado7" class="java.math.BigDecimal"/>
+	<field name="Aprobado8" class="java.math.BigDecimal"/>
+	<field name="Modificado8" class="java.math.BigDecimal"/>
+	<field name="Pagado8" class="java.math.BigDecimal"/>
+	<field name="Aprobado9" class="java.math.BigDecimal"/>
+	<field name="Modificado9" class="java.math.BigDecimal"/>
+	<field name="Pagado9" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement uuid="911636ce-0a98-4796-8baf-7d56fcda5fde" x="141" y="38" width="303" height="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{UR}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="afee8b9f-5169-47fe-ab41-de43eb58dc9a" x="141" y="38" width="303" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Egresos de Flujo de Efectivo Fondos y Fideicomisos]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="77c9fe37-8e63-4177-b7fa-c3e97fb0a66a" x="141" y="65" width="303" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["de "+$F{fechaIniTexto}+" al "+$F{fechaFinTexto}+" "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="074dbea2-fe80-462a-aef7-b7b8b7cd524c" x="141" y="85" width="303" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[(cifras en pesos)]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="2e20f230-5bb6-4b67-bdcd-1f83abc94239" x="141" y="105" width="303" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{descripcionUE}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="b1ea1836-10eb-495a-856d-4eacd1db37a0" x="12" y="3" width="129" height="55"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="d1e30ad5-8e48-40f1-8a59-78dcb03d2501" x="444" y="3" width="128" height="57"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="03b746cb-bc5d-4abf-8baa-7ee6a7bcebb8" x="141" y="3" width="303" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MUNICIPIO DE TAMPICO, TAMAULIPAS]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="003528b6-d096-4ea2-839b-bbbcd735d1c5" x="141" y="23" width="303" height="15"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{parEntePublico}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="82802062-ed24-46d8-86c3-fc3373620773" style="th" x="0" y="0" width="272" height="34"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[CONCEPTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3ff3415f-cc2a-4cae-baac-fbabed22a012" style="th" x="272" y="0" width="100" height="34"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[APROBADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4f34b3b9-174f-47f5-a62b-2bbf84f3d125" style="th" x="372" y="0" width="100" height="34"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[MODIFICADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8acf92b9-ad9e-4d91-9237-1b8075691643" style="th" x="472" y="0" width="100" height="34"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[PAGADO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="1fa4739d-cace-424d-be17-e1a680f1fcea" x="272" y="0" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ROW}==5 ? $F{Aprobado1} : $F{ROW}==6 ? $F{Aprobado2} : $F{ROW}==7 ? $F{Aprobado3} : $F{ROW}==8 ? $F{Aprobado4} : $F{ROW}==9 ? $F{Aprobado5} : $F{ROW}==14 ? $F{Aprobado6} : $F{ROW}==16 ? $F{Aprobado7} : $F{ROW}==17 ? $F{Aprobado8} : $F{ROW}==37 ? $F{Aprobado9} : null]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="a23c2478-1c0c-4958-aa53-6698eb48f718" x="372" y="0" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ROW}==5 ? $F{Modificado1} : $F{ROW}==6 ? $F{Modificado2} : $F{ROW}==7 ? $F{Modificado3} : $F{ROW}==8 ? $F{Modificado4} : $F{ROW}==9 ? $F{Modificado5} : $F{ROW}==14 ? $F{Modificado6} : $F{ROW}==16 ? $F{Modificado7} : $F{ROW}==17 ? $F{Modificado8} : $F{ROW}==37 ? $F{Modificado9} : null]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="769707da-b0a8-4a0c-b106-dde1a7011214" x="472" y="0" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ROW}==5 ? $F{Pagado1} : $F{ROW}==6 ? $F{Pagado2} : $F{ROW}==7 ? $F{Pagado3} : $F{ROW}==8 ? $F{Pagado4} : $F{ROW}==9 ? $F{Pagado5} : $F{ROW}==14 ? $F{Pagado6} : $F{ROW}==16 ? $F{Pagado7} : $F{ROW}==17 ? $F{Pagado8} : $F{ROW}==37 ? $F{Pagado9} : null]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3c3d39ba-6eaf-495a-afdf-ce34c9734c03" x="0" y="0" width="272" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ROW}==1 ? "TOTAL DE RECURSOS" : $F{ROW}==2 ? "" : $F{ROW}==3 ? "EGRESOS" : $F{ROW}==4 ? "GASTO CORRIENTE" : $F{ROW}==5 ? "SERVICIOS PERSONALES" : $F{ROW}==6 ? "DE OPERACIÓN" : $F{ROW}==7 ? "SUBSIDIOS" : $F{ROW}==8 ? "OTRAS EROGACIONES" : $F{ROW}==9 ? "EGRESOS DE OPERACIÓN" : $F{ROW}==10 ? "INTERESES PAGADOS" : $F{ROW}==11 ? "COMISIONES PAGADAS" : $F{ROW}==12 ? "OTROS" : $F{ROW}==13 ? "OTROS EGRESOS" : $F{ROW}==14 ? "INVERSIÓN FÍSICA" : $F{ROW}==15 ? "BIENES MUEBLES E INMUEBLES" : $F{ROW}==16 ? "OBRA PÚBLICA" : $F{ROW}==17 ? "SUBSIDIOS" : $F{ROW}==18 ? "COSTO FINANCIERO" : $F{ROW}==19 ? "INTERESES, COMISIONES Y GASTOS DE LA DEUDA" : $F{ROW}==20 ? "INTERNOS" : $F{ROW}==21 ? "EXTERNOS" : $F{ROW}==22 ? "DE TESORERÍA DE LA FEDERACIÓN" : $F{ROW}==23 ? "OTROS" : $F{ROW}==24 ? "EGRESOS POR OPERACIONES AJENAS" : $F{ROW}==25 ? "POR CUENTA DE TERCEROS" : $F{ROW}==26 ? "EROGACIONES RECUPERABLES" : $F{ROW}==27 ? "FINANCIAMIENTOS" : $F{ROW}==28 ? "OTORGAMIENTO DE CRÉDITO" : $F{ROW}==29 ? "DESCUENTOS Y REDESCUENTOS" : $F{ROW}==30 ? "A TRAVÉS DE LA BANCA MÚLTIPLE" : $F{ROW}==31 ? "BANCA COMERCIAL" : $F{ROW}==32 ? "OTROS INTERMEDIARIOS FINANCIEROS" : $F{ROW}==33 ? "A TRAVÉS DE LA BANCA DE DESARROLLO" : $F{ROW}==34 ? "BANCOS DE DESARROLLO" : $F{ROW}==35 ? "FONDOS DE FOMENTO" : $F{ROW}==36 ? "OTRAS ENTIDADES PÚBLICAS FINANCIERAS" : $F{ROW}==37 ? "INVERSIONES FINANCIERAS NETAS" : $F{ROW}==38 ? "AMORTIZACIÓN DEL CRÉDITO" : $F{ROW}==39 ? "EXTERNO" : $F{ROW}==40 ? "A TESORERÍA DE LA FEDERACIÓN" : $F{ROW}==41 ? "A CARGO DE GOBIERNO FEDERAL" : $F{ROW}==42 ? "A CARGO DE BANCOS Y FONDOS DE FOMENTO" : $F{ROW}==43 ? "OTROS" : $F{ROW}==44 ? "A CARGO DE LA ENTIDAD" : $F{ROW}==45 ? "A CARGO DE OTROS" : $F{ROW}==46 ? "INTERNO" : $F{ROW}==47 ? "INTERBANCARIO" : $F{ROW}==48 ? "BANXICO" : $F{ROW}==49 ? "SUJETO A CRÉDITO EXTERNO" : $F{ROW}==50 ? "LÍNEA NORMAL" : $F{ROW}==51 ? "REDESCUENTO CON FONDOS DE FOMENTO" : $F{ROW}==52 ? "OTRAS FUENTES" : $F{ROW}==53 ? "DISPONIBILIDAD FINAL" : $F{ROW}==54 ? "CORRIENTES" : $F{ROW}==55 ? "FINANCIERAS EN EL SECTOR PÚBLICO" : $F{ROW}==56 ? "FINANCIERAS EN OTROS SECTORES" : $F{ROW}==57 ? "EN TESORERÍA DERIVADA DE CRÉDITO EXTERNO" : $F{ROW}==58 ? "" : ""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptestadoanaliticodelactivo_subreport1" language="groovy" pageWidth="570" pageHeight="802" columnWidth="570" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="45fef591-010a-445b-95b5-9421d2d648ab">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="TituloReporte" class="java.lang.String"/>
+	<parameter name="CuentaContable" class="java.lang.String"/>
+	<parameter name="Anio" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[2017]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{SUBREPORT_DIR}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tagref" class="java.lang.String"/>
+	<parameter name="ue" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT cuentas.accountcode, cuentas.accountname AS cuenta_mayor,
+IFNULL(SUM(case when year(trandate) = $P{Anio} then CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END else 0 end), 0)  as 'PERIODO1',
+IFNULL(SUM(case when year(trandate) = $P{Anio} - 1 then CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END else 0 end), 0)  as 'PERIODO2',
+IFNULL(SUM(case when year(trandate) = $P{Anio} - 2 then CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END else 0 end), 0)  as 'PERIODO3'
+FROM config_reportes_
+INNER JOIN chartmaster ON config_reportes_.valor= chartmaster.accountcode
+LEFT JOIN gltrans ON config_reportes_.valor= gltrans.account AND gltrans.tag = config_reportes_.tagref AND gltrans.posted = 1 AND CASE WHEN $P{ue} = '' THEN 1 = 1 ELSE gltrans.ln_ue IN ($P{ue}) END
+LEFT JOIN chartmaster cuentas ON substr(config_reportes_.valor, 1, 5)= cuentas.accountcode
+WHERE config_reportes_.valor LIKE $P{CuentaContable}
+and config_reportes_.tagref = $P{tagref}
+GROUP BY SUBSTRING_INDEX(config_reportes_.valor, '.', 3), cuentas.accountcode, cuentas.accountname
+ORDER BY SUBSTRING_INDEX(config_reportes_.valor, '.', 3)]]>
+	</queryString>
+	<field name="cuenta_mayor" class="java.lang.String"/>
+	<field name="PERIODO1" class="java.lang.Number"/>
+	<field name="PERIODO2" class="java.lang.Number"/>
+	<field name="PERIODO3" class="java.lang.Number"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="38">
+			<textField>
+				<reportElement uuid="8c21b0ef-c703-471a-98cb-0040a2ce826f" x="16" y="14" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{TituloReporte}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement uuid="180d3793-0b21-4a96-8de5-3806c1c7943f" x="16" y="1" width="229" height="13"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta_mayor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="c96e54b0-2a43-4dc0-b14c-453283151b6e" x="245" y="2" width="61" height="13"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="a282bf14-aeba-4104-a28c-133b3e1f2a08" x="306" y="1" width="62" height="13"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="7badd772-2a88-43fd-be06-564cfbb0f67f" x="367" y="2" width="68" height="13"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="2a3f4180-5adb-4499-a52d-b433ef66a742" x="445" y="2" width="57" height="13"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO1}+$F{PERIODO2}-$F{PERIODO3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="1dfa9e22-eb0b-4a77-a048-35064e58307e" x="502" y="2" width="68" height="13"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{PERIODO1}+$F{PERIODO2}-$F{PERIODO3})-$F{PERIODO1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="concepto_proveedores" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8e4891d7-f150-4b52-814f-82f6b3d1c32e">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="xPath">
+		<![CDATA[/Retenciones/Totales/ImpRetenidos]]>
+	</queryString>
+	<field name="Impuesto2" class="java.lang.String">
+		<fieldDescription><![CDATA[@Impuesto]]></fieldDescription>
+	</field>
+	<field name="BaseRet" class="java.lang.String">
+		<fieldDescription><![CDATA[@BaseRet]]></fieldDescription>
+	</field>
+	<field name="TipoPagoRet" class="java.lang.String">
+		<fieldDescription><![CDATA[@TipoPagoRet]]></fieldDescription>
+	</field>
+	<field name="montoRet" class="java.lang.String">
+		<fieldDescription><![CDATA[@montoRet]]></fieldDescription>
+	</field>
+	<field name="montoTotRet" class="java.lang.String">
+		<fieldDescription><![CDATA[/Retenciones/Totales/@montoTotRet]]></fieldDescription>
+	</field>
+	<columnHeader>
+		<band height="25">
+			<rectangle radius="10">
+				<reportElement uuid="2a86edb5-4f48-4750-b4d3-300cfb0e3787" x="0" y="0" width="572" height="24" forecolor="#CCCCCC" backcolor="#05669C"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="da1c12ef-5c53-4e95-8f2e-fab7f03e4146" x="1" y="11" width="571" height="13" forecolor="#05669C" backcolor="#05669C"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="48c96692-8040-4ec8-9a6a-b6611a36dfde" x="572" y="11" width="1" height="13" forecolor="#CCCCCC" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="88de1a55-8ba3-446a-89bc-819a3f4702b6" x="-1" y="11" width="1" height="13" forecolor="#CCCCCC" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="0c16994e-a1ce-49a8-ad2e-af11518c3c88" x="-2" y="11" width="1" height="14" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="3f92fd49-773c-4df2-afcc-141bf460e31e" x="573" y="11" width="3" height="13" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="d293a6c7-db0b-442c-8ee8-6ca11af4f174" x="1" y="0" width="141" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Impuesto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4a328604-3098-46f8-8b88-7f1a06bb1d71" x="433" y="-1" width="138" height="26" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Monto Retenido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="aa6e4cb9-d9e0-4744-889c-a361a394257d" x="289" y="0" width="140" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tipo Pago Retenido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d89b2b2c-d333-4b51-927d-86a7985ee7c5" x="145" y="-1" width="143" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Base del Impuesto]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="091fc18f-97ed-4c55-b134-8037a2da45b4" x="144" y="0" width="1" height="24" forecolor="#CCCCCC"/>
+			</line>
+			<line>
+				<reportElement uuid="7456b9c5-9ae7-423f-8cbf-686f7d6dfc68" x="0" y="24" width="572" height="1" forecolor="#CCCCCC"/>
+			</line>
+			<line>
+				<reportElement uuid="12e4331a-f90d-441a-aee9-8fed7a48d5b8" x="288" y="0" width="1" height="24" forecolor="#CCCCCC"/>
+			</line>
+			<line>
+				<reportElement uuid="a27d4b50-9816-43b7-be00-03b1264beb1b" x="432" y="0" width="1" height="24" forecolor="#CCCCCC"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement uuid="18259c90-e137-4857-9dcf-045eb4ef329b" x="-1" y="-1" width="574" height="16"/>
+				<rectangle>
+					<reportElement uuid="f8f62600-d03c-45ba-9552-9cbbd022ff26" mode="Opaque" x="1" y="0" width="571" height="15" forecolor="#FFFFFF" backcolor="#EEEEEE">
+						<printWhenExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==1)]]></printWhenExpression>
+					</reportElement>
+				</rectangle>
+				<line>
+					<reportElement uuid="a88686f9-991e-4891-b6ff-6d210c6a9ee9" x="145" y="0" width="1" height="15" forecolor="#CCCCCC"/>
+				</line>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="8b2a14fd-10ff-4a4c-84a9-29dbe1c0fad6" x="7" y="1" width="131" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Impuesto2}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="11794bdd-83a0-4654-b4ca-cdb841e7c26b" x="1" y="0" width="1" height="15" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement uuid="10d9e4bc-e732-440a-be9e-062dfeee7e62" x="289" y="0" width="1" height="15" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement uuid="c76f1743-8393-4531-b743-ccd6a33e15eb" x="433" y="0" width="1" height="15" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement uuid="c3bea26e-266f-4272-a837-02016aa7fa75" x="572" y="0" width="1" height="15" forecolor="#CCCCCC"/>
+				</line>
+				<line>
+					<reportElement uuid="dbf2fc59-7e11-40f8-b8d6-4d03be0e2449" x="2" y="14" width="570" height="1" forecolor="#CCCCCC"/>
+				</line>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="b09597e1-0d78-42ba-9013-f2601b7420af" x="152" y="1" width="130" height="13"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{BaseRet}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="8c834e2a-93d7-4f83-9aac-b1ab5f945f98" x="300" y="1" width="130" height="13"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{TipoPagoRet}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="45e3315a-a5be-4869-ae7c-cc8e2fb78c60" x="442" y="0" width="127" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{montoRet}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<summary>
+		<band height="14">
+			<rectangle radius="5">
+				<reportElement uuid="1ba49cc9-fea8-4cdc-bb64-b5f8fdc51ddc" x="0" y="-1" width="572" height="14" forecolor="#CCCCCC" backcolor="#1183B0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="db7043e5-84bd-468b-87d2-c837652e6f17" x="1" y="-1" width="571" height="3" forecolor="#1183B0" backcolor="#1183B0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="4610475e-14b8-43d3-9b28-a364738a0f9e" x="572" y="-1" width="1" height="13" forecolor="#CCCCCC" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="45fe0158-2237-4a0a-9a49-ec909d315121" x="573" y="-1" width="3" height="13" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="682c9891-7cbe-4538-a369-ed4f0354af7b" x="-1" y="-1" width="1" height="13" forecolor="#CCCCCC" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="4f3853d8-96ac-46d6-ab2a-b928b67084b8" x="-2" y="-1" width="1" height="13" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="8a79f246-d971-449a-add5-6cd0fa63771c" x="328" y="0" width="100" height="13" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="a031f7f0-b797-4e83-860a-280fafe16546" x="432" y="-1" width="1" height="14" forecolor="#CCCCCC"/>
+			</line>
+			<textField>
+				<reportElement uuid="7373aee8-52d5-4c6c-b7d7-d3ea7ec9181c" x="445" y="0" width="121" height="13" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{montoTotRet}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

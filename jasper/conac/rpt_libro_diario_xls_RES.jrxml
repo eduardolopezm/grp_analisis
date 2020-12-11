@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_libro_diario" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="caac95bb-fdf3-4ea7-820c-a665cbb02278">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/alfredob/Projects/grp/ap_grp/jasper/conac/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anioreporte" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[2018]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tagref" class="java.lang.String">
+		<defaultValueExpression><![CDATA["I6L"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="entepublico" class="java.lang.String">
+		<defaultValueExpression><![CDATA["servidor"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechainicial" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2018-02-01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafinal" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2018-02-28"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="mes_string" class="java.lang.String">
+		<defaultValueExpression><![CDATA["febrero"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ue" class="java.lang.String">
+		<defaultValueExpression><![CDATA["I6L"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="descripcionUE" class="java.lang.String"/>
+	<parameter name="fechaReporteNew" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2018-01-01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="usuario" class="java.lang.String">
+		<defaultValueExpression><![CDATA[desarrollo]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechainicialnew" class="java.lang.String"/>
+	<parameter name="fechafinalnew" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+	a.trandate,
+	d.ln_nombre as typeno,
+	a.nu_folio_ue as counterindex,
+	a.typeno as typename,
+	a.account,
+	b.accountname,
+	case when SUBSTRING_INDEX(a.account, '.', 1) = 8 then a.account else '' end  AS account2,
+	case when SUBSTRING_INDEX(a.account, '.', 1) = 8 then b.accountname else '' end  AS accountname2,
+	a.narrative,
+	CASE WHEN a.amount < 0 THEN 0 ELSE sum(a.amount) END  AS debe,
+	CASE WHEN a.amount < 0 THEN -1*sum(a.amount) ELSE 0 END  AS haber,
+	a.type,
+	CASE WHEN a.amount < 0 THEN 'Abono' ELSE 'Cargo' END AS operacion
+FROM gltrans a
+INNER JOIN sec_unegsxuser ON a.tag = sec_unegsxuser.tagref AND sec_unegsxuser.userid = $P{usuario}
+INNER JOIN chartmaster b ON a.account = b.accountcode
+INNER JOIN systypescat c ON a.type = c.typeid
+INNER JOIN tb_cat_poliza_visual d ON c.nu_poliza_visual = d.id
+WHERE a.trandate BETWEEN $P{fechainicialnew} AND $P{fechafinalnew}
+AND a.posted = 1
+AND a.tag = $P{tagref}
+AND CASE WHEN $P{ue} = '' THEN 1 = 1 ELSE gltrans.ln_ue IN ('$P!{ue}') END
+GROUP BY
+a.type,
+a.typeno,
+operacion,
+a.account
+ORDER BY a.type, a.typeno, a.counterindex;]]>
+	</queryString>
+	<field name="type" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="typeno" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="trandate" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="debe" class="java.lang.Number">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="narrative" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="haber" class="java.lang.Number"/>
+	<field name="account" class="java.lang.String"/>
+	<field name="counterindex" class="java.lang.String"/>
+	<field name="accountname" class="java.lang.String"/>
+	<field name="typename" class="java.lang.String"/>
+	<field name="accountname2" class="java.lang.String"/>
+	<field name="account2" class="java.lang.String"/>
+	<variable name="debe_1" class="java.lang.Number" resetType="Group" resetGroup="typeno" calculation="Sum">
+		<variableExpression><![CDATA[$F{debe}]]></variableExpression>
+	</variable>
+	<variable name="haber_1" class="java.lang.Number" resetType="Group" resetGroup="typeno" calculation="Sum">
+		<variableExpression><![CDATA[$F{haber}]]></variableExpression>
+	</variable>
+	<variable name="paginatotal" class="java.lang.Integer" incrementType="Page">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<variable name="paginaactual" class="java.lang.String" incrementType="Page" calculation="Count"/>
+	<group name="type">
+		<groupExpression><![CDATA[$F{type}]]></groupExpression>
+	</group>
+	<group name="typeno">
+		<groupExpression><![CDATA[$F{typeno}]]></groupExpression>
+		<groupFooter>
+			<band height="24">
+				<line>
+					<reportElement uuid="c03a1270-2dfd-42d7-9c64-1f03213108f5" x="0" y="17" width="750" height="1"/>
+				</line>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="be647a64-7623-42f5-be11-676ddcd363f8" x="611" y="1" width="70" height="17"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{debe_1} != null?$V{debe_1}:0]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="f0cbb9f5-aa80-4396-b971-f3ded698775d" x="682" y="1" width="70" height="17"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{haber_1}!=null?$V{haber_1}:0]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="f38cc7f7-d07f-4f32-a55b-dcc4a0b3dea0" x="1" y="1" width="610" height="16">
+						<printWhenExpression><![CDATA[$V{REPORT_COUNT}.equals( 0 )]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[("No se encontro información para las fechas ").toUpperCase()+(
+    new SimpleDateFormat("MM").format( new SimpleDateFormat("yyyy-MM-dd").parse($P{fechainicial}) ) ==
+    new SimpleDateFormat("MM").format( new SimpleDateFormat("yyyy-MM-dd").parse($P{fechafinal}) )
+    ? (
+        "DEL "+new SimpleDateFormat("dd").format( new SimpleDateFormat("yyyy-MM-dd").parse($P{fechainicial}) )
+        +" AL "+ new SimpleDateFormat("dd").format( new SimpleDateFormat("yyyy-MM-dd").parse($P{fechafinal}) )
+        +" DE "+ ($P{mes_string}).toUpperCase()
+        +" DEL "+ new SimpleDateFormat("yyyy").format( new SimpleDateFormat("yyyy-MM-dd").parse($P{fechainicial}) )
+    )
+    : (
+        " DESDE " + new SimpleDateFormat("dd/MM/yyyy").format( new SimpleDateFormat("yyyy-MM-dd").parse($P{fechainicial}) )
+        +" HASTA "+ new SimpleDateFormat("dd/MM/yyyy").format( new SimpleDateFormat("yyyy-MM-dd").parse($P{fechafinal}) )
+    )
+)]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="105">
+			<image>
+				<reportElement uuid="2b5459ec-6b3b-4bb0-a6e8-55c4e96bd58b" x="6" y="5" width="115" height="62"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="c19bb051-91bb-4b42-a816-aa8f7465e5b5" x="121" y="19" width="628" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[LIBRO DIARIO]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="0836ece4-1d42-409a-9061-d77bead46941" x="121" y="5" width="628" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{entepublico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="10a908cf-f20a-48eb-aa13-294ba515b761" x="121" y="34" width="628" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{descripcionUE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="94217902-587f-49d7-88f8-3617503c1b35" x="121" y="49" width="628" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaReporteNew}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="3887e54d-e4fe-4e0d-8150-99ae3270a5d4" x="121" y="68" width="628" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[CIFRAS EN MONEDA NACIONAL]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="2ee6ef73-0e7e-4fe2-883f-172282d1fe97" x="0" y="0" width="752" height="25" forecolor="#1B693F" backcolor="#1B693F"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="da257df5-8e4b-4937-a135-2a6ce81ae6c0" x="55" y="0" width="52" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[TIPO PÓLIZA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9516fbca-c200-4c29-813e-a93cad9228b0" x="208" y="0" width="115" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[CUENTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5a098f09-57bf-4d81-bc54-734eb1fbb0c5" x="611" y="0" width="71" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[DEBE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="835c6b6c-24e6-42bd-b6ea-e52ca5a299bd" x="681" y="0" width="71" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[HABER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d970742a-8cbb-454e-87e9-e707e6d1a15e" x="148" y="0" width="60" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[No. OPERACIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2ce2ec46-0403-4885-baf6-2daee97e7a1c" x="478" y="0" width="133" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6e674925-68e8-4cb2-a874-62b02f724117" x="323" y="0" width="155" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[NOMBRE CUENTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9609ddb6-0ff2-45d4-bfb8-bd17562d7560" x="0" y="0" width="55" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[FECHA PÓLIZA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="643bd8a4-8c22-48e1-977d-a5da4baabca9" x="107" y="0" width="41" height="25" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[No. PÓLIZA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$V{REPORT_COUNT}.equals( 0 )]]></printWhenExpression>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="a8331c6f-8d97-4eb4-b77b-7c1f0cdcb8f8" x="148" y="0" width="60" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{typename}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="45bc6eb1-b484-47a8-adbe-b7d9738632d1" x="55" y="0" width="52" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{typeno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="fedf6287-b741-4f62-97f3-2f089fcaeaba" x="1" y="0" width="54" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{trandate})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3b466e7a-dbc8-48f5-bf93-c49d26149cdc" x="478" y="0" width="133" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{narrative}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="d05f736b-7599-4706-89c3-e9547f6c674c" x="611" y="0" width="70" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{debe}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="1657a83c-29ba-47f5-b3ca-9c586f7d2dbd" x="682" y="0" width="70" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{haber}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="faaa8054-7252-4ea0-9331-725f0c75c603" x="208" y="0" width="115" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{account}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="20780a52-9b1f-41bb-9f28-5051e32007ac" x="107" y="0" width="41" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{counterindex}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="e0132877-655c-4ebf-8120-b883805f65cf" x="323" y="0" width="155" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{accountname}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

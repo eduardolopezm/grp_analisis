@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptIngresosDiarioPagos" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d531e0dc-a985-4664-906a-da63898bf529">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "estiloTablaJasper.jrtx"]]></template>
+	<style name="bordesNegros" forecolor="#000000" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="1.0"/>
+			<topPen lineWidth="1.0"/>
+			<leftPen lineWidth="1.0"/>
+			<bottomPen lineWidth="1.0"/>
+			<rightPen lineWidth="1.0"/>
+		</box>
+	</style>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="fechainicio" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 00:00:00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafin" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 23:59:59"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagenEstado" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/juan/Trabajo/ap_grp_de/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechalarga" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["02 DE ENERO DEL 2020"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="razonsocial" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["MUNICIPIO DE TAMPICO, TAM."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nombreMes" class="java.lang.String"/>
+	<parameter name="anioFinal" class="java.lang.String"/>
+	<parameter name="anioFinal2" class="java.lang.String"/>
+	<parameter name="diaFinal" class="java.lang.String"/>
+	<parameter name="mesFinal" class="java.lang.String"/>
+	<parameter name="loccode" class="java.lang.String"/>
+	<parameter name="stockid" class="java.lang.String"/>
+	<parameter name="userid" class="java.lang.String"/>
+	<parameter name="fechaIniText" class="java.lang.String"/>
+	<parameter name="fechaFinText" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+'B' as orden,
+'' as paseCobro,
+'' as objprincipal,
+'' as objprincipalName,
+'' as contribuyente,
+'' as ic,
+salesorderdetails.stkcode as objetoParcial,
+CONCAT(salesorderdetails.stkcode, ' - ', stockmaster.description) as objetoParcialName,
+'' as comments,
+'' as txt_pagador,
+0 as quantity,
+SUM(salesorderdetails.quantity) as quantity2,
+'' as fechaRecibo,
+'' as reciboPago,
+IFNULL(SUM((salesorderdetails.unitprice * salesorderdetails.quantity) - ((salesorderdetails.unitprice * salesorderdetails.quantity) * salesorderdetails.discountpercent)), 0) AS neto,
+0 AS neto2,
+'' as referencia,
+'' as usuario
+
+FROM locations
+JOIN salesorders ON salesorders.fromstkloc = locations.loccode
+JOIN salesorderdetails ON salesorderdetails.orderno = salesorders.orderno
+JOIN sec_objetoprincipalxuser ON sec_objetoprincipalxuser.loccode = locations.loccode AND sec_objetoprincipalxuser.userid = $P{userid}
+JOIN stockmaster ON stockmaster.stockid = salesorderdetails.stkcode
+JOIN debtortrans ON debtortrans.order_ = salesorders.orderno
+JOIN custallocns ON custallocns.transid_allocto = debtortrans.id
+JOIN debtortrans debtortransRecibo ON debtortransRecibo.id = custallocns.transid_allocfrom
+LEFT JOIN custbranch ON custbranch.branchcode = debtortransRecibo.branchcode AND custbranch.debtorno = debtortransRecibo.debtorno
+LEFT JOIN www_users ON www_users.userid = debtortransRecibo.userid
+
+WHERE
+locations.tipo = 'ObjetoPrincipal'
+-- AND debtortransRecibo.trandate BETWEEN '2020-05-04 00:00:00' AND '2020-05-04 23:59:59'
+AND debtortransRecibo.trandate BETWEEN $P{fechainicio} AND $P{fechafin}
+AND CASE WHEN '-1' = $P{loccode} THEN 1 = 1 ELSE locations.loccode IN ('$P!{loccode}') END
+AND CASE WHEN '-1' = $P{stockid} THEN 1 = 1 ELSE stockmaster.stockid IN ('$P!{stockid}') END
+
+GROUP BY salesorderdetails.stkcode, stockmaster.description
+
+UNION ALL
+
+SELECT
+'A' as orden,
+salesorders.orderno as paseCobro,
+locations.loccode as objprincipal,
+locations.locationname as objprincipalName,
+custbranch.brname as contribuyente,
+debtortransRecibo.debtorno as ic,
+salesorderdetails.stkcode as objetoParcial,
+CONCAT(salesorderdetails.stkcode, ' - ', stockmaster.description) as objetoParcialName,
+CONVERT(salesorders.comments USING utf8) as comments,
+salesorders.txt_pagador,
+salesorderdetails.quantity,
+0 as quantity2,
+DATE_FORMAT(debtortrans.trandate, '%Y-%m-%d') as fechaRecibo,
+debtortransRecibo.transno as reciboPago,
+0 as neto,
+IFNULL(((salesorderdetails.unitprice * salesorderdetails.quantity) - ((salesorderdetails.unitprice * salesorderdetails.quantity) * salesorderdetails.discountpercent)), 0) AS neto2,
+debtortrans.nocuenta as referencia,
+www_users.realname as usuario
+
+FROM locations
+JOIN salesorders ON salesorders.fromstkloc = locations.loccode
+JOIN salesorderdetails ON salesorderdetails.orderno = salesorders.orderno
+JOIN sec_objetoprincipalxuser ON sec_objetoprincipalxuser.loccode = locations.loccode AND sec_objetoprincipalxuser.userid = $P{userid}
+JOIN stockmaster ON stockmaster.stockid = salesorderdetails.stkcode
+JOIN debtortrans ON debtortrans.order_ = salesorders.orderno
+JOIN custallocns ON custallocns.transid_allocto = debtortrans.id
+JOIN debtortrans debtortransRecibo ON debtortransRecibo.id = custallocns.transid_allocfrom
+LEFT JOIN custbranch ON custbranch.branchcode = debtortransRecibo.branchcode AND custbranch.debtorno = debtortransRecibo.debtorno
+LEFT JOIN www_users ON www_users.userid = debtortransRecibo.userid
+
+WHERE
+locations.tipo = 'ObjetoPrincipal'
+-- AND debtortransRecibo.trandate BETWEEN '2020-05-04 00:00:00' AND '2020-05-04 23:59:59'
+AND debtortransRecibo.trandate BETWEEN $P{fechainicio} AND $P{fechafin}
+AND CASE WHEN '-1' = $P{loccode} THEN 1 = 1 ELSE locations.loccode IN ('$P!{loccode}') END
+AND CASE WHEN '-1' = $P{stockid} THEN 1 = 1 ELSE stockmaster.stockid IN ('$P!{stockid}') END
+
+ORDER BY objetoParcial, orden, objprincipalName, paseCobro, reciboPago
+;]]>
+	</queryString>
+	<field name="objprincipal" class="java.lang.String"/>
+	<field name="objprincipalName" class="java.lang.String"/>
+	<field name="objetoParcialName" class="java.lang.String"/>
+	<field name="objetoParcial" class="java.lang.String"/>
+	<field name="neto2" class="java.lang.Double"/>
+	<field name="paseCobro" class="java.lang.String"/>
+	<field name="reciboPago" class="java.lang.String"/>
+	<field name="contribuyente" class="java.lang.String"/>
+	<field name="fechaRecibo" class="java.lang.String"/>
+	<field name="orden" class="java.lang.String"/>
+	<field name="quantity" class="java.lang.Double"/>
+	<field name="neto" class="java.lang.Double"/>
+	<field name="ic" class="java.lang.String"/>
+	<field name="comments" class="java.lang.String"/>
+	<field name="txt_pagador" class="java.lang.String"/>
+	<field name="referencia" class="java.lang.String"/>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="quantity2" class="java.lang.Double"/>
+	<variable name="totalneto" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{neto2}]]></variableExpression>
+	</variable>
+	<variable name="totalquantity" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{quantity}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="91">
+			<image>
+				<reportElement x="0" y="0" width="155" height="84" uuid="0008ca43-f2bb-40e5-8234-b06ce98ef9e5"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="155" y="0" width="406" height="20" uuid="1e73b338-cfc0-40bb-b971-08db2ec956cd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Municipio de Tampico, Tam."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="155" y="20" width="406" height="14" uuid="c40e8418-468e-46a8-81c8-fe59b1c32cca"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TESORERIA MUNICIPAL"]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="561" y="0" width="191" height="84" uuid="687cebad-a90c-4719-af76-20272ee4ed35"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="155" y="34" width="406" height="22" backcolor="#FFFFFF" uuid="b9b91e6b-8954-4b17-871a-f428f7a38e27"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Diario de Pagos"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="155" y="56" width="406" height="28" uuid="09aa2816-fc21-46cc-b8d1-8dd67d76e8cc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DEL "+$P{fechaIniText}+"\nAL "+$P{fechaFinText}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="42" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="2" width="40" height="38" backcolor="#FFFFFF" uuid="aedc9ad6-cde8-4e71-a459-b7f3d3cb1c78"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pase \n de \n Cobro"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="521" y="2" width="40" height="38" backcolor="#FFFFFF" uuid="f2a22dc8-8d37-44fc-99fc-83184051dc5e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Recibo \n de \n Pago"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="561" y="2" width="90" height="38" backcolor="#FFFFFF" uuid="62f14ff9-9b06-42c9-b135-7e49c614c236"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="195" y="2" width="85" height="38" backcolor="#FFFFFF" uuid="11638abe-21b1-4f88-8387-563fcff316f9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Objeto Parcial"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="40" y="2" width="40" height="38" backcolor="#FFFFFF" uuid="0e25de18-c23f-48eb-ac67-b3b4eff43acc">
+					<property name="net.sf.jasperreports.export.xls.auto.filter" value="Start"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{objprincipal}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="80" y="2" width="75" height="38" backcolor="#FFFFFF" uuid="5f0ef922-e582-40fe-926c-35c93b1b11b8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Contribuyente"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="155" y="2" width="40" height="38" backcolor="#FFFFFF" uuid="24a6edd6-d697-4f0c-bd84-672fa8a3cacc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ic"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="280" y="2" width="90" height="38" backcolor="#FFFFFF" uuid="bfbbd7b1-85df-4e43-98e1-bcfc4c7d47db"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Comentario"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="370" y="2" width="65" height="38" backcolor="#FFFFFF" uuid="10fcce1a-e414-44e0-b46f-9e9b01631840"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagador"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="435" y="2" width="41" height="38" backcolor="#FFFFFF" uuid="0f63a748-1e63-4805-a384-55d5099a4971"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cantidad"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="476" y="2" width="45" height="38" backcolor="#FFFFFF" uuid="c0841fd8-5c3d-4591-ab9d-6c043a040b9c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha \n del \n Pago"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="651" y="2" width="52" height="38" backcolor="#FFFFFF" uuid="3c250504-a269-465e-a982-3746c128a22e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Referencia"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="703" y="2" width="49" height="38" backcolor="#FFFFFF" uuid="a99583db-12f8-4a54-8454-0d4e3d7807a7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Usuario"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="40" y="2" width="40" height="15" backcolor="#FFFFFF" uuid="81ca946c-5aa9-4904-9c6d-a025a27f2156"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{objprincipalName}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="18" width="752" height="1" uuid="2547956c-9d40-4507-9970-e6a2d88bfba4">
+					<printWhenExpression><![CDATA[$F{orden} == "B"]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="2" width="40" height="15" backcolor="#FFFFFF" uuid="a0bdb444-19cb-4657-8255-076f9ac52e55"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paseCobro}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="80" y="2" width="75" height="15" backcolor="#FFFFFF" uuid="1cce62bc-e82a-41a5-9efb-f7d27024b0dd"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contribuyente}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="155" y="2" width="40" height="15" backcolor="#FFFFFF" uuid="c2ed2e3a-a5df-4abc-a235-3e72865ede04"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ic}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="195" y="2" width="85" height="15" backcolor="#FFFFFF" uuid="a41295ce-3d0e-41e8-ab7f-e6c68f919afc"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{objetoParcialName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="370" y="2" width="65" height="15" backcolor="#FFFFFF" uuid="2c0b60b6-0788-4f94-a2d6-349d4e6c2f0f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{txt_pagador}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement x="435" y="2" width="41" height="15" backcolor="#FFFFFF" uuid="b3165569-f8ce-493b-a4cb-ee7354e45f4c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{orden} == "B" ? ($F{quantity2}) : ($F{quantity}))]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="476" y="2" width="45" height="15" backcolor="#FFFFFF" uuid="6725611f-ed33-4c2a-ab35-c68b34a7c966"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaRecibo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="521" y="2" width="40" height="15" backcolor="#FFFFFF" uuid="9cb927c2-cc8c-4c44-9e10-344a5161c0b0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reciboPago}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+				<reportElement x="561" y="2" width="90" height="15" backcolor="#FFFFFF" uuid="d681f103-ac95-4dd5-8a7e-360b327d0ad7"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{orden} == "B" ? ($F{neto}) : ($F{neto2}))]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="651" y="2" width="52" height="15" backcolor="#FFFFFF" uuid="a3297ae0-f865-4ad1-8457-720c9ead6e5a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{referencia}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="703" y="2" width="49" height="15" backcolor="#FFFFFF" uuid="959fd908-1b7f-46d0-8804-1a516342cc2b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="280" y="2" width="90" height="15" backcolor="#FFFFFF" uuid="793347ad-e2eb-4da9-a493-4472e3319878"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{comments}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="16" splitType="Immediate">
+			<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+				<reportElement x="561" y="0" width="90" height="15" backcolor="#FFFFFF" uuid="f0064acc-0152-46c9-a86c-0b44aae7f0c8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{totalneto})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement x="0" y="0" width="435" height="15" backcolor="#FFFFFF" uuid="5102ed64-dd31-4ef6-ad8f-f77b56e579c3">
+					<property name="net.sf.jasperreports.export.xls.auto.filter" value="End"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00">
+				<reportElement x="435" y="0" width="41" height="15" backcolor="#FFFFFF" uuid="2c23846a-c839-4493-8e9c-cbe5209d1101"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{totalquantity})]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

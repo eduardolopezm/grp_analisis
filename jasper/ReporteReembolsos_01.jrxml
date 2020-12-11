@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteReembolsos_01" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="275c32f2-66c2-45fa-9ca5-f173d32ae1fe">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table" radius="5" pattern="">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#97946A">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#E6E4CF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#F8F8F3"/>
+		</conditionalStyle>
+	</style>
+	<style name="EstiloTabla" backcolor="#CCCCCC" radius="2" hAlign="Center" vAlign="Middle" fontName="Arial" fontSize="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+			<pen lineStyle="Dotted"/>
+			<topPen lineStyle="Dotted"/>
+			<leftPen lineStyle="Dotted"/>
+			<bottomPen lineStyle="Dotted"/>
+			<rightPen lineStyle="Dotted"/>
+		</box>
+	</style>
+	<parameter name="tipo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="num_orden" class="java.lang.String">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[Select sc.typecargo as tipo, sc.transnocargo as transno, sc.account, sc.cat_cuenta, chm.accountname, chm.group_, st.tagref, st.suppreference, sc.amount as ovamount, st.ovgst, st.alloc, st.transtext, st.id, glt.chequeno, glt.userid, us.realname, t.tagdescription, t.logotag, SUBSTRING(accountname, LOCATE(" ", accountname)+1) as nom_cuenta
+From supptrans_concentrado sc
+Inner Join supptrans st on st.type= sc.typecargo and st.transno= sc.transnocargo
+Inner Join chartmaster chm on sc.account = chm.accountcode
+Inner Join gltrans glt on sc.typecargo= glt.type and sc.transnocargo= glt.typeno and sc.account= glt.account
+Inner Join tags t on st.tagref= t.tagref
+Inner Join www_users us on glt.userid= us.userid
+Where sc.typeorderno= $P{tipo}
+and sc.conorderno= $P{num_orden}
+and sc.amount>0
+Union
+Select sc.typeabono as tipo, sc.transnoabono as transno, sc.account, sc.cat_cuenta, chm.accountname, chm.group_, st.tagref, st.suppreference, st.ovamount, st.ovgst, st.alloc,  st.transtext, st.id, glt.chequeno, glt.userid, us.realname, t.tagdescription, t.logotag, SUBSTRING(accountname, LOCATE(" ", accountname)+1) as nom_cuenta
+From supptrans_concentrado sc
+Inner Join supptrans st on st.type= sc.typeabono and st.transno= sc.transnoabono
+Inner Join chartmaster chm on sc.account = chm.accountcode
+Inner Join gltrans glt on sc.typeabono= glt.type and sc.transnoabono= glt.typeno and sc.account= glt.account
+Inner Join tags t on st.tagref= t.tagref
+Inner Join www_users us on glt.userid= us.userid
+Where sc.typeorderno= $P{tipo}
+and sc.conorderno= $P{num_orden}
+and sc.cat_cuenta= 'PROVEEDOR' and sc.amount>0
+Order by id]]>
+	</queryString>
+	<field name="tipo" class="java.lang.Integer"/>
+	<field name="transno" class="java.lang.Integer"/>
+	<field name="account" class="java.lang.String"/>
+	<field name="cat_cuenta" class="java.lang.String"/>
+	<field name="accountname" class="java.lang.String"/>
+	<field name="group_" class="java.lang.String"/>
+	<field name="tagref" class="java.lang.Integer"/>
+	<field name="suppreference" class="java.lang.String"/>
+	<field name="ovamount" class="java.lang.Double"/>
+	<field name="ovgst" class="java.lang.Double"/>
+	<field name="alloc" class="java.lang.Double"/>
+	<field name="transtext" class="java.lang.String"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="chequeno" class="java.lang.Integer"/>
+	<field name="userid" class="java.lang.String"/>
+	<field name="realname" class="java.lang.String"/>
+	<field name="logotag" class="java.lang.String"/>
+	<field name="tagdescription" class="java.lang.String"/>
+	<field name="nom_cuenta" class="java.lang.String"/>
+	<variable name="sumacargos" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{ovamount}>0?Math.abs($F{ovamount}):0]]></variableExpression>
+	</variable>
+	<variable name="sumaabono" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{alloc}<0?Math.abs($F{alloc}):0]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="96" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d5730f59-434a-4f7b-a9e5-b7a74d82a068" mode="Opaque" x="0" y="70" width="572" height="21" backcolor="#CCCCFF"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[  Cuenta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a2b1da53-2d6b-4621-bb0d-171be62f30c6" x="138" y="70" width="73" height="21"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Referencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2345bb1b-adc7-45c0-aa4f-52ee9dc841a5" x="243" y="70" width="67" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Concepto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9dc129cd-6532-41de-abac-4133c7399c56" x="436" y="71" width="37" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cargo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b9245d99-4c43-436f-92fe-683b9fdad946" x="511" y="70" width="52" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Abono]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="33696019-0e14-4890-bfaf-e1e5485cd600" x="152" y="43" width="193" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{realname}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="7562079a-9cfd-4eb9-bb69-657d300fbb9e" x="0" y="92" width="572" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="80810f67-ee23-4c4c-9f71-d43f01a8f7b7" x="98" y="43" width="51" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Usuario:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="786e66e8-6eff-45a3-8d3b-f722268936e2" x="425" y="3" width="75" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Fecha Reporte:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="3ab8302f-dea0-420b-ad59-3ad879715d00" x="501" y="3" width="70" height="20" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c1efb38f-7e18-4924-a36a-ef101ce5af82" x="98" y="3" width="216" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Concentrado de Reembolsos]]></text>
+			</staticText>
+			<image vAlign="Middle" onErrorType="Blank">
+				<reportElement uuid="3cc891f5-f9a4-4c99-b2cf-2e62368b393c" x="7" y="4" width="71" height="57"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="f2d1774f-d747-4393-8335-2e5a29bdd3f9" x="98" y="23" width="100" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tagdescription}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="e8c738e6-2235-464d-aeae-2a88fa9c63d1" stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="1" width="571" height="20" backcolor="#FAFAFA">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<frame>
+				<reportElement uuid="cd372fc5-dacf-425e-9e7c-c3dc4c1ab43b" mode="Transparent" x="0" y="0" width="572" height="21" backcolor="#FAFAFA"/>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="53ff6051-2452-44bc-8c2e-b9893e79f55b" x="489" y="0" width="73" height="20">
+						<printWhenExpression><![CDATA[$F{alloc}<0]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[Math.abs($F{alloc})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="303074a3-969b-49a9-af7d-2b8b45ac006c" x="7" y="0" width="120" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement verticalAlignment="Middle" markup="html">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA["<b>"+$F{account}+"</b><br>"+$F{nom_cuenta}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="7eff9816-36fd-400a-b815-a7f8715172a7" x="137" y="0" width="79" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{suppreference}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="a15b7e8c-2744-4f9a-810a-48c08b9212f2" x="221" y="0" width="192" height="20"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{transtext}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="b7bf8503-c9f0-4ae8-b1bd-bad9688a12eb" x="413" y="0" width="68" height="20">
+						<printWhenExpression><![CDATA[$F{ovamount}>0]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{ovamount}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="30">
+			<textField>
+				<reportElement uuid="03a85335-a06a-4f1b-805b-bd9f4696fa1f" x="462" y="9" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="6b6c5588-e98f-4fe1-8e44-c615f1605e85" x="542" y="9" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="1d425902-69ee-4436-a9e0-e740931e0678" x="0" y="4" width="571" height="1"/>
+			</line>
+		</band>
+	</columnFooter>
+	<summary>
+		<band height="28">
+			<textField pattern="#,##0.00">
+				<reportElement uuid="db2f9021-45a4-4401-9209-27d63450932e" x="381" y="8" width="100" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{sumacargos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="ca1dd972-7804-44b2-8422-3c44d5ff9eb8" x="462" y="8" width="100" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{sumaabono}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5c696001-6ac2-46af-b6a2-1988dc8cc792" x="324" y="8" width="51" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Totales:]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="58b57ef0-5710-4aef-a6b1-69fe98659044" x="0" y="2" width="572" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Double"/>
+				</graphicElement>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

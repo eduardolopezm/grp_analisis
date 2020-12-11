@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subrptsituacionfinanciera" language="groovy" pageWidth="569" pageHeight="792" columnWidth="569" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="b1f49ba7-74ab-47ca-bb74-c0ca8bf23ced">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="th" mode="Opaque" forecolor="#FFFFFF" backcolor="#727378" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="style1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#F2F2F2" fill="Solid"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="contribuyenteID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[99990002]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="orderno" class="java.lang.String">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateini" class="java.lang.String"/>
+	<parameter name="datefin" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+salesorders.quotedate as fecha,
+salesorders.orderno as numDoc,
+salesorders.comments as referencia,
+salesorders.fromstkloc as objPrincipal,
+CONCAT(salesorderdetails.stkcode, ' - ',stockmaster.description) as objParcial,
+(salesorderdetails.unitprice * salesorderdetails.quantity) - ((salesorderdetails.unitprice * salesorderdetails.quantity) * salesorderdetails.discountpercent) as importe
+FROM salesorders
+LEFT JOIN salesorderdetails ON salesorderdetails.orderno = salesorders.orderno
+LEFT JOIN stockmaster ON stockmaster.stockid = salesorderdetails.stkcode
+WHERE salesorders.debtorno = $P{contribuyenteID}
+AND salesorders.orderno = $P{orderno}
+AND salesorders.quotedate <= $P{datefin}]]>
+	</queryString>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="numDoc" class="java.lang.Integer"/>
+	<field name="referencia" class="java.lang.String"/>
+	<field name="objPrincipal" class="java.lang.String"/>
+	<field name="objParcial" class="java.lang.String"/>
+	<field name="importe" class="java.lang.Double"/>
+	<variable name="total" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{importe}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="17">
+			<textField>
+				<reportElement uuid="eaecf971-8c4c-4d42-9261-97bf03877d68" style="style1" x="260" y="0" width="62" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{objPrincipal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9a8527d6-3d7f-4571-bcc9-7e0b3c63af94" style="style1" x="0" y="0" width="81" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="0a56f6a6-027d-4a1e-b0a3-cf7b22eece13" style="style1" positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="322" y="0" width="181" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{objParcial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement uuid="fb22fb30-d31a-4014-9e6d-dfeefc12e660" style="style1" x="503" y="0" width="66" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="73599ac9-30b0-45f2-b4b3-5aa83cfba6e5" style="style1" x="81" y="0" width="73" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numDoc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a7dbf28e-806a-4bec-b8dc-70edba22b0c1" style="style1" x="154" y="0" width="106" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{referencia}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

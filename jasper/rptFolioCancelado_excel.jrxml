@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptCorteCajaGeneral" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="d531e0dc-a985-4664-906a-da63898bf529">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="fechainicio" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 00:00:00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafin" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 23:59:59"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagenEstado" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/juan/Trabajo/ap_grp_de/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechalarga" class="java.lang.String"/>
+	<parameter name="razonsocial" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+UPPER(legalbusinessunit.legalname) as legalname,
+debtortrans.nu_foliocorte,
+debtortrans.transno,
+debtortrans.userid,
+www_users.obraid,
+debtortrans.debtorno,
+debtortrans.branchcode,
+debtortrans.ovamountcancel,
+debtortrans.ovgstcancel,
+debtortrans.status,
+(debtortrans.ovamountcancel + debtortrans.ovgstcancel) AS importe
+FROM debtortrans
+LEFT JOIN legalbusinessunit ON legalbusinessunit.legalid = 2
+LEFT JOIN www_users ON debtortrans.userid= www_users.userid
+WHERE debtortrans.type=12 AND debtortrans.ovamount = 0 AND debtortrans.trandate BETWEEN $P{fechainicio} AND $P{fechafin};]]>
+	</queryString>
+	<field name="nu_foliocorte" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Folio de la póliza de cierre]]></fieldDescription>
+	</field>
+	<field name="transno" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="userid" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="debtorno" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="importe" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="obraid" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="legalname" class="java.lang.String"/>
+	<variable name="totalingreso" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{importe}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="176" splitType="Stretch">
+			<image>
+				<reportElement uuid="ce0a9881-3642-4d14-8295-e9fe105c5e08" x="0" y="0" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="370bb989-a8fc-42bd-8305-cc5c851b0e32" x="430" y="0" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="62d4d5cc-fddd-41b0-b04b-f1a0152d0fbf" x="225" y="20" width="122" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[TESORERIA MUNICIPAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2e121981-f26f-4e72-bedf-cb4ca5adfb0a" x="225" y="37" width="122" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[2018-2021]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ed0816eb-0f40-48fe-924b-fc718ca0b13b" x="158" y="57" width="236" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[	REPORTE DE FOLIOS CANCELADOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2ae73b13-c1cf-4037-a6ac-734c13af54cd" x="1" y="101" width="132" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[RECAUDACION DEL :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3ce383dd-40e8-4611-bb91-df8e9ec95ade" x="1" y="121" width="141" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CANTIDAD DE FOLIOS:]]></text>
+			</staticText>
+			<frame>
+				<reportElement uuid="c4cc1caa-e28a-49da-929b-e6dabbc8755b" x="0" y="152" width="572" height="24"/>
+				<staticText>
+					<reportElement uuid="5e53836c-2b38-424e-a582-66406edbe900" x="0" y="3" width="66" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[FOLIO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="728a726b-1064-4ef0-94cf-1d4735b794f4" x="66" y="3" width="67" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[CAJA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="ab36cdcc-3a16-489e-bb33-b3ee22b2d530" x="287" y="3" width="127" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[IMPORTE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="aad9cf8b-1b38-4fc1-b900-f135679af15e" x="502" y="3" width="68" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[CANC]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="feb46cd3-b2d4-489c-ba83-1ac101255834" x="1" y="23" width="569" height="1"/>
+				</line>
+			</frame>
+			<textField>
+				<reportElement uuid="c6b6730b-1d7e-4d53-9aea-76a3d1210317" x="134" y="101" width="281" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechalarga}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="55b78504-a319-4192-b482-c3d55c681054" x="158" y="0" width="233" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{legalname}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement uuid="5d56ae5f-a046-4f6a-95ed-b277282f08e8" x="142" y="121" width="83" height="20"/>
+				<subreportParameter name="fechafin">
+					<subreportParameterExpression><![CDATA[$P{fechafin}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechainicio">
+					<subreportParameterExpression><![CDATA[$P{fechainicio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "rptFolioCancelado_subreport.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement uuid="bc189a62-4dc9-4616-8f49-40c9cc9d83af" x="1" y="0" width="65" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{transno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e7b25925-7b80-4a0b-b70f-8fcafa8501b8" x="67" y="0" width="67" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{obraid} == null ? "-" : $F{obraid}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="6bb0ee7b-51c2-490e-b64f-5eac9261c1b7" x="288" y="0" width="127" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{importe}).round(2)]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="85415a15-27cd-4d7f-8955-e55e87e1183b" x="503" y="0" width="68" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CANC]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement uuid="a9ddc8f6-4c75-4d5b-832a-01107e3c77bf" x="257" y="0" width="31" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}+"/"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="940687dd-f81a-40c6-8237-98fc7852296b" x="288" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="28" splitType="Immediate">
+			<textField pattern="$ #,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="03b836ad-5681-431e-bf96-a2d9044900c5" x="287" y="8" width="128" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[($V{totalingreso}.round(3)).round(2)]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="d4beb344-b5be-4f99-8d16-47276ddba5bd" x="287" y="4" width="128" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

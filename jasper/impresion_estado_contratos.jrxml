@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="formato_entrega_solicitud" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7be21170-4d58-4d46-be66-992c50d4e69a">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="70"/>
+	<style name="th" mode="Opaque" forecolor="#FFFFFF" backcolor="#727378" fontSize="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="style1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#F2F2F2" fill="Solid"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="imagenEstado" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="placa" class="java.lang.String">
+		<defaultValueExpression><![CDATA[WD4533A]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaInicio" class="java.lang.String"/>
+	<parameter name="fechaFin" class="java.lang.String"/>
+	<parameter name="dateini" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="datefin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nameConfing" class="java.lang.String"/>
+	<parameter name="contribuyente" class="java.lang.String"/>
+	<parameter name="confContrato" class="java.lang.String"/>
+	<parameter name="atributo" class="java.lang.String">
+		<defaultValueExpression><![CDATA['PLACA']]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+	contratos.dtm_fecha_inicio as fecha,
+	contratos.id_contrato as numDoc,
+	CONCAT(configContrato.id_loccode,' - ', locations.locationname) AS nameConfing,
+	debtorsmaster.name as contribuyente,
+	contratos.dtm_fecha_inicio as fechaInicio,
+	(SELECT tb_propiedades_atributos.ln_valor FROM tb_propiedades_atributos Where tb_propiedades_atributos.id_folio_contrato = contratos.id_contrato
+ORDER BY id_propiedades_atributos ASC LIMIT 1 OFFSET 0) as placa,
+	(SELECT tb_propiedades_atributos.ln_valor FROM tb_propiedades_atributos INNER JOIN tb_cat_atributos_contrato on tb_propiedades_atributos.id_etiqueta_atributo = tb_cat_atributos_contrato.id_atributos Where tb_propiedades_atributos.id_folio_contrato = contratos.id_contrato AND tb_cat_atributos_contrato.ln_etiqueta = 'FOLIO DE BOLETA'  LIMIT 1) as referencia,
+	adminContratos.id_objeto_principal as objPrincipal,
+	CONCAT(adminContratos.id_objeto_parcial, ' - ',stockmaster.description) as objParcial,
+	adminContratos.mtn_importe as importe,
+	legalbusinessunit.legalname,
+	legalbusinessunit.legalname,
+	legalbusinessunit.taxid as rfcLegal,
+	legalbusinessunit.address1 as calleLegal,
+	legalbusinessunit.address2 as coloniaLegal,
+	legalbusinessunit.address3 as municipioLegal,
+	legalbusinessunit.address4 as estadoLegal,
+	legalbusinessunit.address5 as cpLegal
+	FROM tb_contratos AS contratos
+	INNER JOIN tags on (tags.tagref = contratos.tagref)
+	INNER JOIN legalbusinessunit ON legalbusinessunit.legalid = tags.legalid
+	INNER JOIN tb_cat_unidades_ejecutoras as ues on (ues.ue = contratos.ln_ue)
+	INNER JOIN tb_contratos_contribuyentes as configContrato on (configContrato.id_contratos = contratos.id_confcontratos)
+	INNER JOIN locations on (configContrato.id_loccode = locations.loccode)
+	INNER JOIN debtorsmaster on (debtorsmaster.debtorno = contratos.id_debtorno)
+	INNER JOIN tb_administracion_contratos as adminContratos on adminContratos.id_contrato = contratos.id_contrato
+	INNER JOIN stockmaster on stockmaster.stockid = adminContratos.id_objeto_parcial
+	WHERE contratos.ind_activo = '1'
+	AND (SELECT tb_propiedades_atributos.ln_valor FROM tb_propiedades_atributos INNER JOIN tb_cat_atributos_contrato on tb_propiedades_atributos.id_etiqueta_atributo = tb_cat_atributos_contrato.id_atributos Where tb_propiedades_atributos.id_folio_contrato = contratos.id_contrato AND tb_cat_atributos_contrato.ln_etiqueta = $P{atributo}  LIMIT 1) = $P{placa}
+	AND adminContratos.folio_recibo = ''
+	AND contratos.dtm_fecha_inicio BETWEEN $P{dateini} AND $P{datefin}
+AND contratos.id_confcontratos = $P{confContrato}]]>
+	</queryString>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="numDoc" class="java.lang.Integer"/>
+	<field name="nameConfing" class="java.lang.String"/>
+	<field name="contribuyente" class="java.lang.String"/>
+	<field name="fechaInicio" class="java.sql.Date"/>
+	<field name="placa" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="referencia" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="objPrincipal" class="java.lang.String"/>
+	<field name="objParcial" class="java.lang.String"/>
+	<field name="importe" class="java.math.BigDecimal"/>
+	<field name="legalname" class="java.lang.String">
+		<fieldDescription><![CDATA[nombre]]></fieldDescription>
+	</field>
+	<field name="rfcLegal" class="java.lang.String"/>
+	<field name="calleLegal" class="java.lang.String"/>
+	<field name="coloniaLegal" class="java.lang.String"/>
+	<field name="municipioLegal" class="java.lang.String"/>
+	<field name="estadoLegal" class="java.lang.String"/>
+	<field name="cpLegal" class="java.lang.String"/>
+	<variable name="total" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{importe}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="90" splitType="Stretch">
+			<image>
+				<reportElement uuid="c2cb7e1a-a190-49aa-9a1c-cc823af98c17" x="2" y="0" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="8e1118b2-a64e-4d58-a5ce-8696295ca906" x="145" y="1" width="284" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MUNICIPIO DE TAMPICO, TAMAULIPAS"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="416a7afa-fabf-4924-908b-0b15a5e41243" x="144" y="21" width="284" height="34"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ESTADO DE CUENTA DE \n"+$P{nameConfing}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="7952ff0c-50e3-4f17-a6d7-5e5855374cb7" x="429" y="2" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="14db8bf7-899a-4b31-938d-1e587c52deb5" x="145" y="55" width="284" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DEL "+$P{fechaInicio}+"\n AL "+$P{fechaFin}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="33" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="d3440f56-5ffa-40ce-b2a9-b18d328907c0" x="2" y="4" width="537" height="24" isRemoveLineWhenBlank="true" forecolor="#000000"/>
+				<textElement>
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PLACA: "+$P{placa}+"\nCONTRIBUYENTE: "+$P{contribuyente}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="17" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="f92c9259-88bd-4846-829c-bd8f5d187bb3" style="th" x="0" y="0" width="83" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8632868a-0e88-414b-b399-547be6358696" style="th" x="83" y="0" width="73" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO. DOCTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c1efe230-f7b3-405a-89bd-650cfb91b760" style="th" x="302" y="0" width="187" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBJ. PARCIAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="85c31553-0708-442a-b2d5-bef6e09c7098" style="th" x="489" y="0" width="83" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IMPORTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d06c3234-699f-40d1-845d-1fe1b2118aeb" style="th" x="156" y="0" width="73" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REFERENCIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c50592c7-1ace-4961-a197-c5887281841c" style="th" x="229" y="0" width="73" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBJ. PRINCIPAL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<printWhenExpression><![CDATA[!$V{REPORT_COUNT}.equals( 0 )]]></printWhenExpression>
+			<textField>
+				<reportElement uuid="597badcf-b05d-4817-9cf0-0a5f4434d4f2" style="style1" x="229" y="0" width="73" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{objPrincipal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="133b5976-c213-4e5f-8cea-fc7117bef630" style="style1" x="2" y="0" width="81" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1bf0bd6d-58d2-4ebd-818d-b1a3e294b333" style="style1" x="302" y="0" width="187" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{objParcial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement uuid="3604f23f-2786-4d5b-a09e-80ae21ffa2e6" style="style1" x="489" y="0" width="82" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3bb536ce-9f08-4b15-afef-1138321e1a8c" style="style1" x="83" y="0" width="73" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numDoc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d395bff7-7ca4-4967-a88d-27ebd76444a5" style="style1" x="156" y="0" width="73" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{referencia}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="174" splitType="Immediate">
+			<textField>
+				<reportElement uuid="27286925-f639-44ec-b790-0df27e44aee7" x="376" y="35" width="88" height="20">
+					<printWhenExpression><![CDATA[!$V{REPORT_COUNT}.equals( 0 )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TOTAL:  "]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="2689c3e6-bcee-459b-9204-2f803859277a" x="464" y="35" width="108" height="20">
+					<printWhenExpression><![CDATA[!$V{REPORT_COUNT}.equals( 0 )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{total}).round(2)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="17fa393e-0a3a-4468-b706-4697f4deacd7" x="2" y="0" width="581" height="35">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT}.equals( 0 )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[("No se encontro información para las fechas: ").toUpperCase()+"\nDEL "+$P{fechaInicio}+"\n AL "+$P{fechaFin}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

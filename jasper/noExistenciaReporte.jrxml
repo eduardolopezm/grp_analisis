@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="formato_entrega_solicitud" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7be21170-4d58-4d46-be66-992c50d4e69a">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "estiloTablaJasper.jrtx"]]></template>
+	<style name="style1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#F2F2F2" fill="Solid"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="IDReq" class="java.lang.String">
+		<defaultValueExpression><![CDATA[254]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dependecia" class="java.lang.String"/>
+	<parameter name="IMG_NOEXIST" class="java.lang.String"/>
+	<parameter name="IDNoExistencia" class="java.lang.String">
+		<defaultValueExpression><![CDATA[21]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT tb_no_existencias.nu_id_no_existencia AS idNoExistencia, tb_no_existencia_detalle.ln_renglon AS orden,
+tb_no_existencias.nu_id_requisicion AS idRequisicion, tb_no_existencia_detalle.ln_item_code AS item, tb_no_existencia_detalle.txt_item_descripcion AS itemdesc,
+purchorders.initiator, purchorders.validfrom AS fechaRegistro, legalbusinessunit.legalid AS dependenciaid, legalbusinessunit.legalname AS dependenciadesc,
+tb_no_existencias.nu_tag AS tagref, tags.tagname AS tagrefdesc, tb_no_existencias.nu_ue AS ue, tb_cat_unidades_ejecutoras.desc_ue AS uedesc,
+tb_no_existencias.txt_observaciones AS comments, DATE_FORMAT(purchorders.orddate,'%Y-%m-%d') AS fechaActual, sum(tb_no_existencia_detalle.nu_cantidad) AS cantidad
+FROM  tb_no_existencias
+INNER JOIN tb_no_existencia_detalle ON (tb_no_existencias.nu_id_no_existencia = tb_no_existencia_detalle.nu_id_no_existencia )
+INNER JOIN purchorders ON (tb_no_existencias.nu_id_requisicion = purchorders.requisitionno)
+INNER JOIN tb_cat_unidades_ejecutoras ON (tb_no_existencias.nu_ue = tb_cat_unidades_ejecutoras.ue
+AND tb_cat_unidades_ejecutoras.ur = tb_no_existencias.nu_tag )
+INNER JOIN tags ON (purchorders.tagref = tags.tagref)
+INNER JOIN legalbusinessunit ON (legalbusinessunit.legalid = tags.legalid)
+WHERE tb_no_existencias.nu_id_no_existencia = $P{IDNoExistencia}
+AND  tb_no_existencia_detalle.ln_activo=1
+GROUP BY tb_no_existencias.nu_id_no_existencia,tb_no_existencia_detalle.ln_renglon,
+tb_no_existencias.nu_id_requisicion, tb_no_existencia_detalle.ln_item_code, tb_no_existencia_detalle.txt_item_descripcion,
+purchorders.initiator, purchorders.validfrom, legalbusinessunit.legalid, legalbusinessunit.legalname, tb_no_existencias.nu_tag, tags.tagname,
+tb_no_existencias.nu_ue, tb_cat_unidades_ejecutoras.desc_ue, tb_no_existencias.txt_observaciones]]>
+	</queryString>
+	<field name="idNoExistencia" class="java.lang.Integer"/>
+	<field name="orden" class="java.lang.String"/>
+	<field name="idRequisicion" class="java.lang.Integer"/>
+	<field name="item" class="java.lang.String"/>
+	<field name="itemdesc" class="java.lang.String"/>
+	<field name="initiator" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechaRegistro" class="java.sql.Date"/>
+	<field name="dependenciaid" class="java.lang.Integer"/>
+	<field name="dependenciadesc" class="java.lang.String"/>
+	<field name="tagref" class="java.lang.String"/>
+	<field name="tagrefdesc" class="java.lang.String"/>
+	<field name="ue" class="java.lang.String"/>
+	<field name="uedesc" class="java.lang.String"/>
+	<field name="comments" class="java.lang.String"/>
+	<field name="fechaActual" class="java.lang.String"/>
+	<field name="cantidad" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="82" splitType="Stretch">
+			<textField>
+				<reportElement uuid="df010cfc-558f-4de0-abbe-791e711b115a" x="451" y="59" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["PÁGINA "+$V{PAGE_NUMBER}+" DE "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="e03c34dd-1622-4bfd-ad1b-0fcbc1ae644b" x="531" y="59" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="605936ee-97c7-420b-aed2-67677bafe57b" x="507" y="33" width="64" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{idNoExistencia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="488fef83-0274-4604-b7c3-80721ab351fa" x="451" y="33" width="56" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[FOLIO: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="0d629d71-ea6c-4456-a124-394fb104a7e2" x="139" y="0" width="312" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{dependenciadesc}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="cbe94ab8-0dda-489e-a824-630a16d3baa2" x="0" y="0" width="139" height="79"/>
+				<imageExpression><![CDATA[$P{IMG_NOEXIST}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="8608ad7b-9cc6-4085-950d-49b2d67fc210" x="139" y="21" width="312" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tagref} + " - " + $F{tagrefdesc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="60aa3eca-f2e2-43e1-a9da-c691ffb40a3e" x="139" y="44" width="312" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ue} + " - " + $F{uedesc}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="5" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="29" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="a9fcd384-56a5-415e-ab45-c96e91c60901" style="th" x="334" y="0" width="89" height="29"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[FechaRegistro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6f066fd7-53b3-4960-9e73-299ea2a9af9e" style="th" x="0" y="0" width="50" height="29"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nº]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a3972896-27f7-43f3-bfbf-a9fc343f8f78" style="th" x="122" y="0" width="82" height="29"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Clave Artículo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1cc830d4-8235-4594-aad2-baedb5499097" style="th" x="423" y="0" width="84" height="29"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Observaciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="506a98c2-ddd4-4f63-ba45-40ef59d05d86" style="th" x="507" y="0" width="64" height="29"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f7495fcd-7937-4d17-ae5c-a88a784ac1de" style="th" x="204" y="0" width="130" height="29"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Descripción Artículo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5a3b7fd8-af2b-468a-9e20-251375520494" style="th" x="50" y="0" width="72" height="29"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Requisición]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="46" splitType="Stretch">
+			<textField>
+				<reportElement uuid="33cb90eb-08f3-45df-ac01-246728384817" style="style1" x="334" y="0" width="89" height="41"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fechaRegistro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="521d6df0-5f43-4f92-adb2-4b85459d08b5" style="style1" x="0" y="0" width="50" height="41"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{orden}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4ba9dc92-e5fc-4a89-8a32-9378ed571c56" style="style1" x="122" y="0" width="82" height="41"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{item}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0068da8c-c257-4807-a3e7-ab69ff98e373" style="style1" x="204" y="0" width="130" height="41"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{itemdesc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c549fda5-ebca-4371-b3a4-22189a723424" style="style1" x="423" y="0" width="84" height="41"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{comments}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="74578849-5f0a-4817-b198-9b6daff9ad73" style="style1" x="507" y="0" width="64" height="41"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7f1dd84f-e022-400d-8f79-b3e2f9a0b6c7" style="style1" x="50" y="1" width="72" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{idRequisicion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement uuid="371edbed-9794-48d6-9f7d-54fcd8b0920e" x="122" y="34" width="100" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{initiator}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="7e540f73-ae80-467f-979f-f4a4778b6954" x="0" y="34" width="122" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[USUARIO SOLICITUD: ]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

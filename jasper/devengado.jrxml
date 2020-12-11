@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="formato_entrega_solicitud" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7be21170-4d58-4d46-be66-992c50d4e69a">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "estiloTablaJasper.jrtx"]]></template>
+	<style name="style1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#F2F2F2" fill="Solid"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="transno" class="java.lang.String"/>
+	<parameter name="type" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+chartdetailsbudgetlog.type,
+chartdetailsbudgetlog.transno,
+chartdetailsbudgetlog.cvefrom,
+SUM(ROUND(ABS(chartdetailsbudgetlog.qty), 2)) as qty,
+chartdetailsbudgetlog.period,
+DATE_FORMAT(chartdetailsbudgetlog.fecha_captura, '%d-%m-%Y') as fecha_captura,
+CONCAT(tags.tagref, ' - ', tags.tagname) as tagname,
+legalbusinessunit.legalname,
+CONCAT(tb_pagos.nu_type,' - ',systypescatOperacion.typename) as tipoSuficiencia,
+periods.lastdate_in_period,
+DATE_FORMAT(periods.lastdate_in_period, '%Y') as anio,
+cat_Months.mes as mesName,
+www_users.realname,
+systypescat.typename,
+tb_botones_status.statusname,
+DATE_FORMAT(NOW(), '%d-%m-%Y') as fechaImpresion,
+DATE_FORMAT(NOW(), '%H:%i:%S') as horaImpresion,
+CONCAT(tb_pagos.ln_ue, ' - ', tb_cat_unidades_ejecutoras.desc_ue) as nameUe,
+tb_pagos.txt_justificacion,
+tb_pagos.nu_id_compromiso,
+tb_pagos.nu_id_devengado,
+CONCAT(tb_pagos.supplierid, ' - ', suppliers.suppname) as nameProveedor
+FROM chartdetailsbudgetlog
+JOIN chartdetailsbudgetbytag ON chartdetailsbudgetbytag.accountcode = chartdetailsbudgetlog.cvefrom
+LEFT JOIN tags ON tags.tagref = chartdetailsbudgetbytag.tagref
+LEFT JOIN legalbusinessunit ON legalbusinessunit.legalid = tags.legalid
+LEFT JOIN tb_pagos ON tb_pagos.nu_type = chartdetailsbudgetlog.type AND tb_pagos.nu_transno = chartdetailsbudgetlog.transno
+LEFT JOIN systypescat systypescatOperacion ON systypescatOperacion.typeid = tb_pagos.nu_type
+LEFT JOIN tb_cat_unidades_ejecutoras ON tb_cat_unidades_ejecutoras.ur = tb_pagos.sn_tagref AND tb_cat_unidades_ejecutoras.ue = tb_pagos.ln_ue
+LEFT JOIN www_users ON www_users.userid = tb_pagos.sn_userid
+LEFT JOIN periods ON periods.periodno = chartdetailsbudgetlog.period
+LEFT JOIN cat_Months ON cat_Months.u_mes = DATE_FORMAT(periods.lastdate_in_period, '%m')
+LEFT JOIN systypescat ON systypescat.typeid = chartdetailsbudgetlog.nu_tipo_movimiento
+LEFT JOIN tb_botones_status ON tb_botones_status.statusid = tb_pagos.nu_estatus AND tb_botones_status.sn_funcion_id = tb_pagos.sn_funcion_id
+LEFT JOIN suppliers ON suppliers.supplierid = tb_pagos.supplierid
+WHERE
+chartdetailsbudgetlog.type = $P{type}
+AND chartdetailsbudgetlog.transno = $P{transno}
+GROUP BY chartdetailsbudgetlog.cvefrom
+ORDER BY chartdetailsbudgetlog.cvefrom ASC, periods.lastdate_in_period ASC, chartdetailsbudgetlog.qty DESC
+]]>
+	</queryString>
+	<field name="cvefrom" class="java.lang.String"/>
+	<field name="qty" class="java.lang.Double"/>
+	<field name="period" class="java.lang.String"/>
+	<field name="tagname" class="java.lang.String"/>
+	<field name="legalname" class="java.lang.String"/>
+	<field name="tipoSuficiencia" class="java.lang.String"/>
+	<field name="mesName" class="java.lang.String"/>
+	<field name="realname" class="java.lang.String"/>
+	<field name="fecha_captura" class="java.lang.String"/>
+	<field name="statusname" class="java.lang.String"/>
+	<field name="fechaImpresion" class="java.lang.String"/>
+	<field name="horaImpresion" class="java.lang.String"/>
+	<field name="nameUe" class="java.lang.String"/>
+	<field name="txt_justificacion" class="java.lang.String"/>
+	<field name="nu_id_compromiso" class="java.lang.String"/>
+	<field name="nameProveedor" class="java.lang.String"/>
+	<field name="nu_id_devengado" class="java.lang.String"/>
+	<variable name="totalImporte" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{qty}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="72" splitType="Stretch">
+			<textField>
+				<reportElement uuid="1015e28f-2059-4c12-8fc9-20941b8762e1" x="145" y="0" width="422" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{legalname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b42fdad3-3b26-415f-846e-fdffe7989f13" x="145" y="25" width="422" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tagname}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="295705d6-b343-426b-a047-74d25d14262a" x="2" y="2" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="ba38521d-f943-40be-941a-09a0509ccd46" x="624" y="25" width="182" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["PÁGINA "+$V{PAGE_NUMBER}+" DE"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="db393110-dd6e-410f-85e7-44fb7d4e3982" x="693" y="25" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="442d9478-5cf3-4e3d-ae0e-d7943dc8d7ea" x="624" y="45" width="47" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA["FOLIO: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="838185f7-3e07-4826-9846-a9a180964a26" x="671" y="45" width="80" height="20"/>
+				<textElement>
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{transno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="adbc3ed7-c16a-45a8-8eac-4f13e2838762" x="624" y="2" width="106" height="20"/>
+				<textElement textAlignment="Left">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_captura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="92d9604e-affe-40e3-b728-a0b556d904d1" x="145" y="47" width="422" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nameUe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="44" splitType="Stretch">
+			<textField>
+				<reportElement uuid="99aac5a3-7198-446d-b5ca-870a94a130ed" x="2" y="0" width="240" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="12" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Operación: "+$F{tipoSuficiencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ec4e5e2b-4790-484d-b8ad-47c0cf44b04e" x="242" y="0" width="298" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="12" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["No de Devengado: "+$F{nu_id_devengado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d2b430c1-2bd6-4030-bc3d-c5004961d610" x="540" y="0" width="209" height="20">
+					<printWhenExpression><![CDATA[$F{nu_id_compromiso} != ""]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="12" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["No de Compromiso: "+$F{nu_id_compromiso}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="55f0b1ab-3883-4143-a6fc-3c4deb523fae" x="2" y="20" width="538" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="12" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Proveedor: "+$F{nameProveedor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6d41dece-0785-4eea-90f4-42ed0b0e46e8" x="540" y="20" width="209" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="12" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Estatus: "+$F{statusname}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="b6c39cc4-d132-4cb1-bbde-1701e4aa3180" style="th" x="0" y="0" width="540" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[CLAVE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="48c7c6ee-fe63-4340-a9ab-aed2ffdfb7ac" style="th" x="540" y="0" width="211" height="17"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[IMPORTE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement uuid="b466a557-377d-461a-8da3-adec32f4ab15" style="style1" x="540" y="0" width="211" height="27"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e56b279b-8e17-4d7b-9baa-9b6df007b45a" style="style1" x="2" y="0" width="538" height="27"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cvefrom}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="67" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement uuid="c8289cc9-b00e-4965-92ba-1b88d78c2ffb" x="242" y="7" width="298" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bfc4ae34-b5af-498a-a3df-c90ad0b2f302" x="1" y="7" width="241" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["Fecha de Impresión: "+$F{fechaImpresion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6623f914-f131-4d80-8c48-04f5a6b278c2" x="540" y="7" width="213" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Hora: "+$F{horaImpresion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="91" splitType="Stretch">
+			<textField>
+				<reportElement uuid="aac3af7a-b4ee-4d25-8c91-2f690087d147" x="1" y="25" width="141" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Justificación: "]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="8314892c-19cd-4d1c-97c0-4b7f54bd3be6" x="1" y="46" width="748" height="24"/>
+				<textElement textAlignment="Justified">
+					<font isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{txt_justificacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6d555c74-78d6-4954-ba2f-8fd7a535686d" x="2" y="5" width="538" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total: "]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="2877d307-90e9-4423-b31b-d97d89fa0882" x="540" y="5" width="209" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{totalImporte}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

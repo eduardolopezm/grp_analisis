@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_analitico_deudapasivos" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="31db912d-26b3-445f-b380-7af962e0bb97">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="anioreporte" class="java.lang.Integer"/>
+	<parameter name="tagref" class="java.lang.String"/>
+	<parameter name="entepublico" class="java.lang.String"/>
+	<parameter name="fechainicial" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2017-1-1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafinal" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2018-1-1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/eloypm/ap_grp_2018/jasper/conac/"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[select 1]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="20" y="22" width="529" height="14" uuid="0875d770-0272-4162-a4ce-4a0618002282"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Estado Analítico de la Deuda y Otros Pasivos]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="20" y="6" width="550" height="13" uuid="d424d3ab-13d7-4047-ab8f-3b3bc624c2e4"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{entepublico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="39" width="550" height="13" uuid="07192e92-2b0b-40b0-80c2-78c8d0ec66cc"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["DESDE " + $P{fechainicial} +" HASTA "+$P{fechafinal}]]></textFieldExpression>
+			</textField>
+			<image isUsingCache="false">
+				<reportElement x="0" y="0" width="140" height="70" uuid="05a1f6e9-0991-40c3-960b-5039d2c67e53"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="572" height="20" forecolor="#003300" backcolor="#1B693F" uuid="1e83b332-96bc-4da5-8934-6267de7333cf"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="124" height="13" forecolor="#FFFFFF" uuid="d76fd2a7-f9a1-4e06-a2eb-404301ee05fd"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Denominación de las Deudas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="231" y="0" width="100" height="20" forecolor="#FFFFFF" uuid="6397da8e-3d2b-4114-abb1-7c8f17be8531"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Moneda de Contratación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="331" y="0" width="80" height="20" forecolor="#FFFFFF" uuid="e66d1715-4a89-40eb-84a4-a8640d4cfe18"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Institución o País Acreedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="411" y="0" width="80" height="20" forecolor="#FFFFFF" uuid="3b7791fe-a45c-4590-9832-3502fbbd34db"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Saldo Inicial del Período]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="491" y="0" width="80" height="20" forecolor="#FFFFFF" uuid="553c93ce-a091-4412-b5e9-fe31141d3255"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Saldo Final del Período]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="464" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="1" width="100" height="20" uuid="616b8397-78a8-4d19-b4de-b24ec5a0047d"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEUDA PÚBLICA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="13" width="100" height="20" uuid="9031ccea-15c5-47c7-a7a6-1eb5ea4184c0"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Corto Plazo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="32" width="100" height="20" uuid="0b1b0809-a9f6-46b6-88d5-45eacb6c2b73"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Deuda Interna]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="45" width="120" height="20" uuid="799b5237-f27f-443a-b4c0-5606d9512da0"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Instituciones de Crédito]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="55" width="120" height="20" uuid="37d99fec-a6c7-43a8-94b3-96beb86d74b0"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Títulos y Valores]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="65" width="143" height="20" uuid="e5b91e0d-89af-4b50-bdc8-3ada98207003"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Arrendamientos Financieros]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="88" width="100" height="20" uuid="054a4e81-5891-43d8-9d41-e34702e3cb32"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Deuda Externa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="101" width="200" height="20" uuid="82c285fa-6758-42ea-82bd-843c0deef0ca"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Organismos Financieros Internacionales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="111" width="120" height="20" uuid="a16b679e-b589-42c5-88a8-8f3416e7f65d"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Deuda Bilateral]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="121" width="143" height="20" uuid="88664969-20df-44cf-9af5-d564ef435d76"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Títulos y Valores]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="131" width="143" height="20" uuid="195d911b-20c8-4dee-afea-f5b35a6a34bf"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Arrendamientos Financieros]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="151" width="143" height="20" uuid="c747c449-79c9-4a39-9ecf-6f53e6c2355e"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Subtotal Corto Plazo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="172" width="143" height="20" uuid="0d976c40-04f1-4d2f-a781-10e8c5c0734d"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Largo Plazo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="194" width="100" height="20" uuid="8888a3c7-9916-474b-be41-a8a97663b886"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Deuda Interna]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="207" width="120" height="20" uuid="d070af84-0479-4375-907f-66cfacd405eb"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Instituciones de Crédito]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="217" width="120" height="20" uuid="72ec626f-a3b5-4d4b-a327-02690729d020"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Títulos y Valores]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="227" width="143" height="20" uuid="48491d0c-fda3-46c2-8f67-e90116a9983b"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Arrendamientos Financieros]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="258" width="100" height="20" uuid="ad7c795c-09cc-4c8d-a47a-7662f698796c"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Deuda Externa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="271" width="200" height="20" uuid="30d6fa04-fb29-4603-b092-ae63965f093c"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Organismos Financieros Internacionales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="281" width="120" height="20" uuid="7122b36f-b72a-4264-ab80-150bffa950fa"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Deuda Bilateral]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="291" width="143" height="20" uuid="cfe092cd-87c7-4194-ac29-f17eb2ed92d4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Títulos y Valores]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="301" width="143" height="20" uuid="f3bced76-44b1-4405-9088-67ebe90002d1"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Arrendamientos Financieros]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="321" width="143" height="20" uuid="c289676f-3ebc-4239-835b-1d40b7c7d7ed"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Subtotal Largo Plazo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="361" width="143" height="20" uuid="a59d8710-596f-48a5-91aa-7272713c2088"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Otros Pasivos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="381" width="143" height="20" uuid="d5220635-55fc-4ac1-a9ce-0ac6021b4d97"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Deuda y Otros Pasivos]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="3" y="401" width="569" height="56" uuid="68b7216f-513f-4477-83df-da41b45a906d"/>
+				<subreportParameter name="TituloReporte"/>
+				<subreportParameter name="CuentaContable"/>
+				<subreportParameter name="Anio"/>
+				<subreportParameter name="SUBREPORT_DIR"/>
+				<subreportParameter name="tagref"/>
+				<subreportParameter name="ue"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "rpt_analitico_desudapasivos_subreport.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="67"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

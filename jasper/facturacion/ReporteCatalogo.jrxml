@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteCatalogo" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="82c56e9f-eafc-443b-af58-a83615d137ec">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#CCCCCC"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#C3CFD9">
+		<box>
+			<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#E6F3FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="08b459dc-384a-4b51-b3de-bfdb377592da"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/jesusvargas2/NetBeansProjects/erpdistribucionv2/jasper/facturacion/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LOGO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Users/jesusvargas2/git/erpdistribucionv2_03/companies/erpplacacentro_DES/logo.jpg"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="xPath">
+		<![CDATA[/Catalogo]]>
+	</queryString>
+	<field name="Anio" class="java.lang.String">
+		<fieldDescription><![CDATA[@Anio]]></fieldDescription>
+	</field>
+	<field name="Mes" class="java.lang.String">
+		<fieldDescription><![CDATA[@Mes]]></fieldDescription>
+	</field>
+	<field name="RFC" class="java.lang.String">
+		<fieldDescription><![CDATA[@RFC]]></fieldDescription>
+	</field>
+	<field name="Legalname" class="java.lang.String">
+		<fieldDescription><![CDATA[@Legalname]]></fieldDescription>
+	</field>
+	<field name="Ctas" class="java.lang.String">
+		<fieldDescription><![CDATA[concepto/Ctas]]></fieldDescription>
+	</field>
+	<field name="CodAgrup" class="java.lang.String">
+		<fieldDescription><![CDATA[concepto/Ctas/@CodAgrup]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="121" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="cf3baeb4-8b68-4e74-bab3-a92dc2c8510f" mode="Opaque" x="134" y="75" width="83" height="15" backcolor="#EEEEEE"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RFC:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ac5a3688-5df6-4b7c-b813-600cbac43488" mode="Opaque" x="135" y="90" width="82" height="13" forecolor="#000000" backcolor="#EEEEEE"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Mes:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="52d8e550-e56a-4d5a-b346-9cb5c5b89963" mode="Opaque" x="135" y="103" width="82" height="13" backcolor="#EEEEEE"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Año:]]></text>
+			</staticText>
+			<rectangle radius="4">
+				<reportElement uuid="b039d26c-84c7-447c-85b5-63c8dafca24f" mode="Transparent" x="134" y="74" width="224" height="43" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="81d8ca92-bb97-4b41-994d-84539649e011" x="217" y="103" width="141" height="15"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Anio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="44164584-3091-469d-8fe3-c971c7012afc" x="217" y="90" width="141" height="15"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Mes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d87a0ac6-83b2-4037-a8a7-2f1bf9a6e71e" x="217" y="75" width="141" height="15"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RFC}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="0dad0dc6-2048-4493-8909-6a3d3b551fef" x="217" y="0" width="224" height="16" forecolor="#666666"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Catálogo Contable]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="7be146d0-3588-4fb5-80ed-d6fdf452f7f2" x="217" y="16" width="224" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Legalname}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" hAlign="Left" vAlign="Middle" isUsingCache="true" onErrorType="Blank">
+				<reportElement uuid="5b4ea646-7062-49ea-826c-a0caf3d65c6c" mode="Transparent" x="3" y="9" width="106" height="66"/>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="36">
+			<subreport>
+				<reportElement uuid="43e50457-b811-4521-ba68-35653eb2d0d3" x="1" y="0" width="554" height="34"/>
+				<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)
+$P{REPORT_DATA_SOURCE}).subDataSource("/Catalogo/concepto/Ctas")]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "conceptos_catalogo.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

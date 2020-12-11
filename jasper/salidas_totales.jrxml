@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="formato_entrega_solicitud" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7be21170-4d58-4d46-be66-992c50d4e69a">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "estiloTablaJasper.jrtx"]]></template>
+	<style name="style1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#F2F2F2" fill="Solid"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="idsolicitud" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["75"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dependencia" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["algo"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ur" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["ur"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechasolicitud" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["90/01/01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="usuarioSolicitud" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["01/01/01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="usuarioEntrega" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["asdfasdf"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="nu_folio" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["0"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="almacen" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["asfasdf"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="urName" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+*
+FROM tb_salidas_almacen
+INNER JOIN tb_salidas_almacen_detalle ON tb_salidas_almacen.nu_folio=tb_salidas_almacen_detalle.nu_folio
+WHERE
+tb_salidas_almacen.nu_solicitud = $P{idsolicitud}
+ORDER BY tb_salidas_almacen_detalle.ln_renglon ASC]]>
+	</queryString>
+	<field name="nu_id_salida" class="java.lang.Integer">
+		<fieldDescription><![CDATA[id de salida]]></fieldDescription>
+	</field>
+	<field name="nu_solicitud" class="java.lang.Integer">
+		<fieldDescription><![CDATA[id de solicitud]]></fieldDescription>
+	</field>
+	<field name="dtm_fecharegistro" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[Fecha de creacion]]></fieldDescription>
+	</field>
+	<field name="nu_tag" class="java.lang.String">
+		<fieldDescription><![CDATA[tag unidad responsable]]></fieldDescription>
+	</field>
+	<field name="ln_usuario" class="java.lang.String">
+		<fieldDescription><![CDATA[usuario en el sistema]]></fieldDescription>
+	</field>
+	<field name="estatus" class="java.lang.String">
+		<fieldDescription><![CDATA[estatus de la salia parcial o total]]></fieldDescription>
+	</field>
+	<field name="nu_folio" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nu_id_solicitud" class="java.lang.Integer">
+		<fieldDescription><![CDATA[id de tabla tb_solicitudes_alamacen]]></fieldDescription>
+	</field>
+	<field name="nu_cantidad" class="java.lang.Integer">
+		<fieldDescription><![CDATA[cantidad del articulo]]></fieldDescription>
+	</field>
+	<field name="nu_cantidad_entregada" class="java.lang.Integer">
+		<fieldDescription><![CDATA[cantidad del articulo entregada]]></fieldDescription>
+	</field>
+	<field name="nu_cantidad_faltante" class="java.lang.Integer">
+		<fieldDescription><![CDATA[cantidad del articulo faltante]]></fieldDescription>
+	</field>
+	<field name="ln_clave_articulo" class="java.lang.String">
+		<fieldDescription><![CDATA[clave articulo]]></fieldDescription>
+	</field>
+	<field name="txt_descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[nombre articulo o descripcion]]></fieldDescription>
+	</field>
+	<field name="ln_cams" class="java.lang.String">
+		<fieldDescription><![CDATA[clave articulo]]></fieldDescription>
+	</field>
+	<field name="ln_partida" class="java.lang.String">
+		<fieldDescription><![CDATA[partida especifica del articulo]]></fieldDescription>
+	</field>
+	<field name="ln_unidad_medida" class="java.lang.String">
+		<fieldDescription><![CDATA[unidad de medida sobre el articulo]]></fieldDescription>
+	</field>
+	<field name="ln_estatus" class="java.lang.String">
+		<fieldDescription><![CDATA[estatus de operacion cuando se entrega los productos si es parcial o total la entrega]]></fieldDescription>
+	</field>
+	<field name="ln_renglon" class="java.lang.String">
+		<fieldDescription><![CDATA[numero de renglon]]></fieldDescription>
+	</field>
+	<variable name="ln_clave_articulo_1" class="java.lang.Integer" resetType="Page" calculation="Count">
+		<variableExpression><![CDATA[$F{ln_clave_articulo}]]></variableExpression>
+	</variable>
+	<group name="Salidas">
+		<groupExpression><![CDATA[$F{nu_folio}]]></groupExpression>
+		<groupHeader>
+			<band height="60">
+				<frame>
+					<reportElement uuid="37455a3f-0777-46e6-baa9-0a9388dfacb8" x="1" y="29" width="572" height="29"/>
+					<staticText>
+						<reportElement uuid="48c7c6ee-fe63-4340-a9ab-aed2ffdfb7ac" style="th" x="0" y="0" width="90" height="29"/>
+						<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="1.0"/>
+							<topPen lineWidth="1.0"/>
+							<leftPen lineWidth="1.0"/>
+							<bottomPen lineWidth="1.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Center">
+							<font size="9"/>
+						</textElement>
+						<text><![CDATA[NO.]]></text>
+					</staticText>
+					<staticText>
+						<reportElement uuid="8a4ea098-d008-44c4-b076-52619f5ebe69" style="th" x="90" y="0" width="82" height="29"/>
+						<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="1.0"/>
+							<topPen lineWidth="1.0"/>
+							<leftPen lineWidth="1.0"/>
+							<bottomPen lineWidth="1.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Center">
+							<font size="9"/>
+						</textElement>
+						<text><![CDATA[CLAVE ARTÍCULO]]></text>
+					</staticText>
+					<rectangle>
+						<reportElement uuid="205e0544-086d-47eb-a932-af06c06499d9" x="555" y="0" width="17" height="29"/>
+						<graphicElement>
+							<pen lineWidth="0.0"/>
+						</graphicElement>
+					</rectangle>
+					<staticText>
+						<reportElement uuid="392401d8-de58-487a-9621-30965fa48f83" style="th" x="172" y="0" width="176" height="29"/>
+						<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="1.0"/>
+							<topPen lineWidth="1.0"/>
+							<leftPen lineWidth="1.0"/>
+							<bottomPen lineWidth="1.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Center">
+							<font size="9"/>
+						</textElement>
+						<text><![CDATA[DESCRIPCIÓN ARTÍCULO]]></text>
+					</staticText>
+					<staticText>
+						<reportElement uuid="b6c39cc4-d132-4cb1-bbde-1701e4aa3180" style="th" x="348" y="0" width="74" height="29"/>
+						<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="1.0"/>
+							<topPen lineWidth="1.0"/>
+							<leftPen lineWidth="1.0"/>
+							<bottomPen lineWidth="1.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Center">
+							<font size="9"/>
+						</textElement>
+						<text><![CDATA[CANTIDAD SOLICITADA]]></text>
+					</staticText>
+					<staticText>
+						<reportElement uuid="06eb00a4-2c7e-41d1-b08e-916c9431f13f" style="th" x="422" y="0" width="74" height="29"/>
+						<textElement textAlignment="Center">
+							<font size="9"/>
+						</textElement>
+						<text><![CDATA[CANTIDAD ENTREGADA]]></text>
+					</staticText>
+					<staticText>
+						<reportElement uuid="90a32802-7db6-4bb6-87f4-64de5c883f0d" style="th" x="497" y="0" width="57" height="29"/>
+						<textElement textAlignment="Center">
+							<font size="9"/>
+						</textElement>
+						<text><![CDATA[CANTIDAD FALTANTE]]></text>
+					</staticText>
+				</frame>
+				<staticText>
+					<reportElement uuid="4ca62d60-f3ed-4a65-b927-047e3e517856" x="80" y="0" width="78" height="12"/>
+					<textElement textAlignment="Center">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[FOLIO SALIDA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="e9f94913-d9cb-4df3-a5c6-75a76eebf4ee" x="0" y="0" width="78" height="12"/>
+					<textElement textAlignment="Center">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[FOLIO SOLICITUD]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="71dfae5f-40d3-4fb8-9162-2699ef788d31" x="0" y="11" width="78" height="12"/>
+					<textElement textAlignment="Center">
+						<font size="9" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{idsolicitud}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="0d150370-26fc-4f2b-9f30-e9309c01445e" x="80" y="11" width="78" height="12"/>
+					<textElement textAlignment="Center">
+						<font isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nu_folio}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="5f588352-68fb-4d3a-b37b-b9f318aa001d" x="446" y="11" width="125" height="14"/>
+					<textElement textAlignment="Center">
+						<font isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{dtm_fecharegistro}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="03d73268-bf8f-4061-85a2-e8041ec4d015" x="446" y="0" width="125" height="12"/>
+					<textElement textAlignment="Center">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[FECHA SALIDA]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="23"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="77" splitType="Stretch">
+			<textField>
+				<reportElement uuid="1015e28f-2059-4c12-8fc9-20941b8762e1" x="144" y="2" width="302" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dependencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b42fdad3-3b26-415f-846e-fdffe7989f13" x="144" y="33" width="302" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{urName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4d3b4e44-2852-4c6d-8203-235f6753c643" x="446" y="8" width="125" height="34"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{almacen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="25996195-86da-452f-a02d-9965dc317ef3" x="446" y="42" width="126" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["FECHA SOLICITUD"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b8f94cc4-0f27-41b9-9f70-df21f67c0bb1" x="446" y="57" width="124" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechasolicitud}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="4bc1dc46-d684-45e7-a6e9-6dccfc40cea2" x="2" y="1" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="59" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="48cb8494-3763-454e-88b1-2042610e3e40" style="style1" x="553" y="0" width="18" height="58"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="db4c35a7-5b21-4dda-a9d3-d4be0f3490b3" x="556" y="20" width="15" height="15"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="3266c80f-1452-4f9a-81ea-81363de14a60" style="style1" x="91" y="0" width="82" height="58"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ln_clave_articulo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5e4b4a63-6404-458e-870d-0f53b1ea6018" style="style1" x="422" y="1" width="74" height="57"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nu_cantidad_entregada}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b466a557-377d-461a-8da3-adec32f4ab15" style="style1" x="0" y="0" width="90" height="58"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ln_renglon}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="beae7e69-df4a-413d-aa4d-1f664a1dfa5f" style="style1" x="497" y="1" width="56" height="57"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nu_cantidad_faltante}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="69f8cd83-56ef-4485-a7aa-81a2d1084a95" style="style1" x="173" y="0" width="174" height="58"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{txt_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e56b279b-8e17-4d7b-9baa-9b6df007b45a" style="style1" x="348" y="0" width="74" height="57"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nu_cantidad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="59" splitType="Stretch">
+			<textField>
+				<reportElement uuid="72aca643-d2a7-4dc7-9e4e-eaa26e7d8e76" x="0" y="0" width="101" height="20"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["USUARIO SOLICITUD: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="503f1876-16f5-459e-ba31-5428d1b7bb29" x="102" y="0" width="108" height="20"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usuarioSolicitud}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="43f902c0-60e4-41a5-bf82-3b80a92a6e49" x="371" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["USUARIO ENTREGA: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="371edbed-9794-48d6-9f7d-54fcd8b0920e" x="471" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ln_usuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e9194c51-74cf-4de9-abca-0ae6a0f7aadd" x="386" y="35" width="144" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["PÁGINA "+$V{PAGE_NUMBER}+"DE"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="8559d2a3-a89b-42e6-b1f0-f435c69354ea" x="530" y="35" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

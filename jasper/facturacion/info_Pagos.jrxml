@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="detail.v3.nivel.0" language="groovy" pageWidth="440" pageHeight="100" columnWidth="440" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="110b6398-3008-454f-9432-f8e3dd2405f1">
+	<property name="ireport.zoom" value="4.0"/>
+	<property name="ireport.x" value="8"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="tienepagare" class="java.lang.String">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TYPE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<queryString language="xPath">
+		<![CDATA[/Comprobante/Complemento/Pagos/Pago]]>
+	</queryString>
+	<field name="etiqueta" class="java.lang.String">
+		<fieldDescription><![CDATA[@etiqueta]]></fieldDescription>
+	</field>
+	<field name="formaDePago" class="java.lang.String">
+		<fieldDescription><![CDATA[ancestor::Comprobante/@formaDePago]]></fieldDescription>
+	</field>
+	<field name="metodoDePago" class="java.lang.String">
+		<fieldDescription><![CDATA[ancestor::Comprobante/@metodoDePago]]></fieldDescription>
+	</field>
+	<field name="condicionesDePago" class="java.lang.String">
+		<fieldDescription><![CDATA[ancestor::Comprobante/@condicionesDePago]]></fieldDescription>
+	</field>
+	<field name="NumCtaPago" class="java.lang.String">
+		<fieldDescription><![CDATA[ancestor::Comprobante/@NumCtaPago]]></fieldDescription>
+	</field>
+	<field name="Moneda" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@Moneda]]></fieldDescription>
+	</field>
+	<field name="TipoProceso" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/INE/@TipoProceso]]></fieldDescription>
+	</field>
+	<field name="Ambito" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/INE/Entidad/@Ambito]]></fieldDescription>
+	</field>
+	<field name="Contabilidad" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/INE/Entidad/Contabilidad]]></fieldDescription>
+	</field>
+	<field name="ClaveEntidad" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/INE/Entidad/@ClaveEntidad]]></fieldDescription>
+	</field>
+	<field name="TipoComite" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/INE/@TipoComite]]></fieldDescription>
+	</field>
+	<field name="IdContabilidad" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/INE/Entidad/Contabilidad/@IdContabilidad]]></fieldDescription>
+	</field>
+	<field name="MetodoPago" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@MetodoPago]]></fieldDescription>
+	</field>
+	<field name="FormaPago" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@FormaPago]]></fieldDescription>
+	</field>
+	<field name="TipoCambio" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@TipoCambio]]></fieldDescription>
+	</field>
+	<field name="UsoCFDI" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/@UsoCFDI]]></fieldDescription>
+	</field>
+	<field name="Confirmacion" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/@Confirmacion]]></fieldDescription>
+	</field>
+	<field name="version" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@version]]></fieldDescription>
+	</field>
+	<field name="RfcEmisorCtaOrd" class="java.lang.String">
+		<fieldDescription><![CDATA[@RfcEmisorCtaOrd]]></fieldDescription>
+	</field>
+	<field name="NomBancoOrdExt" class="java.lang.String">
+		<fieldDescription><![CDATA[@NomBancoOrdExt]]></fieldDescription>
+	</field>
+	<field name="CtaOrdenante" class="java.lang.String">
+		<fieldDescription><![CDATA[@CtaOrdenante]]></fieldDescription>
+	</field>
+	<field name="FechaPago" class="java.lang.String">
+		<fieldDescription><![CDATA[@FechaPago]]></fieldDescription>
+	</field>
+	<field name="NumOperacion" class="java.lang.String">
+		<fieldDescription><![CDATA[@NumOperacion]]></fieldDescription>
+	</field>
+	<field name="FormaDePagoP" class="java.lang.String">
+		<fieldDescription><![CDATA[@FormaDePagoP]]></fieldDescription>
+	</field>
+	<field name="MonedaP" class="java.lang.String">
+		<fieldDescription><![CDATA[@MonedaP]]></fieldDescription>
+	</field>
+	<field name="RfcEmisorCtaBen" class="java.lang.String">
+		<fieldDescription><![CDATA[@RfcEmisorCtaBen]]></fieldDescription>
+	</field>
+	<field name="CtaBeneficiario" class="java.lang.String">
+		<fieldDescription><![CDATA[@CtaBeneficiario]]></fieldDescription>
+	</field>
+	<field name="TipoCambioP" class="java.lang.String">
+		<fieldDescription><![CDATA[@TipoCambioP]]></fieldDescription>
+	</field>
+	<field name="MontoP" class="java.lang.String">
+		<fieldDescription><![CDATA[@Monto]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="4" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{TYPE}=="12"||$P{TYPE}=="200"]]></printWhenExpression>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="ad6d2a55-e830-4650-8616-be43f6fbc7a1" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="0" width="432" height="4" forecolor="#000000"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="html">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{version} == "3.3" && ($P{TYPE} == "12" || $P{TYPE} == "200")
+       ?
+       "<br><b>Información del Cta Ordenate:  </b> " +
+       ($F{RfcEmisorCtaOrd}!=null && !$F{RfcEmisorCtaOrd}.isEmpty() ? " <b>RFC: </b>" + $F{RfcEmisorCtaOrd} : "") +
+       ($F{NomBancoOrdExt}!=null && !$F{NomBancoOrdExt}.isEmpty() ? " <b>Banco: </b> " + $F{NomBancoOrdExt} : "") +
+       ($F{CtaOrdenante}!=null && !$F{CtaOrdenante}.isEmpty() ? " <b>Cta Ordenante: </b> " + $F{CtaOrdenante} : "") +
+       ($F{RfcEmisorCtaBen}!=null && !$F{RfcEmisorCtaBen}.isEmpty() ? "<br><b>Información del beneficiario: </b>" : "") +
+       ($F{RfcEmisorCtaBen}!=null && !$F{RfcEmisorCtaBen}.isEmpty() ? " <b>RFC: </b> " + $F{RfcEmisorCtaBen} : "")+
+       ($F{CtaBeneficiario}!=null && !$F{CtaBeneficiario}.isEmpty() ? " <b>Cta Beneficiario: </b> " + $F{CtaBeneficiario} : "")+
+
+       "<br><b>Información del Depósito: </b> " +
+       ($F{FechaPago}!=null && !$F{FechaPago}.isEmpty() ? " <b>Fecha de Pago: </b> " + $F{FechaPago} : "") +
+       ($F{NumOperacion}!=null && !$F{NumOperacion}.isEmpty() ? " <b>No. Operación: </b> " + $F{NumOperacion} : "")+
+       ($F{FormaDePagoP}!=null && !$F{FormaDePagoP}.isEmpty() ? " <b>Forma de pago: </b> " + $F{FormaDePagoP} : "")+
+       ($F{MonedaP}!=null && !$F{MonedaP}.isEmpty() ? " <b>Moneda: </b> " + $F{MonedaP} : "")+
+       ($F{TipoCambioP}!=null && !$F{TipoCambioP}.isEmpty() ? " <b>Tipo de Cambio: </b> " + $F{TipoCambioP} : "")+
+       ($F{MontoP}!=null && !$F{MontoP}.isEmpty() ? " <b>Monto: </b> " + $F{MontoP} : "")
+       : ""
+)]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

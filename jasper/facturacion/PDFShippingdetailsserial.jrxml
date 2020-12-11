@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PDFShippingdetailsserial" language="groovy" pageWidth="255" pageHeight="80" columnWidth="253" leftMargin="1" rightMargin="1" topMargin="1" bottomMargin="1" isIgnorePagination="true" uuid="2934e599-9fe1-4647-8e05-7470e5543e92">
+	<property name="ireport.zoom" value="4.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="embarque" class="java.lang.String">
+		<parameterDescription><![CDATA[embarque]]></parameterDescription>
+		<defaultValueExpression><![CDATA["27289"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="stockid" class="java.lang.String">
+		<parameterDescription><![CDATA[stockid]]></parameterDescription>
+		<defaultValueExpression><![CDATA["T107JM-GIQU"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[Select shippingserialitems.serialno,
+shippingserialitems.cantidad
+from shippingserialitems
+where shippingserialitems.shippinglogid = $P{embarque}
+AND shippingserialitems.stockid = $P{stockid}]]>
+	</queryString>
+	<field name="serialno" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cantidad" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<title>
+		<band height="26" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="b2b3b1a2-f2f6-4ec7-a934-8bf0c0594caf" x="0" y="0" width="253" height="26" backcolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="96cd09fe-b518-4dc6-a226-0901add7f554" x="122" y="0" width="118" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d7159c8e-1519-4a18-b1b2-46e4ade5422c" x="18" y="0" width="104" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Serie]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="da98e3cc-3b53-4c48-a2ac-0e8564f63bca" x="18" y="0" width="104" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{serialno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="b9390f5b-fdda-4b69-bac7-486acf070701" x="122" y="0" width="118" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="10">
+				<reportElement uuid="f5e33946-5220-45a5-9c30-a23234199add" mode="Transparent" x="0" y="0" width="253" height="20"/>
+			</rectangle>
+		</band>
+	</detail>
+</jasperReport>

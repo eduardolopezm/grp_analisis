@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_conac_footer" language="groovy" pageWidth="555" pageHeight="70" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="752b6f3f-e3c4-424f-821b-444f6ab8569d">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT 1]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="69" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="45a3a610-2cd2-473e-a5fa-c426a0c689d6" x="26" y="5" width="496" height="11"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Bajo protesta de decir verdad declaramos que los Estados Financieros y sus Notas son razonablemente correctos y responsabilidad del emisor.							]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9e68d5d5-603f-4e35-af66-7e571097a53e" x="81" y="46" width="129" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Autorizo]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="44f6312d-738e-43b8-a852-e7b9fd274c62" x="81" y="45" width="129" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="f9b70a2c-2e0a-4e68-8a56-8a849e5d9a12" x="339" y="44" width="129" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="2a056732-4f09-4cac-b608-b77f200c951d" x="339" y="45" width="129" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Elaboro]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+</jasperReport>

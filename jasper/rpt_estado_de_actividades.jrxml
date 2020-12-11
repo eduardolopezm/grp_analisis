@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_estado_de_actividades" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="429e7bfa-471e-42f3-9f81-ab272a9e7a49">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.print.keep.full.text" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.wrap.text" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.collapse.row.span" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.one.page.per.sheet" value="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/alfredob/Projects/grp/ap_grp/jasper/conac/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anioreporte" class="java.lang.String">
+		<defaultValueExpression><![CDATA[2017]]></defaultValueExpression>
+	</parameter>
+	<parameter name="entepublico" class="java.lang.String"/>
+	<parameter name="tagref" class="java.lang.String">
+		<defaultValueExpression><![CDATA[100]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechainicial" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2017-1-1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafinal" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2018-1-1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="ue" class="java.lang.String"/>
+	<parameter name="descripcionUE" class="java.lang.String"/>
+	<parameter name="fechaReporteNew" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2018-01-01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechainicialnew" class="java.lang.String"/>
+	<parameter name="fechafinalnew" class="java.lang.String"/>
+	<parameter name="usuario" class="java.lang.String">
+		<defaultValueExpression><![CDATA[desarrollo]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT gg.grupo1id,
+		gg.grupo1desc, gg.grupo2id,
+		gg.grupo2desc,
+		config_reportes_.reporte,
+		gg.descripcion,
+		gg.clasificacionid,
+		SUBSTRING_INDEX(config_reportes_.valor, '.', 3) as accountcode,
+		chartmaster.accountname AS cuenta_mayor,
+		coalesce(gltrans.Periodo1,0) as PERIODO1,
+		coalesce(gltrans.Periodo2,0) as PERIODO2
+FROM config_reportes_
+INNER JOIN chartmaster ON SUBSTRING_INDEX(config_reportes_.valor, '.', 3) = chartmaster.accountcode
+LEFT JOIN (SELECT SUBSTRING_INDEX(account, '.', "3") as account,
+					IFNULL(SUM(case when trandate between $P{fechainicialnew} and  $P{fechafinalnew} then gltrans.amount else 0 end), 0)  as Periodo1,
+					IFNULL(SUM(case when trandate between date_add($P{fechainicialnew}, INTERVAL -1 year) and date_add($P{fechafinalnew}, INTERVAL -1 year) then gltrans.amount else 0 end), 0)  as Periodo2
+			FROM  gltrans
+			INNER JOIN sec_unegsxuser ON gltrans.tag = sec_unegsxuser.tagref AND sec_unegsxuser.userid ='desarrollo'
+			INNER JOIN (SELECT SUBSTRING_INDEX(config_reportes_.valor, '.', 3)  AS valor
+      					FROM config_reportes_
+      					WHERE reporte ='EstadoDeActividades'
+      					GROUP BY SUBSTRING_INDEX(config_reportes_.valor, '.', 3)
+      					) configReport ON SUBSTRING_INDEX(account, '.', "3") = configReport.valor
+			WHERE gltrans.tag = $P{tagref}
+	  				AND CASE WHEN  '09' = '' THEN 1 = 1 ELSE gltrans.ln_ue IN ('09') END
+	  				AND gltrans.account != ''
+      				AND gltrans.posted = 1
+      		GROUP BY SUBSTRING_INDEX(account, '.', "3")
+) gltrans ON SUBSTRING_INDEX(config_reportes_.valor, '.', 3) = gltrans.account
+LEFT JOIN (
+    select
+        n.*, d.descripcion, d.clasificacionid
+    from  (
+        select
+            c.clasificacionid grupo1id, c.descripcion grupo1desc, b.clasificacionid as grupo2id, b.descripcion as grupo2desc, c.reporte
+        from tb_cat_guia_cumplimiento c
+        left outer join tb_cat_guia_cumplimiento b
+            on b.padreid = c.clasificacionid and c.reporte = b.reporte
+        where c.padreid is null and c.reporte =  'ESTADO DE ACTIVIDADES' AND b.reporte = 'ESTADO DE ACTIVIDADES'
+    ) n
+    left outer join tb_cat_guia_cumplimiento d
+        on d.padreid = n.grupo2id and d.reporte = n.reporte
+) gg ON UPPER(chartmaster.accountname) = UPPER(gg.descripcion)
+WHERE config_reportes_.reporte ='EstadoDeActividades'
+		AND config_reportes_.tagref = $P{tagref}
+GROUP BY SUBSTRING_INDEX(config_reportes_.valor, '.', 3)
+ORDER BY gg.grupo1id, gg.grupo2id;]]>
+	</queryString>
+	<field name="cuenta_mayor" class="java.lang.String"/>
+	<field name="Periodo1" class="java.lang.Number"/>
+	<field name="Periodo2" class="java.lang.Number"/>
+	<field name="grupo1id" class="java.lang.Integer"/>
+	<field name="grupo1desc" class="java.lang.String"/>
+	<field name="grupo2id" class="java.lang.Integer"/>
+	<field name="grupo2desc" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<variable name="variableSecciones" class="java.lang.String">
+		<variableExpression><![CDATA[($F{cuenta_mayor}.startsWith( "Ingresos no Comprendidos en las Fracciones" )?"Participaciones, Aportaciones, Transferencias, Asignaciones, Subsidios y Otras Ayudas":
+    ($F{cuenta_mayor}.startsWith( "Transferencias, Asignaciones, Subsidios y Otras ayudas" )?"Otros Ingresos y Beneficios":
+        ($F{cuenta_mayor}.startsWith("Otros Ingresos y Beneficios Varios")? "Total de Ingresos y Otros Beneficios":
+            ($F{cuenta_mayor}.startsWith("Servicios Generales")? "Transferencia, Asignaciones, Subidios y Otras Ayudas":
+                    ($F{cuenta_mayor}.startsWith("Transferencias al Exterior")? "Participaciones y Aportaciones":
+                        ($F{cuenta_mayor}.startsWith("Convenios")? "Intereses, Comisiones y Otros Gastos de la Deuda Pública":
+                            ($F{cuenta_mayor}.startsWith("Apoyos Financieros")? "Otros Gastos y Pérdidas Extraordinarias":
+                                ($F{cuenta_mayor}.startsWith("Otros Gastos")? "Inversión Pública":"otro")
+                            )
+                        )
+                    )
+            )
+        )
+    )
+
+)]]></variableExpression>
+	</variable>
+	<variable name="variableSeccionesArriba" class="java.lang.String"/>
+	<variable name="variableSeccionesTitulos" class="java.lang.String">
+		<variableExpression><![CDATA[($F{cuenta_mayor}.startsWith( "Impuestos" )?"INGRESOS Y OTROS BENEFICIOS":
+    ($F{cuenta_mayor}.startsWith( "Transferencias, Asignaciones, Subsidios y Otras ayudas" )?"Otros Ingresos y Beneficios":
+        ($F{cuenta_mayor}.startsWith("Otros Ingresos y Beneficios Varios")? "Total de Ingresos y Otros Beneficios":
+            ($F{cuenta_mayor}.startsWith("Servicios Generales")? "Transferencia, Asignaciones, Subidios y Otras Ayudas":
+                    ($F{cuenta_mayor}.startsWith("Transferencias al Exterior")? "Participaciones y Aportaciones":
+                        ($F{cuenta_mayor}.startsWith("Convenios")? "Intereses, Comisiones y Otros Gastos de la Deuda Pública":
+                            ($F{cuenta_mayor}.startsWith("Apoyos Financieros")? "Otros Gastos y Pérdidas Extraordinarias":
+                                ($F{cuenta_mayor}.startsWith("Otros Gastos")? "Inversión Pública":"otro")
+                            )
+                        )
+                    )
+            )
+        )
+    )
+
+)]]></variableExpression>
+	</variable>
+	<variable name="totalPeriodo1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{Periodo1}.doubleValue()]]></variableExpression>
+	</variable>
+	<variable name="totalPeriodo2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{Periodo2}]]></variableExpression>
+	</variable>
+	<variable name="subtotalPeriodo1" class="java.lang.Double" resetType="Group" resetGroup="grupo1" calculation="Sum">
+		<variableExpression><![CDATA[$F{Periodo1}.doubleValue()]]></variableExpression>
+	</variable>
+	<variable name="subtotalPeriodo2" class="java.lang.Double" resetType="Group" resetGroup="grupo1" calculation="Sum">
+		<variableExpression><![CDATA[$F{Periodo2}]]></variableExpression>
+	</variable>
+	<group name="grupo1">
+		<groupExpression><![CDATA[$F{grupo1desc}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement uuid="4fd90310-45e6-4466-895c-75e2e8f804cc" mode="Opaque" x="0" y="0" width="572" height="20" forecolor="#000000" backcolor="#F6F2F2"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{grupo1desc}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<textField>
+					<reportElement uuid="385a0c33-67f2-4442-b6e7-044008f9b2b3" x="-1" y="0" width="405" height="20"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA["TOTAL DE " + $F{grupo1desc}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,##0.00">
+					<reportElement uuid="9cbccb6c-7f35-4c2d-babe-132c6f0bd33d" x="404" y="0" width="81" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{subtotalPeriodo1}.doubleValue() < 0 ? $V{subtotalPeriodo1}.doubleValue() * -1 : $V{subtotalPeriodo1}.doubleValue()]]></textFieldExpression>
+				</textField>
+				<textField pattern="###,##0.00">
+					<reportElement uuid="5d4be15e-20d9-4e75-9394-b7199746066a" x="485" y="0" width="87" height="20"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{subtotalPeriodo2}.doubleValue() < 0 ? $V{subtotalPeriodo2}.doubleValue() * -1 : $V{subtotalPeriodo2}.doubleValue()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="grupo 2">
+		<groupExpression><![CDATA[$F{grupo2desc}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement uuid="c714fc97-a6e4-44f9-9fbf-a267b1d3d3a6" mode="Transparent" x="11" y="0" width="561" height="20" forecolor="#000000" backcolor="#006633"/>
+					<textElement>
+						<font size="9" isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{grupo2desc}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="78" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="faa03ba2-f07b-49c5-8840-db89a901197e" x="105" y="21" width="467" height="18"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Estado de actividades]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="b145ad77-414a-4880-9204-032621056e74" x="105" y="1" width="467" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{entepublico}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape">
+				<reportElement uuid="7707a8e5-470a-4e40-81f5-8767cc8e11be" x="-1" y="1" width="106" height="52"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="5a152a33-8c1a-4cd0-b161-245f68fc3082" x="105" y="39" width="467" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{descripcionUE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8c16a8de-a812-4413-b155-e33d2200573f" x="105" y="54" width="467" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaReporteNew}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<textField pattern="###0">
+				<reportElement uuid="3199b271-8742-4750-9722-adcec078cfda" mode="Opaque" x="485" y="0" width="87" height="20" forecolor="#FFFFFF" backcolor="#006633"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Integer.parseInt($P{anioreporte}) - Integer.parseInt('1')]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d66ee967-31b6-4fca-9d3e-8fa5768a0831" mode="Opaque" x="404" y="0" width="81" height="20" forecolor="#FFFFFF" backcolor="#006633"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{anioreporte}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="21449d90-a099-4bbd-89fe-ae67baa954b9" mode="Opaque" x="0" y="0" width="404" height="20" forecolor="#FFFFFF" backcolor="#006633"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16">
+			<textField pattern="#,##0.00">
+				<reportElement uuid="b2b7b43d-0d73-4547-8b79-b486c16525bf" x="404" y="0" width="81" height="16"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Periodo1}.doubleValue() < 0 ? $F{Periodo1}.doubleValue() * -1 : $F{Periodo1}.doubleValue()]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="c265bc83-894a-4dbf-ac7c-dfa1ce72a6b3" x="485" y="0" width="87" height="16"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Periodo2}.doubleValue() < 0 ? $F{Periodo1}.doubleValue() * -1 : $F{Periodo2}.doubleValue()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="7eaa2282-a2fb-4bf7-bf37-722bce793c8c" x="11" y="0" width="393" height="16"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="51695ce0-19c2-4ba7-9d04-33c05e7cb2eb" x="-1" y="0" width="405" height="20"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Resultado del Ejercicio (Ahorro / Desahorro)"]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,##0.00">
+				<reportElement uuid="3c1705a7-d372-4bdf-82d5-54513ba3f3e8" x="404" y="0" width="81" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalPeriodo1}.doubleValue() == 0 ? $V{totalPeriodo1}.doubleValue() : $V{totalPeriodo1}.doubleValue() * -1]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,##0.00">
+				<reportElement uuid="9e829e7c-cbee-4642-9346-9e2e51ab64bc" x="485" y="0" width="87" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalPeriodo2}.doubleValue() == 0 ? $V{totalPeriodo2}.doubleValue() : $V{totalPeriodo2}.doubleValue() * -1]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

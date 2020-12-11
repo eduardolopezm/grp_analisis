@@ -1,0 +1,172 @@
+.header-table {
+	background-color: #72BA99;
+	color: #FFFFFF;
+}
+
+.breadcrumb > li > a{
+	color: #337ab7 !important;
+}
+.filters-container >form {
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.description-section{
+	color: #777676;
+	font-size: 14px;
+	padding: 30px; 
+}
+
+.container-info {
+	background-color: #f5f5f5; 
+	margin-bottom: 20px; 
+	border-radius: 5px; 
+	margin-top: 20px;
+	display: none;
+}
+
+/*--------modo grafico*/
+.has-feedback .form-control{
+	text-align: left;
+}
+
+[id^="frmb-"][id$="-form-wrap"] .stage-wrap.pull-right .frmb{
+    height: 530px;
+}
+
+/*----multiselect----*/
+
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:focus, .dropdown-menu > .active > a:hover{
+	background-color: #e4e2e2;
+}
+
+.btn-group {
+	width: 100%;
+}
+
+.btn-group > button {
+	width: 100%;
+}
+
+/*---------------*/
+#crumbs ul li {
+    display: inline;
+}
+
+#crumbs ul li a {
+	display: block;
+	float: left;
+	height: 50px;
+	background: #dedede;
+	text-align: center;
+	padding: 13px 3% 0 5%;
+	position: relative;
+	margin: 0 2px 0 0; 
+	
+	font-size: 20px;
+	text-decoration: none;
+	color: #fff;
+}
+
+#crumbs ul li a:after {
+	content: "";  
+	border-top: 25px solid transparent;
+	border-bottom: 25px solid transparent;
+	border-left: 25px solid #dedede;
+	position: absolute; right: -25px; top: 0;
+	z-index: 1;
+}
+
+#crumbs ul li a:before {
+	content: "";  
+	border-top: 25px solid transparent;
+	border-bottom: 25px solid transparent;
+	border-left: 25px solid;
+	position: absolute; left: 0; top: 0;
+}
+
+#crumbs ul li:first-child a {
+	border-top-left-radius: 10px; border-bottom-left-radius: 10px;
+}
+#crumbs ul li:first-child a:before {
+	display: none; 
+}
+
+#crumbs ul li:last-child a {
+	padding-right: 80px;
+	border-top-right-radius: 10px; border-bottom-right-radius: 10px;
+}
+#crumbs ul li:last-child a:after {
+	display: none; 
+}
+#crumbs ul li a:hover {
+	background: #1B693F;
+}
+#crumbs ul li a:hover:after {
+	border-left-color: #1B693F;
+}
+#crumbs ul li.active a
+{
+	background: #1B693F;
+}
+#crumbs ul li.active a:after
+{
+	border-left-color: #1B693F;
+}
+
+.btn-next {
+	margin-right: 30px;
+	position: relative;
+	background: #72BA99;
+	text-align: center;
+	padding: 5px 3% 0 5%;
+	color: #FFF;
+	height: 30px;
+}
+.btn-next:after {
+	content: "";  
+	border-top: 15px solid transparent;
+	border-bottom: 15px solid transparent;
+	border-left: 15px solid #72BA99;
+	position: absolute; right: -15px; top: 0;
+	z-index: 1;
+}
+
+.btn-next:before {
+	content: "";  
+	border-top: 15px solid transparent;
+	border-bottom: 15px solid transparent;
+	border-left: 15px solid;
+	position: absolute; left: 0; top: 0;
+}
+.btn-next:hover {
+	background: #1B693F;
+}
+.btn-next:hover:after {
+	border-left-color: #1B693F;
+}
+
+.btn-new {
+	margin-right: 30px;
+	position: relative;
+	background: #72BA99;
+	text-align: center;
+	padding: 5px;
+	color: #FFF;
+	border-radius: 3px;
+}
+.btn-new:hover {
+	background: #1B693F;
+}
+
+/* para modo grafico*/
+#sideBar{
+	width: 23%;
+}
+#myDiagramDiv{
+	width: 77%;
+}
+/* para modo grafico*/
+
+
+

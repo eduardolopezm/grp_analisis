@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Servillantas" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6b151979-5265-428b-92bb-06dd56ce1f28">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/ruta/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FISCAL" class="java.lang.String"/>
+	<parameter name="LOGO" class="java.lang.String"/>
+	<parameter name="NOMBRE" class="java.lang.String"/>
+	<parameter name="TYPE" class="java.lang.String"/>
+	<queryString language="xPath">
+		<![CDATA[/Comprobante]]>
+	</queryString>
+	<field name="LugarExpedicion" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@LugarExpedicion]]></fieldDescription>
+	</field>
+	<field name="Moneda" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@Moneda]]></fieldDescription>
+	</field>
+	<field name="NumCtaPago" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@NumCtaPago]]></fieldDescription>
+	</field>
+	<field name="TipoCambio" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@TipoCambio]]></fieldDescription>
+	</field>
+	<field name="anoAprobacion" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@anoAprobacion]]></fieldDescription>
+	</field>
+	<field name="certificado" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@certificado]]></fieldDescription>
+	</field>
+	<field name="condicionesDePago" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@condicionesDePago]]></fieldDescription>
+	</field>
+	<field name="descuento" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@descuento]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@fecha]]></fieldDescription>
+	</field>
+	<field name="folio" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@folio]]></fieldDescription>
+	</field>
+	<field name="formaDePago" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@formaDePago]]></fieldDescription>
+	</field>
+	<field name="metodoDePago" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@metodoDePago]]></fieldDescription>
+	</field>
+	<field name="noAprobacion" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@noAprobacion]]></fieldDescription>
+	</field>
+	<field name="noCertificado" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@noCertificado]]></fieldDescription>
+	</field>
+	<field name="sello" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@sello]]></fieldDescription>
+	</field>
+	<field name="serie" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@serie]]></fieldDescription>
+	</field>
+	<field name="subTotal" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@subTotal]]></fieldDescription>
+	</field>
+	<field name="tipoDeComprobante" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@tipoDeComprobante]]></fieldDescription>
+	</field>
+	<field name="total" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/@total]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/@nombre]]></fieldDescription>
+	</field>
+	<field name="rfc" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/@rfc]]></fieldDescription>
+	</field>
+	<field name="calle" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/DomicilioFiscal/@calle]]></fieldDescription>
+	</field>
+	<field name="codigoPostal" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/DomicilioFiscal/@codigoPostal]]></fieldDescription>
+	</field>
+	<field name="colonia" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/DomicilioFiscal/@colonia]]></fieldDescription>
+	</field>
+	<field name="estado" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/DomicilioFiscal/@estado]]></fieldDescription>
+	</field>
+	<field name="municipio" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/DomicilioFiscal/@municipio]]></fieldDescription>
+	</field>
+	<field name="noExterior" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/DomicilioFiscal/@noExterior]]></fieldDescription>
+	</field>
+	<field name="pais" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/DomicilioFiscal/@pais]]></fieldDescription>
+	</field>
+	<field name="referencia" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/DomicilioFiscal/@referencia]]></fieldDescription>
+	</field>
+	<field name="Regimen" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/RegimenFiscal/@Regimen]]></fieldDescription>
+	</field>
+	<field name="calle2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/ExpedidoEn/@calle]]></fieldDescription>
+	</field>
+	<field name="codigoPostal2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/ExpedidoEn/@codigoPostal]]></fieldDescription>
+	</field>
+	<field name="colonia2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/ExpedidoEn/@colonia]]></fieldDescription>
+	</field>
+	<field name="estado2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/ExpedidoEn/@estado]]></fieldDescription>
+	</field>
+	<field name="municipio2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/ExpedidoEn/@municipio]]></fieldDescription>
+	</field>
+	<field name="noExterior2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/ExpedidoEn/@noExterior]]></fieldDescription>
+	</field>
+	<field name="pais2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/ExpedidoEn/@pais]]></fieldDescription>
+	</field>
+	<field name="referencia2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Emisor/ExpedidoEn/@referencia]]></fieldDescription>
+	</field>
+	<field name="nombre2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/@nombre]]></fieldDescription>
+	</field>
+	<field name="rfc2" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/@rfc]]></fieldDescription>
+	</field>
+	<field name="calle3" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@calle]]></fieldDescription>
+	</field>
+	<field name="codigoPostal3" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@codigoPostal]]></fieldDescription>
+	</field>
+	<field name="colonia3" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@colonia]]></fieldDescription>
+	</field>
+	<field name="estado3" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@estado]]></fieldDescription>
+	</field>
+	<field name="localidad" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@localidad]]></fieldDescription>
+	</field>
+	<field name="municipio3" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@municipio]]></fieldDescription>
+	</field>
+	<field name="noExterior3" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@noExterior]]></fieldDescription>
+	</field>
+	<field name="noInterior" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@noInterior]]></fieldDescription>
+	</field>
+	<field name="pais3" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Receptor/Domicilio/@pais]]></fieldDescription>
+	</field>
+	<field name="totalImpuestosTrasladados" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Impuestos/@totalImpuestosTrasladados]]></fieldDescription>
+	</field>
+	<field name="impuesto" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Impuestos/Traslados/Traslado/@impuesto]]></fieldDescription>
+	</field>
+	<field name="tasa" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Impuestos/Traslados/Traslado/@tasa]]></fieldDescription>
+	</field>
+	<field name="cadenaOriginal" class="java.lang.String">
+		<fieldDescription><![CDATA[@cadenaOriginal]]></fieldDescription>
+	</field>
+	<field name="FechaTimbrado" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/TimbreFiscalDigital/@FechaTimbrado]]></fieldDescription>
+	</field>
+	<field name="UUID" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/TimbreFiscalDigital/@UUID]]></fieldDescription>
+	</field>
+	<field name="noCertificadoSAT" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/TimbreFiscalDigital/@noCertificadoSAT]]></fieldDescription>
+	</field>
+	<field name="selloCFD" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/TimbreFiscalDigital/@selloCFD]]></fieldDescription>
+	</field>
+	<field name="selloSAT" class="java.lang.String">
+		<fieldDescription><![CDATA[/Comprobante/Complemento/TimbreFiscalDigital/@selloSAT]]></fieldDescription>
+	</field>
+	<field name="totalCFDi" class="java.lang.Double">
+		<fieldDescription><![CDATA[@total]]></fieldDescription>
+	</field>
+	<field name="cantidadLetra" class="java.lang.String">
+		<fieldDescription><![CDATA[@cantidadLetra]]></fieldDescription>
+	</field>
+	<field name="nombre3" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/@nombre]]></fieldDescription>
+	</field>
+	<field name="calle4" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@calle]]></fieldDescription>
+	</field>
+	<field name="codigoPostal4" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@codigoPostal]]></fieldDescription>
+	</field>
+	<field name="colonia4" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@colonia]]></fieldDescription>
+	</field>
+	<field name="estado4" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@estado]]></fieldDescription>
+	</field>
+	<field name="localidad2" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@localidad]]></fieldDescription>
+	</field>
+	<field name="municipio4" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@municipio]]></fieldDescription>
+	</field>
+	<field name="noExterior4" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@noExterior]]></fieldDescription>
+	</field>
+	<field name="noInterior2" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@noInterior]]></fieldDescription>
+	</field>
+	<field name="pais4" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@pais]]></fieldDescription>
+	</field>
+	<field name="referencia3" class="java.lang.String">
+		<fieldDescription><![CDATA[Embarque/Domicilio/@referencia]]></fieldDescription>
+	</field>
+	<field name="LeyendaPrivacidad" class="java.lang.String">
+		<fieldDescription><![CDATA[LeyendaPrivacidad/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="NodoLeyendaRentriccion" class="java.lang.String">
+		<fieldDescription><![CDATA[LeyendasRestricciones/Descripciones/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="NodoInformacionVehiculo" class="java.lang.String">
+		<fieldDescription><![CDATA[InformacionVehiculos/Descripciones/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="NodoInformacionComercial" class="java.lang.String">
+		<fieldDescription><![CDATA[InformacionComercial/Descripciones/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="NodoInformacionSucursales" class="java.lang.String">
+		<fieldDescription><![CDATA[InformacionSucursales/Descripciones/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="NodoInformacionBancaria" class="java.lang.String">
+		<fieldDescription><![CDATA[InformacionBancaria/Descripciones/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="NodoInfoPagare" class="java.lang.String">
+		<fieldDescription><![CDATA[InfoPagare/Descripciones/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="msg1" class="java.lang.String">
+		<fieldDescription><![CDATA[InfoPagare/Descripciones[@etiqueta="MSG1"]/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="msg2" class="java.lang.String">
+		<fieldDescription><![CDATA[InfoPagare/Descripciones[@etiqueta="MSG2"]/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="msg3" class="java.lang.String">
+		<fieldDescription><![CDATA[InfoPagare/Descripciones[@etiqueta="MSG3"]/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="msg4" class="java.lang.String">
+		<fieldDescription><![CDATA[InfoPagare/Descripciones[@etiqueta="MSG4"]/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="totalPagare" class="java.lang.String">
+		<fieldDescription><![CDATA[InfoPagare/Descripciones[@etiqueta="TOTAL"]/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="nombreDocumento" class="java.lang.String">
+		<fieldDescription><![CDATA[@nombreDocumento]]></fieldDescription>
+	</field>
+	<field name="pedidoVenta" class="java.lang.String">
+		<fieldDescription><![CDATA[@pedidoVenta]]></fieldDescription>
+	</field>
+	<field name="status" class="java.lang.Integer">
+		<fieldDescription><![CDATA[@status]]></fieldDescription>
+	</field>
+	<field name="comentarios" class="java.lang.String">
+		<fieldDescription><![CDATA[@comentarios]]></fieldDescription>
+	</field>
+	<field name="telefono" class="java.lang.String">
+		<fieldDescription><![CDATA[InfoEmisor/Descripciones[@etiqueta="TELEFONO"]/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="fax" class="java.lang.String">
+		<fieldDescription><![CDATA[InfoEmisor/Descripciones[@etiqueta="FAX"]/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="idCliente" class="java.lang.String">
+		<fieldDescription><![CDATA[InfoCliente/Descripciones[@etiqueta="ID"]/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="NodoInfoRemision" class="java.lang.String">
+		<fieldDescription><![CDATA[InfoRemision/Descripciones/@descripcion0]]></fieldDescription>
+	</field>
+	<field name="totalImpuestosRetenidos" class="java.lang.String">
+		<fieldDescription><![CDATA[Impuestos/@totalImpuestosRetenidos]]></fieldDescription>
+	</field>
+	<field name="impuesto2" class="java.lang.String">
+		<fieldDescription><![CDATA[Impuestos/Retenciones/Retencion/@impuesto]]></fieldDescription>
+	</field>
+	<field name="tasa2" class="java.lang.String">
+		<fieldDescription><![CDATA[Impuestos/Retenciones/Retencion/@tasa]]></fieldDescription>
+	</field>
+	<field name="showRemision" class="java.lang.String">
+		<fieldDescription><![CDATA[InfoImpresion/Descripciones[@etiqueta="SHOW_REMISION"]/@descripcion0]]></fieldDescription>
+	</field>
+	<pageHeader>
+		<band height="80" splitType="Stretch">
+			<image isUsingCache="false" onErrorType="Blank">
+				<reportElement x="0" y="0" width="106" height="78" uuid="a68610c5-1ff6-40c1-8dcb-1e26e2670bd2"/>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
+			</image>
+			<rectangle radius="5">
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="458" y="0" width="114" height="78" forecolor="#999999" uuid="feb7d03c-834e-43bc-845e-2a78378cc70f"/>
+			</rectangle>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="459" y="1" width="113" height="11" isRemoveLineWhenBlank="true" forecolor="#062D7C" backcolor="#CCCCCC" uuid="3758acca-0802-4934-9ec6-5a569e683364"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="459" y="22" width="113" height="8" isRemoveLineWhenBlank="true" forecolor="#062D7C" backcolor="#CCCCCC" uuid="7aa3bb81-ba30-4d39-8191-fd79c5c31fb9"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pedido de Venta: "]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="459" y="38" width="113" height="8" isRemoveLineWhenBlank="true" forecolor="#062D7C" backcolor="#CCCCCC" uuid="b1a21f6b-d845-4507-82fd-c4466b7ce7e9"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha de Emisión"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="459" y="57" width="113" height="6" isRemoveLineWhenBlank="true" forecolor="#062D7C" backcolor="#CCCCCC" uuid="04a3e447-c675-454e-9001-40f536769946">
+					<printWhenExpression><![CDATA[$F{UUID}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha de Certificación:"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="80">
+			<staticText>
+				<reportElement x="5" y="0" width="100" height="14" forecolor="#062D7C" uuid="f972a243-c089-438b-afa0-d31b270af939"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos del Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="204" y="0" width="100" height="12" isRemoveLineWhenBlank="true" forecolor="#062D7C" uuid="4fc68d24-21ad-4904-8e0d-9524f55b8083"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos de Embarque]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="379" y="18" width="192" height="12" forecolor="#062D7C" backcolor="#CCCCCC" uuid="54ff14d1-ec18-4021-807f-02290468d33d">
+					<printWhenExpression><![CDATA[$F{UUID}==null && $P{FISCAL}.equals("1")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Número / Año de Aprobación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="379" y="43" width="193" height="12" forecolor="#062D7C" backcolor="#CCCCCC" uuid="ed43b9b9-a9e5-4b65-9c8c-1135a9e07a0f">
+					<printWhenExpression><![CDATA[$F{UUID}==null && $P{FISCAL}.equals("1")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. Certificado Digital]]></text>
+			</staticText>
+			<rectangle radius="5">
+				<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="378" y="17" width="193" height="60" isRemoveLineWhenBlank="true" forecolor="#999999" uuid="9fde5134-986e-47e2-94f8-e3bc4618f739">
+					<printWhenExpression><![CDATA[$F{UUID}!=null && $P{FISCAL}.equals("1")]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Opaque" x="378" y="18" width="193" height="10" forecolor="#2745A4" backcolor="#CCCCCC" uuid="6f042c47-d16a-47e5-86f1-9442f30adf7a">
+					<printWhenExpression><![CDATA[$F{UUID}!=null && $P{FISCAL}.equals("1")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Folio Fiscal (UUID)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" mode="Opaque" x="378" y="38" width="193" height="10" forecolor="#2745A4" backcolor="#CCCCCC" uuid="28ef6339-fb84-4c50-a5ff-4d3e23e085c0">
+					<printWhenExpression><![CDATA[$F{UUID}!=null && $P{FISCAL}.equals("1")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. Certificado Digital]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" mode="Opaque" x="378" y="58" width="193" height="10" forecolor="#2745A4" backcolor="#CCCCCC" uuid="5717fbb7-5374-4bfb-982a-eac33f01dd02">
+					<printWhenExpression><![CDATA[$F{UUID}!=null && $P{FISCAL}.equals("1")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. Serie Certificado SAT]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="50">
+			<textField>
+				<reportElement x="0" y="0" width="572" height="29" uuid="bebc1e4e-a8a4-4a61-9d27-eb77100f8b78"/>
+				<textFieldExpression><![CDATA[$P{TYPE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="13" y="3" width="343" height="12" uuid="49071c22-750b-4cbb-8380-9836303228a7">
+					<printWhenExpression><![CDATA[$F{UUID}==null && $P{FISCAL}.equals("1")]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ESTE DOCUMENTO ES UNA REPRESENTACION IMPRESA DE UN CFD"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="462" y="3" width="80" height="12" uuid="9263cbe8-52a7-4211-8b2a-f7acb1191bbc"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="542" y="3" width="30" height="12" uuid="aa065205-3fef-41f8-a46d-3995ce76791c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="FixRelativeToBottom" x="13" y="3" width="343" height="12" uuid="8a76d074-3413-4d0b-8903-dc137fa0d6d7">
+					<printWhenExpression><![CDATA[$F{UUID}!=null && $P{FISCAL}.equals("1")]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ESTE DOCUMENTO ES UNA REPRESENTACION IMPRESA DE UN CFDI"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

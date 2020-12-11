@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptCorteCajaGeneral" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d531e0dc-a985-4664-906a-da63898bf529">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="bordesNegros" forecolor="#000000" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="1.0"/>
+			<topPen lineWidth="1.0"/>
+			<leftPen lineWidth="1.0"/>
+			<bottomPen lineWidth="1.0"/>
+			<rightPen lineWidth="1.0"/>
+		</box>
+	</style>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="fechainicio" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 00:00:00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafin" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 23:59:59"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagenEstado" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/juan/Trabajo/ap_grp_de/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechalarga" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["02 DE ENERO DEL 2020"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="razonsocial" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["MUNICIPIO DE TAMPICO, TAM."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nombreMes" class="java.lang.String"/>
+	<parameter name="anioFinal" class="java.lang.String"/>
+	<parameter name="anioFinal2" class="java.lang.String"/>
+	<parameter name="diaFinal" class="java.lang.String"/>
+	<parameter name="mesFinal" class="java.lang.String"/>
+	<parameter name="inicio" class="java.lang.String"/>
+	<parameter name="fin" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+datosGeneral.agrupador,
+datosGeneral.objprincipal,
+datosGeneral.objprincipalName,
+SUM(datosGeneral.anterior) as anterior,
+SUM(datosGeneral.suma) as suma,
+SUM(datosGeneral.meta) as meta,
+SUM(datosGeneral.neto) as neto,
+SUM(datosGeneral.cosas) as cosas,
+SUM(datosGeneral.avance) as avance
+FROM (
+
+SELECT
+'1' as agrupador,
+locations.loccode as objprincipal,
+locations.locationname as objprincipalName,
+IFNULL(((CASE
+    WHEN IFNULL(tb_ingresos_totxobj_prin.precio, 0) = 0 THEN (SELECT SUM(tb_ingresos_totxdia.importe) FROM tb_ingresos_totxdia WHERE  tb_ingresos_totxdia.loccode = locations.loccode AND tb_ingresos_totxdia.fecha BETWEEN $P{inicio} AND $P{fin})
+    ELSE tb_ingresos_totxobj_prin.precio
+END)),0) AS anterior,
+tb_cat_meta.meta as suma,
+IFNULL((CASE
+    WHEN IFNULL(((tb_ingresos_totxobj_prin.precio * (tb_cat_meta.meta/100)) + tb_ingresos_totxobj_prin.precio), 0) = 0 THEN
+	(((SELECT SUM(tb_ingresos_totxdia.importe) FROM tb_ingresos_totxdia WHERE  tb_ingresos_totxdia.loccode = locations.loccode AND tb_ingresos_totxdia.fecha BETWEEN $P{inicio} AND $P{fin}) * (tb_cat_meta.meta/100)) + (SELECT SUM(tb_ingresos_totxdia.importe) FROM tb_ingresos_totxdia WHERE  tb_ingresos_totxdia.loccode = locations.loccode AND tb_ingresos_totxdia.fecha BETWEEN $P{inicio} AND $P{fin} ))
+    ELSE ((tb_ingresos_totxobj_prin.precio * (tb_cat_meta.meta/100)) + tb_ingresos_totxobj_prin.precio)
+END), 0) AS meta,
+
+IFNULL(
+SUM((salesorderdetails.unitprice * salesorderdetails.quantity)) - SUM((salesorderdetails.unitprice * salesorderdetails.quantity ) * salesorderdetails.discountpercent)
+, 0) AS neto,
+
+(
+0
+*
+IFNULL(SUM((salesorderdetails.unitprice * salesorderdetails.quantity)) - SUM((salesorderdetails.unitprice * salesorderdetails.quantity ) * salesorderdetails.discountpercent ), 0)
+) / 100 as cosas,
+
+
+(CASE
+    WHEN IFNULL((((SUM((salesorderdetails.unitprice * salesorderdetails.quantity)) - SUM((salesorderdetails.unitprice * salesorderdetails.quantity) * salesorderdetails.discountpercent))/((tb_ingresos_totxobj_prin.precio * (tb_cat_meta.meta/100)) + tb_ingresos_totxobj_prin.precio))*100), 0) = 0 THEN
+
+(((SUM((salesorderdetails.unitprice * salesorderdetails.quantity)) - SUM((salesorderdetails.unitprice * salesorderdetails.quantity) * salesorderdetails.discountpercent))/(((SELECT SUM(tb_ingresos_totxdia.importe) FROM tb_ingresos_totxdia WHERE  tb_ingresos_totxdia.loccode = locations.loccode AND tb_ingresos_totxdia.fecha BETWEEN $P{inicio} AND $P{fin}) * (tb_cat_meta.meta/100)) + (SELECT SUM(tb_ingresos_totxdia.importe) FROM tb_ingresos_totxdia WHERE  tb_ingresos_totxdia.loccode = locations.loccode AND tb_ingresos_totxdia.fecha BETWEEN $P{inicio} AND $P{fin})))*100)
+
+	 ELSE (((SUM((salesorderdetails.unitprice * salesorderdetails.quantity)) - SUM((salesorderdetails.unitprice * salesorderdetails.quantity) * salesorderdetails.discountpercent))/((tb_ingresos_totxobj_prin.precio * (tb_cat_meta.meta/100)) + tb_ingresos_totxobj_prin.precio))*100)
+END) AS avance
+
+FROM locations
+JOIN sec_objetoprincipalxreporte ON sec_objetoprincipalxreporte.loccode = locations.loccode AND sec_objetoprincipalxreporte.functionid = 2531
+LEFT JOIN (
+SELECT
+salesorders.*
+FROM salesorders
+JOIN debtortrans ON debtortrans.order_ = salesorders.orderno
+JOIN custallocns ON custallocns.transid_allocto = debtortrans.id
+JOIN debtortrans debtortransRecibo ON debtortransRecibo.id = custallocns.transid_allocfrom AND debtortransRecibo.trandate BETWEEN $P{fechainicio} AND $P{fechafin}
+) AS salesorders ON salesorders.fromstkloc = locations.loccode
+LEFT JOIN tb_ingresos_totxobj_prin ON tb_ingresos_totxobj_prin.loccode = locations.loccode AND nu_mes = $P{mesFinal} AND nu_anio = $P{anioFinal2}
+LEFT JOIN tb_cat_meta ON  tb_cat_meta.loccode = locations.loccode AND tb_cat_meta.nu_mes = $P{mesFinal} AND tb_cat_meta.nu_anio = $P{anioFinal}  AND tb_cat_meta.nu_estatus = 1
+LEFT JOIN salesorderdetails ON salesorderdetails.orderno = salesorders.orderno
+WHERE
+locations.tipo = 'ObjetoPrincipal'
+AND locations.loccode != 'TESC'
+GROUP BY locations.loccode, locations.locationname
+
+UNION
+
+SELECT
+'1' as agrupador,
+locations.loccode as objprincipal,
+locations.locationname as objprincipalName,
+
+0 AS anterior,
+0 as suma,
+0 AS meta,
+IFNULL(SUM(tb_predial_montos.amt_monto), 0) AS neto,
+0 as cosas,
+0 AS avance
+
+FROM tb_predial_montos
+JOIN stockmaster ON stockmaster.stockid = tb_predial_montos.stockid
+JOIN locstock ON locstock.stockid = tb_predial_montos.stockid
+JOIN locations ON locations.loccode = locstock.loccode
+WHERE tb_predial_montos.dtm_fecha BETWEEN $P{fechainicio} AND $P{fechafin}
+
+GROUP BY locations.loccode, locations.locationname
+
+UNION
+
+SELECT
+'2' as agrupador,
+locations.loccode as objprincipal,
+locations.locationname as objprincipalName,
+IFNULL(((CASE
+    WHEN IFNULL(tb_ingresos_totxobj_prin.precio, 0) = 0 THEN (SELECT SUM(tb_ingresos_totxdia.importe) FROM tb_ingresos_totxdia WHERE  tb_ingresos_totxdia.loccode = locations.loccode AND tb_ingresos_totxdia.fecha BETWEEN $P{inicio} AND $P{fin})
+    ELSE tb_ingresos_totxobj_prin.precio
+END)),0) AS anterior,
+tb_cat_meta.meta as suma,
+IFNULL((CASE
+    WHEN IFNULL(((tb_ingresos_totxobj_prin.precio * (tb_cat_meta.meta/100)) + tb_ingresos_totxobj_prin.precio), 0) = 0 THEN
+	(((SELECT SUM(tb_ingresos_totxdia.importe) FROM tb_ingresos_totxdia WHERE  tb_ingresos_totxdia.loccode = locations.loccode AND tb_ingresos_totxdia.fecha BETWEEN $P{inicio} AND $P{fin}) * (tb_cat_meta.meta/100)) + (SELECT SUM(tb_ingresos_totxdia.importe) FROM tb_ingresos_totxdia WHERE  tb_ingresos_totxdia.loccode = locations.loccode AND tb_ingresos_totxdia.fecha BETWEEN $P{inicio} AND $P{fin} ))
+    ELSE ((tb_ingresos_totxobj_prin.precio * (tb_cat_meta.meta/100)) + tb_ingresos_totxobj_prin.precio)
+END), 0) AS meta,
+
+IFNULL(
+SUM((salesorderdetails.unitprice * salesorderdetails.quantity)) - SUM((salesorderdetails.unitprice * salesorderdetails.quantity ) * salesorderdetails.discountpercent)
+, 0) AS neto,
+
+(
+0
+*
+IFNULL(SUM((salesorderdetails.unitprice * salesorderdetails.quantity)) - SUM((salesorderdetails.unitprice * salesorderdetails.quantity ) * salesorderdetails.discountpercent ), 0)
+) / 100 as cosas,
+
+
+(CASE
+    WHEN IFNULL((((SUM((salesorderdetails.unitprice * salesorderdetails.quantity)) - SUM((salesorderdetails.unitprice * salesorderdetails.quantity) * salesorderdetails.discountpercent))/((tb_ingresos_totxobj_prin.precio * (tb_cat_meta.meta/100)) + tb_ingresos_totxobj_prin.precio))*100), 0) = 0 THEN
+
+(((SUM((salesorderdetails.unitprice * salesorderdetails.quantity)) - SUM((salesorderdetails.unitprice * salesorderdetails.quantity) * salesorderdetails.discountpercent))/(((SELECT SUM(tb_ingresos_totxdia.importe) FROM tb_ingresos_totxdia WHERE  tb_ingresos_totxdia.loccode = locations.loccode AND tb_ingresos_totxdia.fecha BETWEEN $P{inicio} AND $P{fin}) * (tb_cat_meta.meta/100)) + (SELECT SUM(tb_ingresos_totxdia.importe) FROM tb_ingresos_totxdia WHERE  tb_ingresos_totxdia.loccode = locations.loccode AND tb_ingresos_totxdia.fecha BETWEEN $P{inicio} AND $P{fin})))*100)
+
+	 ELSE (((SUM((salesorderdetails.unitprice * salesorderdetails.quantity)) - SUM((salesorderdetails.unitprice * salesorderdetails.quantity) * salesorderdetails.discountpercent))/((tb_ingresos_totxobj_prin.precio * (tb_cat_meta.meta/100)) + tb_ingresos_totxobj_prin.precio))*100)
+END) AS avance
+
+FROM locations
+JOIN sec_objetoprincipalxreporte ON sec_objetoprincipalxreporte.loccode = locations.loccode AND sec_objetoprincipalxreporte.functionid = 2531
+LEFT JOIN (
+SELECT
+salesorders.*
+FROM salesorders
+JOIN debtortrans ON debtortrans.order_ = salesorders.orderno
+JOIN custallocns ON custallocns.transid_allocto = debtortrans.id
+JOIN debtortrans debtortransRecibo ON debtortransRecibo.id = custallocns.transid_allocfrom AND debtortransRecibo.trandate BETWEEN $P{fechainicio} AND $P{fechafin}
+) AS salesorders ON salesorders.fromstkloc = locations.loccode
+LEFT JOIN tb_ingresos_totxobj_prin ON tb_ingresos_totxobj_prin.loccode = locations.loccode AND nu_mes = $P{mesFinal} AND nu_anio = $P{anioFinal2}
+LEFT JOIN tb_cat_meta ON  tb_cat_meta.loccode = locations.loccode AND tb_cat_meta.nu_mes = $P{mesFinal} AND tb_cat_meta.nu_anio = $P{anioFinal}  AND tb_cat_meta.nu_estatus = 1
+LEFT JOIN salesorderdetails ON salesorderdetails.orderno = salesorders.orderno
+WHERE
+locations.tipo = 'ObjetoPrincipal'
+AND locations.loccode = 'TESC'
+GROUP BY locations.loccode, locations.locationname
+ORDER BY agrupador, objprincipal, objprincipalName ASC
+
+) datosGeneral
+GROUP BY agrupador, objprincipal, objprincipalName ASC
+ORDER BY agrupador, objprincipal, objprincipalName ASC
+;]]>
+	</queryString>
+	<field name="agrupador" class="java.lang.String"/>
+	<field name="objprincipal" class="java.lang.String"/>
+	<field name="objprincipalName" class="java.lang.String"/>
+	<field name="neto" class="java.lang.Double"/>
+	<field name="meta" class="java.lang.Double"/>
+	<field name="avance" class="java.lang.Double"/>
+	<field name="anterior" class="java.lang.Double"/>
+	<variable name="totalneto" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{neto}]]></variableExpression>
+	</variable>
+	<variable name="totalAvance" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{avance}]]></variableExpression>
+	</variable>
+	<variable name="totalAnterior" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{anterior}]]></variableExpression>
+	</variable>
+	<variable name="totalMeta" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{meta}]]></variableExpression>
+	</variable>
+	<variable name="totalnetosub" class="java.lang.Double" resetType="Group" resetGroup="agrupador" calculation="Sum">
+		<variableExpression><![CDATA[$F{neto}]]></variableExpression>
+	</variable>
+	<variable name="totalAnteriorsub" class="java.lang.Double" resetType="Group" resetGroup="agrupador" calculation="Sum">
+		<variableExpression><![CDATA[$F{anterior}]]></variableExpression>
+	</variable>
+	<variable name="totalMetasub" class="java.lang.Double" resetType="Group" resetGroup="agrupador" calculation="Sum">
+		<variableExpression><![CDATA[$F{meta}]]></variableExpression>
+	</variable>
+	<group name="agrupador">
+		<groupExpression><![CDATA[$F{agrupador}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band height="15">
+				<printWhenExpression><![CDATA[$F{agrupador} == "1"]]></printWhenExpression>
+				<textField pattern="#,##0.00" isBlankWhenNull="false">
+					<reportElement uuid="6bb747b1-2b1c-49ec-8509-26b4472f3179" style="bordesNegros" x="467" y="0" width="104" height="15" backcolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(($V{totalnetosub} / $V{totalMetasub}) == null ? "0" : (($V{totalnetosub} / $V{totalMetasub}) * 100).round(2))+ " %"]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="1f819294-5721-48d9-8219-57f4074a351f" style="bordesNegros" x="363" y="0" width="104" height="15" backcolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($V{totalnetosub} == null ? "0" : $V{totalnetosub})]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="e9ee7ec9-b7d7-4f35-97c5-b15f25de72d3" style="bordesNegros" x="259" y="0" width="104" height="15" backcolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($V{totalMetasub} == null ? "0" : $V{totalMetasub})]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="cffa172e-7c56-45c9-ab8e-9a9274c98ccf" style="bordesNegros" x="0" y="0" width="155" height="15" backcolor="#FFFFFF"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["SUB TOTAL"]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="f7bbaabe-7de9-4a0b-9364-8de643587cb5" style="bordesNegros" x="155" y="0" width="104" height="15" backcolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($V{totalAnteriorsub} == null ? "" : $V{totalAnteriorsub})]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="120" splitType="Stretch">
+			<textField>
+				<reportElement uuid="7f97da52-92fc-4076-bf1c-4df6858b1ca9" style="bordesNegros" x="189" y="17" width="201" height="27" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nombreMes}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="1cba8d6f-e0f6-4c22-a63f-3873825dae60" style="bordesNegros" x="0" y="81" width="155" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CONCEPTOS"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="aedc9ad6-cde8-4e71-a459-b7f3d3cb1c78" style="bordesNegros" x="155" y="81" width="104" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nombreMes}+"\n"+$P{anioFinal2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="c9f19c1f-de14-497e-8314-735f3cec2a06" style="bordesNegros" x="467" y="81" width="104" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["% DE AVANCE"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="f2a22dc8-8d37-44fc-99fc-83184051dc5e" style="bordesNegros" x="259" y="81" width="104" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["META\n"+$P{nombreMes}+"\n"+$P{anioFinal}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="62f14ff9-9b06-42c9-b135-7e49c614c236" style="bordesNegros" x="363" y="81" width="104" height="38" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{diaFinal}+" "+$P{nombreMes}+"\n"+$P{anioFinal}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="415dff7e-06e3-49fb-85f3-d6763718dd42" x="0" y="0" width="155" height="55"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="e18a1a98-c235-40bf-88bc-84c12831693d" x="417" y="0" width="155" height="55"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement uuid="81ca946c-5aa9-4904-9c6d-a025a27f2156" style="bordesNegros" x="0" y="0" width="155" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="DejaVu Serif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{objprincipalName}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;#,##0.00-">
+				<reportElement uuid="e92898da-8b7c-4fff-bab1-25ce9557348c" style="bordesNegros" x="155" y="0" width="104" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{anterior} == null ? "0" : $F{anterior})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="3676d29a-8358-4bd5-bf3c-4677d0e1c079" style="bordesNegros" x="259" y="0" width="104" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{meta} == null ? "0" : $F{meta})]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="b60cb8a7-5d43-4515-be05-351303adb037" style="bordesNegros" x="363" y="0" width="104" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{neto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;#,##0.00-">
+				<reportElement uuid="dfb2d6eb-7e17-4836-a6fd-6cf3a6e91cb0" style="bordesNegros" x="467" y="0" width="104" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{avance} == null ? "0" : $F{avance}.round(2))+ " %"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="16" splitType="Immediate">
+			<textField>
+				<reportElement uuid="2fdb23e1-3b26-490b-90d0-50f9df1cdaa1" style="bordesNegros" x="0" y="0" width="155" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TOTAL"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="63f6001b-2ebb-4e06-b4b0-3a454e310f4a" style="bordesNegros" x="155" y="0" width="104" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{totalAnterior} == null ? "" : $V{totalAnterior})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="7f2b378e-4a1b-4ca7-8fb5-09f6637418fa" style="bordesNegros" x="259" y="0" width="104" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{totalMeta} == null ? "0" : $V{totalMeta})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="f0064acc-0152-46c9-a86c-0b44aae7f0c8" style="bordesNegros" x="363" y="0" width="104" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{totalneto} == null ? "0" : $V{totalneto})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement uuid="6b77873e-f435-4ae6-b515-1e04cffecd89" style="bordesNegros" x="467" y="0" width="104" height="15" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($V{totalneto} / $V{totalMeta}) == null ? "0" : (($V{totalneto} / $V{totalMeta}) * 100).round(2))+ " %"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_ldf_5" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="da27259d-349e-4010-ac7d-e41002af7be2">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/alfredob/Projects/grp/ap_grp/jasper/conac/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="entepublico" class="java.lang.String"/>
+	<parameter name="fechainicial" class="java.lang.String"/>
+	<parameter name="fechafinal" class="java.lang.String"/>
+	<parameter name="imagen" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[Select 1]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<textField>
+				<reportElement uuid="c09fc13c-ba72-44db-9319-7ad22183cea7" x="11" y="0" width="550" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{entepublico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="63fb5437-87bf-45c6-900e-68a5867c11ee" x="11" y="13" width="550" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Estado Analítico de Ingresos Detallados - LDF]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="0083e3ae-2ed9-4719-8d0f-f4fbb120cf9a" x="11" y="27" width="550" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["DESDE " + $P{fechainicial} +" HASTA "+$P{fechafinal}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="691985dd-1730-4464-a006-c704b4bf013f" x="0" y="0" width="140" height="57"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="6d25b89f-4b54-4b60-9d88-894faeac40c8" x="0" y="0" width="570" height="27" forecolor="#003300" backcolor="#1B693F"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="e5680246-1b48-4eac-9d18-9082f05bd708" x="186" y="7" width="61" height="20" forecolor="#FFFFFF"/>
+				<textElement/>
+				<text><![CDATA[Estimado (d)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e122ee36-af93-458e-9e16-460544df7d9d" x="257" y="0" width="75" height="28" forecolor="#FFFFFF"/>
+				<textElement/>
+				<text><![CDATA[Ampliaciones/(Reducciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2d17d59b-fcca-4ed8-afcb-f393ac649661" x="332" y="7" width="59" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Modificado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bf0c4567-56ad-4085-90ef-e7baab2181cc" x="393" y="7" width="58" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Devengado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="35a6cd78-fde9-4267-842b-529b97576008" x="454" y="7" width="61" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Recaudado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7fec0c78-4abe-442f-a09f-fb6fd984cd5c" x="515" y="7" width="55" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Diferencia]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="173f8913-7a62-4af0-bd95-458244c88f04" stretchType="RelativeToBandHeight" x="513" y="0" width="1" height="30"/>
+			</line>
+			<line>
+				<reportElement uuid="97d28ac6-9897-44e7-9159-ca99dffe44c7" stretchType="RelativeToBandHeight" x="571" y="0" width="1" height="30"/>
+			</line>
+			<line>
+				<reportElement uuid="2cf88d4a-ea4d-4e60-8b54-16e4b2ca7ba5" stretchType="RelativeToBandHeight" x="246" y="0" width="1" height="30"/>
+			</line>
+			<line>
+				<reportElement uuid="0010d40f-3397-4a2e-ab2f-66040478b242" stretchType="RelativeToBandHeight" x="391" y="0" width="1" height="30"/>
+			</line>
+			<line>
+				<reportElement uuid="6c6074cb-50a2-48cb-aaac-67d18695d7a0" stretchType="RelativeToBandHeight" x="452" y="0" width="1" height="30"/>
+			</line>
+			<line>
+				<reportElement uuid="352ae566-fedc-4b0e-8a4b-4b1ecbb3692c" stretchType="RelativeToBandHeight" x="331" y="0" width="1" height="30"/>
+			</line>
+			<line>
+				<reportElement uuid="1597fac4-1b65-4c1d-ae7d-888dab95db1d" stretchType="RelativeToBandHeight" x="184" y="0" width="1" height="30"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="41" splitType="Stretch">
+			<subreport>
+				<reportElement uuid="0283c3f3-194d-4dd1-bc0a-ca5d4a726635" x="0" y="0" width="172" height="41"/>
+				<subreportParameter name="anio">
+					<subreportParameterExpression><![CDATA[2017]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titulo_reporte">
+					<subreportParameterExpression><![CDATA["Ingresos de Libre Disposición"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cuenta_mayor">
+					<subreportParameterExpression><![CDATA["4.1"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tagref">
+					<subreportParameterExpression><![CDATA[100]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "rpt_sub_ldf_5.jasper"]]></subreportExpression>
+			</subreport>
+			<line>
+				<reportElement uuid="e47ad25e-7396-48ab-badf-d3afd8d3148e" stretchType="RelativeToBandHeight" x="184" y="0" width="1" height="41"/>
+			</line>
+			<line>
+				<reportElement uuid="580957e0-5399-4446-a737-6f31ceae673e" stretchType="RelativeToBandHeight" x="246" y="0" width="1" height="41"/>
+			</line>
+			<line>
+				<reportElement uuid="5ab77be1-0048-4f31-a54c-f02733c8d4e7" stretchType="RelativeToBandHeight" x="331" y="0" width="1" height="41"/>
+			</line>
+			<line>
+				<reportElement uuid="613d3a47-f9c2-419d-b2ee-72a9e226c82a" stretchType="RelativeToBandHeight" x="391" y="0" width="1" height="41"/>
+			</line>
+			<line>
+				<reportElement uuid="d4fe9f39-3f92-4e22-9cda-4781c51f8ad6" stretchType="RelativeToBandHeight" x="452" y="0" width="1" height="41"/>
+			</line>
+			<line>
+				<reportElement uuid="6c4b2635-07ad-4a5d-847c-dd2fae8e6bda" stretchType="RelativeToBandHeight" x="513" y="0" width="1" height="41"/>
+			</line>
+			<line>
+				<reportElement uuid="5a4b2b9f-09df-4957-bc7d-41c4f0f444d9" stretchType="RelativeToBandHeight" x="571" y="0" width="1" height="41"/>
+			</line>
+		</band>
+		<band height="41">
+			<subreport>
+				<reportElement uuid="baa8ce13-0cc0-4350-8c92-bde77d3d3169" x="0" y="0" width="572" height="41"/>
+				<subreportParameter name="anio">
+					<subreportParameterExpression><![CDATA[2017]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titulo_reporte">
+					<subreportParameterExpression><![CDATA["Ingresos de Libre Disposición"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="cuenta_mayor">
+					<subreportParameterExpression><![CDATA["4.2"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tagref">
+					<subreportParameterExpression><![CDATA[100]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "rpt_sub_ldf_5.jasper"]]></subreportExpression>
+			</subreport>
+			<line>
+				<reportElement uuid="70cb77f9-0c0a-42fd-9ad8-e55103384007" stretchType="RelativeToBandHeight" x="183" y="0" width="1" height="41" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement uuid="11acc792-734d-448d-8761-09a765507c70" stretchType="RelativeToBandHeight" x="245" y="0" width="1" height="41" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement uuid="49a238d9-bd9f-4e6e-a8e6-d9b6658c3fef" stretchType="RelativeToBandHeight" x="330" y="0" width="1" height="41" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement uuid="4053e716-f371-4b5a-9644-7774d89cc662" stretchType="RelativeToBandHeight" x="390" y="0" width="1" height="41" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement uuid="9acd38cc-bf43-46d1-a074-27eec12c0b51" stretchType="RelativeToBandHeight" x="451" y="0" width="1" height="41" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement uuid="575e42d4-a157-4573-81af-03e08a96140f" stretchType="RelativeToBandHeight" x="512" y="0" width="1" height="41" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement uuid="398f717d-0316-47dd-a4a3-c17437d2ca76" stretchType="RelativeToBandHeight" x="570" y="0" width="1" height="41" isPrintWhenDetailOverflows="true"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_estado_analitico_ingresos_subreport1" language="groovy" pageWidth="572" pageHeight="752" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="a70c7d40-3e75-4e11-9c14-197c96df167e">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="titulo_reporte" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["ESTADO ANALITICO DE INGRESOS 1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tagref" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from (select n.*, d.descripcion, d.clasificacionid from  (select c.clasificacionid grupo1id,
+c.descripcion grupo1desc, b.clasificacionid as grupo2id, b.descripcion as grupo2desc,
+c.reporte
+from tb_cat_guia_cumplimiento c
+left outer join tb_cat_guia_cumplimiento b
+    on b.padreid = c.clasificacionid and c.reporte = b.reporte
+
+where c.padreid is null and (c.reporte =  $P{titulo_reporte} or b.reporte = $P{titulo_reporte})) n
+left outer join tb_cat_guia_cumplimiento d on d.padreid = n.grupo2id
+and d.reporte = n.reporte) gg
+left outer join
+(SELECT chartmaster.reporte_group, chartmaster.accountcode, chartmaster.group_, chartmaster.accountname AS cuenta_mayor,
+
+IFNULL(SUM(case when year(trandate) = 2017 then CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END else 0 end), 0)  as 'PERIODO1',
+IFNULL(SUM(case when year(trandate) = 2016 then CASE WHEN gltrans.amount > 0 THEN gltrans.amount ELSE 0 END else 0 end), 0)  as 'PERIODO2'
+FROM config_reportes_
+INNER JOIN (select  c1.* from chartmaster c1
+
+where c1.groupcode in ("4.1","4.2", "4.3")) chartmaster ON config_reportes_.valor = chartmaster.accountcode
+LEFT JOIN gltrans ON chartmaster.accountcode= gltrans.account and gltrans.tag = config_reportes_.tagref
+WHERE config_reportes_.valor LIKE concat("4.","%")
+and config_reportes_.tagref = 100
+and config_reportes_.reporte = "analiticoIngresos"
+GROUP BY chartmaster.accountcode, reporte_group, group_, chartmaster.accountname
+) b on b.cuenta_mayor = gg.descripcion
+order by 1, 3, 7]]>
+	</queryString>
+	<field name="group_" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cuenta_mayor" class="java.lang.String"/>
+	<field name="reporte_group" class="java.lang.String"/>
+	<field name="grupo1id" class="java.lang.Integer"/>
+	<field name="grupo1desc" class="java.lang.String"/>
+	<field name="grupo2id" class="java.lang.Integer"/>
+	<field name="grupo2desc" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<group name="grupo1">
+		<groupExpression><![CDATA[$F{grupo1desc}]]></groupExpression>
+		<groupHeader>
+			<band height="13">
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="14e1d1e0-54ce-41d0-8d67-33ada2201a1e" x="21" y="0" width="163" height="12"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{grupo1desc}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="59f5b0a8-a585-474c-ba74-fd8476f731bf" stretchType="RelativeToTallestObject" x="184" y="0" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement uuid="a3ef7223-0145-47b6-8cf1-731a71f52d93" stretchType="RelativeToTallestObject" x="246" y="0" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement uuid="7617bdf4-4e1b-46a1-b3ff-96adf3ea657a" stretchType="RelativeToTallestObject" x="331" y="0" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement uuid="0ceb9c8e-6111-4573-a538-ed242e9f1a15" stretchType="RelativeToTallestObject" x="391" y="0" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement uuid="cbb9f982-4788-40cb-bfbe-06f574b9f2b4" stretchType="RelativeToTallestObject" x="452" y="0" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement uuid="fafe079c-78eb-4be5-8864-7c2e0362776c" stretchType="RelativeToTallestObject" x="513" y="0" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement uuid="93cca706-a056-49d3-b059-fc32d440d096" stretchType="RelativeToTallestObject" x="571" y="0" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement uuid="5be78465-0715-49ec-8afa-345d6002d278" stretchType="RelativeToTallestObject" x="0" y="0" width="1" height="13"/>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="grupo2">
+		<groupExpression><![CDATA[$F{grupo2desc}]]></groupExpression>
+		<groupHeader>
+			<band height="13" splitType="Stretch">
+				<printWhenExpression><![CDATA[!($F{grupo2desc}.isEmpty())]]></printWhenExpression>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="8ec7a795-ba26-4505-a3df-ba7fe3829daa" x="35" y="0" width="149" height="12"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{grupo2desc}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="092717c9-987c-4771-9459-863325c035fa" stretchType="RelativeToTallestObject" x="184" y="0" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement uuid="33caa535-6df0-400e-b153-de1607140ece" stretchType="RelativeToTallestObject" x="246" y="0" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement uuid="c72335b5-75df-484d-8ddb-3446c2cedc23" stretchType="RelativeToTallestObject" x="331" y="0" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement uuid="dcd2e909-6b5e-4681-abd4-73db16ea35fd" stretchType="RelativeToTallestObject" x="391" y="0" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement uuid="167f3b72-47b3-4791-8baf-03db72ad8857" stretchType="RelativeToTallestObject" x="452" y="0" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement uuid="68748154-b92f-42b9-ae58-0bdcebc69b36" stretchType="RelativeToTallestObject" x="513" y="0" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement uuid="79c840f7-455e-4c02-97ed-e25c66377284" stretchType="RelativeToTallestObject" x="571" y="0" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement uuid="47f2a5ea-fd0e-4911-ab8f-2fedf2d351c8" stretchType="RelativeToTallestObject" x="0" y="0" width="1" height="13"/>
+				</line>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="40" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="99245d54-2296-4095-b546-f3c2e7a9a21e" x="0" y="0" width="572" height="40" forecolor="#003300" backcolor="#1B693F"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="d2b509d8-fb63-4406-8167-7b58c3be495a" x="186" y="24" width="61" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estimado (d)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="012c43bf-d270-4f1f-9363-eb7f12c32699" x="257" y="18" width="60" height="22" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ampliaciones/(Reducciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d375e08c-2e27-4d24-a70c-952fd957d2f0" x="338" y="24" width="48" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Modificado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b0cbc3e1-0327-40ce-93fa-c64e883c5a1b" x="397" y="24" width="50" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Devengado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c7fad2ca-83e8-46e3-a99c-3a157dd7e1ef" x="458" y="24" width="50" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Recaudado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5504f846-82a3-4b74-88d4-a79ba77604eb" x="516" y="12" width="50" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Diferencia]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="3a25cd95-47f4-4120-bd19-79e32c140018" stretchType="RelativeToBandHeight" x="513" y="0" width="1" height="40"/>
+			</line>
+			<line>
+				<reportElement uuid="b7318022-1cf4-4caa-a840-5efb430346b8" stretchType="RelativeToBandHeight" x="571" y="0" width="1" height="40"/>
+			</line>
+			<line>
+				<reportElement uuid="d18b80d5-4ad5-4877-b50a-bc92fc47a4ab" stretchType="RelativeToBandHeight" x="246" y="15" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement uuid="a813d776-6cbf-4828-aac6-4a5f529276c3" stretchType="RelativeToBandHeight" x="391" y="15" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement uuid="dce95089-e70c-4d9c-aa47-fb427ed6c0fa" stretchType="RelativeToBandHeight" x="452" y="15" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement uuid="0e2526ce-d5ca-4444-960b-b7a5644a01a7" stretchType="RelativeToBandHeight" x="331" y="15" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement uuid="f503261d-d75c-4dfe-8057-371542e43ab2" stretchType="RelativeToBandHeight" x="184" y="0" width="1" height="40"/>
+			</line>
+			<line>
+				<reportElement uuid="d78035fd-6500-4bdb-b470-7732578ce1a1" x="1" y="0" width="571" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="d1e52810-a9d1-42d7-8035-02136a3580aa" x="184" y="15" width="330" height="1"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="2cb73aa5-f43b-4faa-9efa-2b439b96e7a2" x="1" y="4" width="173" height="34" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{titulo_reporte}=="ESTADO ANALITICO DE INGRESOS 1"?"Rubro de Ingresos":"Estado Analítico de Ingreso Por Fuente de Financiamiento"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="b4f46f25-8204-4640-95f2-22a0be32fd66" x="332" y="4" width="48" height="14" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ingreso]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="bcd08a5c-ed4f-425c-bc4a-43b7f976bc04" x="1" y="39" width="571" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="63cd1c5f-e588-406f-92fe-adece46197a4" stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="40"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<printWhenExpression><![CDATA[!($F{descripcion}.isEmpty())]]></printWhenExpression>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="e68b0135-f5f8-4d3d-909d-2f6ec0122a33" x="48" y="0" width="136" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="5127c6b6-1b4e-4add-adc0-215d0c14f5ab" stretchType="RelativeToTallestObject" x="184" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement uuid="2725df92-3b95-4de8-81ff-1d4a020f4397" stretchType="RelativeToTallestObject" x="246" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement uuid="7dfe2ce6-d523-4dd7-ae6a-c5f84863ca2d" stretchType="RelativeToTallestObject" x="331" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement uuid="ef1bf1da-9f6d-4d41-9cbf-14a45f5fcd4c" stretchType="RelativeToTallestObject" x="391" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement uuid="7fab475e-faf1-4cae-a683-0282dc6e531a" stretchType="RelativeToTallestObject" x="452" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement uuid="abbb022e-f47c-440a-98f0-46509f90cac4" stretchType="RelativeToTallestObject" x="513" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement uuid="ba6367a9-8c29-40f8-b0b8-5e31d23f0a26" stretchType="RelativeToTallestObject" x="571" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement uuid="0e1b33bf-bf15-4b92-9152-d252dee369c4" stretchType="RelativeToTallestObject" x="0" y="0" width="1" height="13"/>
+			</line>
+		</band>
+	</detail>
+	<summary>
+		<band height="50">
+			<staticText>
+				<reportElement uuid="b93e521c-d0f3-4b39-a538-c1cd6c8b20fa" x="21" y="3" width="45" height="14"/>
+				<textElement/>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="e8753469-6fbe-491b-96a0-7cccad22b0c7" x="1" y="0" width="571" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="c99e5819-2ef0-4b9f-b82e-6adb593ea412" x="1" y="20" width="571" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="f5959240-70e2-42f8-a816-f215be2fe723" x="319" y="21" width="120" height="14"/>
+				<textElement/>
+				<text><![CDATA[Ingresos Excedentes]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="0af4a89e-a831-4f6e-a4e9-231052c22756" stretchType="RelativeToBandHeight" x="452" y="9" width="1" height="41"/>
+			</line>
+			<line>
+				<reportElement uuid="dc4389cd-6516-4fce-b6f2-6b7be66a39f7" stretchType="RelativeToBandHeight" x="513" y="9" width="1" height="41"/>
+			</line>
+			<line>
+				<reportElement uuid="ebaedf6d-afed-414b-84ac-92be7f1ef772" stretchType="RelativeToBandHeight" x="571" y="9" width="1" height="41"/>
+			</line>
+			<line>
+				<reportElement uuid="f761868d-5feb-46b1-ae6c-3a6543e84c7b" stretchType="RelativeToTallestObject" x="184" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement uuid="9001f7a4-373e-4a15-90a5-5aa6878cebd8" stretchType="RelativeToTallestObject" x="246" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement uuid="06ccf66d-5bc1-45a4-82ff-30efa70e05c4" stretchType="RelativeToTallestObject" x="331" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement uuid="d615bd0e-0f96-4201-986d-41f251609c73" stretchType="RelativeToTallestObject" x="391" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement uuid="d9f5e52e-b846-4ad0-b806-e88871f4c4f9" stretchType="RelativeToTallestObject" x="452" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement uuid="646cf9b5-8d97-4204-b613-9a00108bdd86" stretchType="RelativeToTallestObject" x="513" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement uuid="099cbb8e-e317-4264-86eb-e1309369426c" stretchType="RelativeToTallestObject" x="571" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement uuid="f58444a7-5cd0-4f63-839d-32a84f00305b" stretchType="RelativeToTallestObject" x="0" y="0" width="1" height="20"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

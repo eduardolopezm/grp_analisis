@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptestadovariacionhaciendapublica" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4db7879c-8b17-4fdb-a794-918039e3a565">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="parEntePublico" class="java.lang.String"/>
+	<parameter name="parRangoDeFechas" class="java.lang.String"/>
+	<parameter name="tagref" class="java.lang.String"/>
+	<parameter name="imagen" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[Select 1]]>
+	</queryString>
+	<variable name="varEntePublico" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement uuid="ef5c1985-915c-45cd-90d3-8fa0b13c08aa" x="1" y="0" width="570" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{parEntePublico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="6e08db26-61d7-4b7b-93ca-05de5bea3be9" x="1" y="20" width="565" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Estado de Variación en la Hacienda Pública]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="6dd5d7f7-0df2-4741-b103-ffde72d196ca" x="0" y="40" width="570" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{parRangoDeFechas}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="940056c9-a974-47cf-ba22-fb948cff9d54" x="0" y="0" width="140" height="70"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="70" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="8d6fcb8b-dd4e-423a-887f-5648a28daf7f" x="0" y="0" width="572" height="70" forecolor="#003300" backcolor="#1B693F"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<line>
+				<reportElement uuid="00ecb744-d9a8-496c-964d-7e80fc7160df" x="393" y="0" width="1" height="70"/>
+			</line>
+			<line>
+				<reportElement uuid="4ecf3771-0d3f-4283-93fe-29988c277e97" x="326" y="0" width="1" height="70"/>
+			</line>
+			<line>
+				<reportElement uuid="d486f55c-4faa-42ff-9798-35695d75270c" x="453" y="0" width="1" height="70"/>
+			</line>
+			<line>
+				<reportElement uuid="1f8b93e6-7896-4e56-b459-717c0521eba7" x="257" y="0" width="1" height="70"/>
+			</line>
+			<line>
+				<reportElement uuid="92a55ede-e696-41f1-ad08-84685b77d796" x="517" y="0" width="1" height="70"/>
+			</line>
+			<line>
+				<reportElement uuid="16c75d71-b2be-4a19-9c11-fee7c1a1b36b" x="571" y="0" width="1" height="70"/>
+			</line>
+			<line>
+				<reportElement uuid="ce964821-34ab-4d8d-9e2a-b38a7100471a" x="0" y="0" width="572" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="90692722-1cfa-4fa2-a3c6-6f400c5cbafa" x="5" y="34" width="239" height="19" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Concepto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="41a8fb77-628b-4d5d-a01b-6c0cd96c8756" x="263" y="3" width="60" height="67" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Hacienda Pública / Patrimonio Contribuido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8e7af007-e49a-4348-b8c9-105f551efc04" x="330" y="3" width="60" height="67" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Hacienda Pública / Patrimonio Generado de Ejercicios Anteriores]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="80ae9b11-389d-4c70-b50a-d06ab14cd0c8" x="393" y="1" width="60" height="67" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Hacienda Pública / Patrimonio Generado del Ejercicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0b241c91-d61d-4472-9414-f2aa325ff24f" x="455" y="3" width="60" height="67" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Ajustes por Cambios de Valor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6249f057-013c-4506-bf12-3b7774a175e8" x="520" y="3" width="50" height="65" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="7c9e979a-e148-47db-96a0-d54716027396" x="0" y="0" width="1" height="70"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="410" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="f776c540-3616-43ee-85c5-1f94020e8672" x="5" y="4" width="250" height="11"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rectificaciones de Resultados de Ejercicios Anteriores]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="32fc115e-c73c-47d1-a0ac-9b2f53f5e0d9" x="393" y="0" width="1" height="410"/>
+			</line>
+			<line>
+				<reportElement uuid="df9d3e40-4405-4100-98d3-c549b2fb195a" x="0" y="28" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="8ed7ced6-4303-4586-8e37-2eaf41b946ce" x="0" y="0" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="eba8830c-e77d-4105-a2c8-650685640013" x="0" y="17" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="a28b28a0-4036-4240-9c0e-ce49dfa1add7" x="0" y="42" width="572" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="2528bef7-2789-47e2-9b39-afa4f34d263a" x="5" y="30" width="250" height="11"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Patrimonio Neto Inicial Ajustado del Ejercicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f5963122-0f85-4787-8553-00d9985112b6" x="5" y="45" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Aportaciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0be1f294-ae37-45b7-ba19-128295a40501" x="5" y="61" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Donaciones de Capital]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0cf5602f-e24e-4350-bebd-167febded446" x="5" y="77" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Actualización de la Hacienda Pública/Patrimonio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="362a64fc-f4db-4741-b5f1-575ba6f1c75c" x="5" y="123" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Resultados del Ejercicio (Ahorro/Desahorro)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c44505c0-0e29-4871-b742-54cee2f31e2c" x="5" y="147" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Revalúos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8842ac4c-a201-4856-a5ff-e344e926da0e" x="5" y="135" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Resultados de Ejercicios Anteriores]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="640d1f2e-6273-484b-babd-96819aab2811" x="5" y="159" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Reservas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f56c0c4a-1c6a-4357-a651-7606a2daac7b" x="5" y="107" width="250" height="11"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Variaciones de la Hacienda Pública / Patrimonio Neto del Ejercicio]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="407c4c9d-c1ac-44ff-9ff5-c55a8c381e17" x="0" y="106" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="89558108-6784-4af3-b679-6f231a840a40" x="0" y="134" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="8bcce048-36f8-4891-918c-af7dbc284d1b" x="0" y="118" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="a0a7994d-845d-4aef-9c4e-95f98fbb0295" x="0" y="146" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="0e88e5bc-191d-489d-a29b-f68feb9f921e" x="0" y="158" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="544dcdc2-aadd-4b4d-9417-47e834a76dc7" x="0" y="170" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="4b60b63b-3c75-4095-9c7b-2d078734cfd2" x="0" y="58" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="0f616589-78e3-4f9d-a2ae-85cfcd37ccf1" x="0" y="74" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="d6b32954-6fd6-4de9-b550-cca473bcc618" x="0" y="90" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="970f5067-c39e-497c-b8d4-68275b3624ba" x="257" y="0" width="1" height="410"/>
+			</line>
+			<line>
+				<reportElement uuid="a42406b2-c48d-4d42-8b66-53eb0944d144" x="517" y="0" width="1" height="410"/>
+			</line>
+			<line>
+				<reportElement uuid="e0b03d56-e140-4ef0-96df-2c0ef01f8244" x="453" y="0" width="1" height="410"/>
+			</line>
+			<line>
+				<reportElement uuid="88c04918-bc05-40c8-b0f3-c951b3041767" x="572" y="0" width="1" height="410"/>
+			</line>
+			<line>
+				<reportElement uuid="3df37683-0a21-4545-b22b-d600e9c56a2c" x="326" y="0" width="1" height="410"/>
+			</line>
+			<staticText>
+				<reportElement uuid="6c10f3cd-b530-47ad-80a8-5508ae21b85e" x="5" y="209" width="250" height="11"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hacienda Pública / Patrimonio Neto Final del Ejercicio ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="771a9fca-ec95-45fc-bc4e-f827c4357bf9" x="5" y="235" width="250" height="11"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cambios en la Hacienda Pública / Patrimonio Neto del Ejercicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f49893db-38ab-48a1-83b7-92822f33de4d" x="5" y="250" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Aportaciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="12a7bcc6-77d1-45e0-b057-ac5e953e0a77" x="5" y="266" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Donaciones de Capital]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5bd1a298-ad41-4610-be82-800d9101f8c0" x="5" y="282" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Actualización de la Hacienda Pública/Patrimonio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4dab41bd-3c14-4b8f-85f6-f4b9623c212e" x="5" y="328" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Resultados del Ejercicio (Ahorro/Desahorro)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d05afb32-5aff-4ac0-9cea-19c2f8392009" x="5" y="352" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Revalúos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0aaf82a3-7ea6-4323-8402-3429af37115a" x="5" y="340" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Resultados de Ejercicios Anteriores]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="09bc86dd-5c8e-479c-9d91-7a6d2f6ec419" x="5" y="364" width="250" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Reservas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0e1bbcc4-ba19-4965-944e-e45671a58ecc" x="5" y="312" width="250" height="11"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Variaciones de la Hacienda Pública / Patrimonio Neto del Ejercicio]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="767eae30-9d3f-439c-9d90-7102acf27d92" x="0" y="362" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="479ef7ba-2f59-4f3f-81a3-0bb486592e8e" x="0" y="310" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="a3532b6a-a2d6-4a97-8dff-cb265339dbbe" x="0" y="374" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="8f27793b-944b-48b7-bbe1-20a94b9be67c" x="0" y="246" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="c553e82a-3732-4af4-be5e-64c3c860aac6" x="0" y="204" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="58ece5c3-da6c-4a9c-87c7-f67cfd40efc2" x="0" y="322" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="2e309af2-3db9-4e6c-bdfa-cb9657a2625d" x="0" y="262" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="40259d83-1157-4a07-976a-1b2e44b0fcdc" x="0" y="278" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="53499831-aed4-4f9a-bb5c-28d7177ce956" x="0" y="294" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="f99631b2-cc7f-4f8a-b001-57870172eb84" x="0" y="350" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="243454c9-aec4-4fe6-977c-7ae378676f95" x="0" y="221" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="35b3853b-a366-4564-99c8-6b0bee17b029" x="0" y="338" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="f5f8cb2f-6207-4636-9cc0-f1d80e915fff" x="0" y="232" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="ad835d1e-1539-4d23-803c-617246b564d1" x="0" y="0" width="1" height="410"/>
+			</line>
+			<line>
+				<reportElement uuid="f99e6835-6b92-475c-af2f-3c9c9cbc7bc1" x="0" y="387" width="572" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="d988cf8d-e5d6-4d9c-990a-9d3a5eb722c2" x="0" y="409" width="572" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="d4ef18df-d8fb-4984-ab01-aa05d1be0aec" x="5" y="391" width="250" height="11"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo Neto en la Hacienda Pública / Patrimonio 20XN]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="53" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

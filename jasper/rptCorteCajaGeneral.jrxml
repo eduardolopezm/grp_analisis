@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptCorteCajaGeneral" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d531e0dc-a985-4664-906a-da63898bf529">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="fechainicio" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-03 00:00:00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafin" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-03 23:59:59"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagenEstado" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/juan/Trabajo/ap_grp_de/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT fecha, UPPER(legalname) AS legalname, nu_foliocorte, userid, obraid, SUM(importe) AS importe, 0 AS cancelados, SUM(IFNULL(importecance, 0)) AS importecance, SUM(IFNULL(importecanceAbsoluto, 0)) AS importecanceAbsoluto, count(*) AS movimientos
+FROM (
+SELECT CONCAT(UPPER(DWH_Tiempo.NombreDia), ' ', cat_Days.Dia, ' DE ', UPPER(cat_Months.mes), ' DE ', YEAR(debtortrans.trandate)) AS fecha, debtortrans.tagref, tags.tagdescription, legalbusinessunit.legalname, debtortrans.nu_ue, debtortrans.nu_foliocorte, debtortrans.transno, debtortrans.userid, www_users.obraid, debtortrans.debtorno, debtortrans.branchcode, custbranch.brname, debtortrans.status,
+SUM(IFNULL((salesorderdetails.unitprice * salesorderdetails.quantity) - ((salesorderdetails.unitprice * salesorderdetails.quantity) * salesorderdetails.discountpercent), ABS(debtortrans.ovamountcancel + debtortrans.ovgstcancel))) AS importe,
+(debtortrans.ovamountcancel + debtortrans.ovgstcancel) AS importecance,
+ABS(debtortrans.ovamountcancel + debtortrans.ovgstcancel) AS importecanceAbsoluto
+FROM debtortrans
+LEFT JOIN custallocns ON custallocns.transid_allocfrom = debtortrans.id
+LEFT JOIN debtortrans debtortransFac ON debtortransFac.id = custallocns.transid_allocto
+LEFT JOIN salesorders ON salesorders.orderno = debtortransFac.order_
+LEFT JOIN salesorderdetails ON salesorderdetails.orderno = salesorders.orderno
+LEFT JOIN www_users ON debtortrans.userid= www_users.userid
+LEFT JOIN tags ON debtortrans.tagref= tags.tagref
+LEFT JOIN legalbusinessunit ON tags.legalid= legalbusinessunit.legalid
+LEFT JOIN custbranch ON debtortrans.branchcode= custbranch.branchcode
+LEFT JOIN DWH_Tiempo ON YEAR(debtortrans.trandate)= DWH_Tiempo.anio AND MONTH(debtortrans.trandate)= DWH_Tiempo.mes AND DAY(debtortrans.trandate)= DWH_Tiempo.dia
+LEFT JOIN cat_Days ON DAY(debtortrans.trandate)=cat_Days.DiaId
+LEFT JOIN cat_Months ON MONTH(debtortrans.trandate)= cat_Months.u_mes
+WHERE debtortrans.type=12
+AND debtortrans.trandate BETWEEN $P{fechainicio} AND $P{fechafin}
+GROUP BY debtortrans.tagref, tags.tagdescription, legalbusinessunit.legalname, debtortrans.nu_ue, debtortrans.nu_foliocorte, debtortrans.transno, debtortrans.userid, debtortrans.debtorno, debtortrans.branchcode, custbranch.brname
+) AS recibos
+GROUP BY fecha, legalname, nu_foliocorte, userid, obraid
+ORDER BY nu_foliocorte;]]>
+	</queryString>
+	<field name="fecha" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="legalname" class="java.lang.String">
+		<fieldDescription><![CDATA[nombre]]></fieldDescription>
+	</field>
+	<field name="nu_foliocorte" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Folio de la póliza de cierre]]></fieldDescription>
+	</field>
+	<field name="userid" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="movimientos" class="java.lang.Double"/>
+	<field name="importe" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cancelados" class="java.lang.Double"/>
+	<field name="importecance" class="java.lang.Double"/>
+	<field name="obraid" class="java.lang.String"/>
+	<field name="importecanceAbsoluto" class="java.lang.Double"/>
+	<variable name="totalmovimientos" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{movimientos}]]></variableExpression>
+	</variable>
+	<variable name="totalingreso" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{importe}]]></variableExpression>
+	</variable>
+	<variable name="totalingresoneto" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{importe}-$F{importecanceAbsoluto}]]></variableExpression>
+	</variable>
+	<variable name="totalmovimientoscanc" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cancelados}]]></variableExpression>
+	</variable>
+	<variable name="totalcancelados" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{importecance}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="205" splitType="Stretch">
+			<image>
+				<reportElement uuid="ce0a9881-3642-4d14-8295-e9fe105c5e08" x="0" y="0" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="370bb989-a8fc-42bd-8305-cc5c851b0e32" x="430" y="0" width="142" height="66"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="4ab2aa5d-a83a-4455-83ce-5fb898daca41" x="143" y="3" width="286" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{legalname}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="62d4d5cc-fddd-41b0-b04b-f1a0152d0fbf" x="225" y="20" width="122" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[TESORERIA MUNICIPAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2e121981-f26f-4e72-bedf-cb4ca5adfb0a" x="225" y="40" width="122" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[2018-2021]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ed0816eb-0f40-48fe-924b-fc718ca0b13b" x="158" y="63" width="257" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[<<<   CORTE DE CAJA GENERAL  >>>]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2ae73b13-c1cf-4037-a6ac-734c13af54cd" x="1" y="101" width="132" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[RECAUDACION DEL DIA ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="ec02f4a5-696d-4758-b1fd-f21fc9fb45b8" x="131" y="101" width="394" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="3ce383dd-40e8-4611-bb91-df8e9ec95ade" x="1" y="121" width="157" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CANTIDAD DE MOVIMIENTOS:]]></text>
+			</staticText>
+			<subreport>
+				<reportElement uuid="7bcf5cf0-fc2d-4eb0-8553-be01413680f6" x="158" y="121" width="73" height="20"/>
+				<subreportParameter name="fechafin">
+					<subreportParameterExpression><![CDATA[$P{fechafin}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechainicio">
+					<subreportParameterExpression><![CDATA[$P{fechainicio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "rptCorteCajaGeneralSub.jasper"]]></subreportExpression>
+			</subreport>
+			<frame>
+				<reportElement uuid="c4cc1caa-e28a-49da-929b-e6dabbc8755b" x="0" y="159" width="572" height="46"/>
+				<staticText>
+					<reportElement uuid="5e53836c-2b38-424e-a582-66406edbe900" x="0" y="3" width="55" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[FOLIO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="728a726b-1064-4ef0-94cf-1d4735b794f4" x="55" y="3" width="47" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[CAJA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="14959a91-1785-41a2-b34b-3a12d2f1b806" x="102" y="3" width="40" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[#REC]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="ab36cdcc-3a16-489e-bb33-b3ee22b2d530" x="142" y="3" width="132" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[INGRESO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="8113f931-68e0-4892-8a75-9599476e661a" x="274" y="3" width="45" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[#RECS]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="ed538570-d24e-467c-ae91-d7577ab9f0d2" x="274" y="23" width="45" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[CANC.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="aad9cf8b-1b38-4fc1-b900-f135679af15e" x="319" y="3" width="124" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[IMPORTE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="a86b568b-5b98-40a8-b8c2-7c34b5a88666" x="319" y="23" width="124" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[CANC.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="1e3704f7-c1e3-4063-862f-03c6a9c12909" x="443" y="3" width="127" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[NETO]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="feb46cd3-b2d4-489c-ba83-1ac101255834" x="1" y="43" width="569" height="1"/>
+				</line>
+				<staticText>
+					<reportElement uuid="b39a16c2-7225-4efe-a3b4-1cb94001166d" x="1" y="23" width="54" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[PÓLIZA]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="bc189a62-4dc9-4616-8f49-40c9cc9d83af" x="1" y="0" width="54" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nu_foliocorte}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e7b25925-7b80-4a0b-b70f-8fcafa8501b8" x="55" y="0" width="47" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{obraid} == null ? " - " : $F{obraid}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement uuid="ff30fe1f-2572-4b61-baff-58f012205b46" x="102" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{movimientos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="6bb0ee7b-51c2-490e-b64f-5eac9261c1b7" x="144" y="0" width="130" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[($F{importe})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement uuid="b7b18566-251a-4a2a-94f5-aa48c22d34aa" x="274" y="0" width="45" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cancelados}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="a4a61644-05c6-4aed-bc05-580aeb8588db" x="319" y="0" width="124" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[($F{importecance}).round(2)]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="8849de25-4e06-45cc-84b3-bbd73bec53ee" x="443" y="0" width="129" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[($F{importe}-$F{importecanceAbsoluto})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField evaluationTime="Report">
+				<reportElement uuid="5d072c75-303e-4f8d-ab86-015ea498dd4d" x="286" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="690dcdbd-c4c0-44a7-9f40-ac605e0e860c" x="255" y="0" width="31" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}+"/"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="28" splitType="Immediate">
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement uuid="a40fdaa0-84de-46cb-bea4-3de86828075a" x="102" y="8" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{totalmovimientos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="0ca2cf39-e5a8-4728-bf75-224d65c6f030" x="144" y="8" width="130" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[($V{totalingreso})]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="64f947e5-9cbe-4cc9-aad9-6f3f977feaf6" x="319" y="8" width="124" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[($V{totalcancelados}).round(2)]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement uuid="640e5d5e-7c49-4a80-9704-fd1377e79218" x="443" y="8" width="128" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[($V{totalingresoneto})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement uuid="03b836ad-5681-431e-bf96-a2d9044900c5" x="274" y="8" width="45" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{totalmovimientoscanc}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="3d6aafa5-7dad-423e-8b8d-799dfe9bdbc0" x="102" y="4" width="40" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="e600f9ac-b14c-4f5f-a81a-56b6f63768c0" x="144" y="4" width="130" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="d4beb344-b5be-4f99-8d16-47276ddba5bd" x="274" y="4" width="45" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="83718f63-6973-4ef1-b07a-42565f52f44a" x="319" y="4" width="124" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="8f9af6c4-5e70-4ece-8ae0-2b81d6afd060" x="443" y="4" width="128" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

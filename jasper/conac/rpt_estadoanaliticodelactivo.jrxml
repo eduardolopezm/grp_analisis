@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_estadoanaliticodelactivo" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e6d6966f-98d3-489c-af9f-af8283f63b75">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="178"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "../estiloTablaJasper.jrtx"]]></template>
+	<parameter name="EntePublico" class="java.lang.String"/>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="fechainicialnew" class="java.lang.String"/>
+	<parameter name="fechafinalnew" class="java.lang.String"/>
+	<parameter name="ur" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ue" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="usuario" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="parRangoDeFechas" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="descripcionUE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaReporteNew" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="imagenEstado" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+		config_reportes_.valor as nu_clave,
+		chartmaster1.accountname as txt_descripcion,
+		chartmaster.accountcode,
+		CONCAT(chartmaster.accountcode, ' - ', chartmaster.accountname) as cuenta_mayor,
+		0 as prdActual,
+		0 as prdCargos,
+		0 as prdAbonos,
+		COALESCE(dtSaldoInicial.saldoInicial,'0') + COALESCE(dtMovimientos.saldoInicial,'0') as PERIODO1,
+		COALESCE(dtMovimientos.movCargos,'0') as PERIODO2,
+		COALESCE(dtMovimientos.movAbonos,'0') as PERIODO3,
+		COALESCE(dtSaldoFinal.saldoFinal, '0') as saldofinal,
+		COALESCE(dtSaldoFinal.saldoFinal, '0') - (COALESCE(dtSaldoInicial.saldoInicial,'0') + COALESCE(dtMovimientos.saldoInicial,'0')) as variacion
+	FROM tb_cat_reportes_conac tb_c
+	LEFT JOIN config_reportes_ ON tb_c.ln_reporte= config_reportes_.reporte
+	LEFT JOIN chartmaster chartmaster1  on  config_reportes_.valor = chartmaster1.accountcode
+	LEFT JOIN chartmaster on config_reportes_.valor = chartmaster.groupcode
+	LEFT JOIN (SELECT SUBSTRING_INDEX(gltrans.account, '.', 3) as account,
+			        SUM(gltrans.amount) AS saldoInicial
+                    FROM  gltrans
+                    INNER JOIN sec_unegsxuser ON gltrans.tag = sec_unegsxuser.tagref AND sec_unegsxuser.userid = $P{usuario}
+					INNER JOIN (SELECT chartmaster.accountcode  AS valor
+      					FROM tb_cat_reportes_conac tb_c
+      					inner join config_reportes_ ON tb_c.ln_reporte= config_reportes_.reporte
+      					LEFT JOIN chartmaster on config_reportes_.valor = chartmaster.groupcode AND chartmaster.nu_nivel=3
+      					WHERE id_nu_reportes_conac = '8'
+      					GROUP BY chartmaster.accountcode
+      					) configReport ON SUBSTRING_INDEX(gltrans.account, '.', '3') = configReport.valor
+                    WHERE YEAR(gltrans.trandate) = year($P{fechainicialnew})
+                    	and gltrans.trandate < $P{fechainicialnew}
+                    	AND gltrans.type = 0
+                    	AND CASE WHEN $P{ur} = '' THEN 1 = 1 ELSE gltrans.tag IN ('$P!{ur}') END
+                    	AND CASE WHEN $P{ue} = '' THEN 1 = 1 ELSE gltrans.ln_ue IN ('$P!{ue}') END
+                        AND gltrans.account != ''
+                        AND gltrans.posted = 1
+                        AND gltrans.periodno not like '%.5'
+                    group by SUBSTRING_INDEX(account, '.', 3)) AS dtSaldoInicial
+				ON chartmaster.accountcode = dtSaldoInicial.account
+	LEFT JOIN (SELECT SUBSTRING_INDEX(gltrans.account, '.', 3) as account,
+	          SUM(CASE WHEN gltrans.type = 0  THEN gltrans.amount ELSE 0 END) AS saldoInicial,
+                    SUM(CASE WHEN gltrans.type != 0 AND gltrans.amount >=0 THEN gltrans.amount ELSE 0 END) AS movCargos,
+                    SUM(CASE WHEN gltrans.type != 0 AND gltrans.amount < 0 THEN gltrans.amount ELSE 0 END) AS movAbonos
+                    FROM  gltrans
+                    INNER JOIN sec_unegsxuser ON gltrans.tag = sec_unegsxuser.tagref AND sec_unegsxuser.userid = $P{usuario}
+					INNER JOIN (SELECT chartmaster.accountcode  AS valor
+      					FROM tb_cat_reportes_conac tb_c
+      					INNER join config_reportes_ ON tb_c.ln_reporte= config_reportes_.reporte
+      					INNER JOIN chartmaster on config_reportes_.valor = chartmaster.groupcode AND chartmaster.nu_nivel=3
+      					WHERE id_nu_reportes_conac = '8'
+      					GROUP BY chartmaster.accountcode
+      					) configReport ON SUBSTRING_INDEX(gltrans.account, '.', '3') = configReport.valor
+                    WHERE trandate between $P{fechainicialnew} and  $P{fechafinalnew}
+                    	AND CASE WHEN $P{ur} = '' THEN 1 = 1 ELSE gltrans.tag IN ('$P!{ur}') END
+                    	AND CASE WHEN $P{ue} = '' THEN 1 = 1 ELSE gltrans.ln_ue IN ('$P!{ue}') END
+                    	AND gltrans.periodno not like '%.5'
+                        AND gltrans.account != ''
+                        AND gltrans.posted = 1
+                        AND SUBSTRING_INDEX(account, '.', 3) in (select accountcode from chartmaster where chartmaster.nu_nivel=3)
+                    group by SUBSTRING_INDEX(account, '.', 3)) AS dtMovimientos
+              ON chartmaster.accountcode = dtMovimientos.account
+    LEFT JOIN (SELECT SUBSTRING_INDEX(gltrans.account, '.', 3) as account,
+			        SUM(gltrans.amount) AS saldoFinal
+                    FROM  gltrans
+                    INNER JOIN sec_unegsxuser ON gltrans.tag = sec_unegsxuser.tagref AND sec_unegsxuser.userid = $P{usuario}
+					INNER JOIN (SELECT chartmaster.accountcode  AS valor
+      					FROM tb_cat_reportes_conac tb_c
+      					inner join config_reportes_ ON tb_c.ln_reporte= config_reportes_.reporte
+      					LEFT JOIN chartmaster on config_reportes_.valor = chartmaster.groupcode AND chartmaster.nu_nivel=3
+      					WHERE id_nu_reportes_conac = '8'
+      					GROUP BY chartmaster.accountcode
+      					) configReport ON SUBSTRING_INDEX(gltrans.account, '.', '3') = configReport.valor
+                    WHERE YEAR(gltrans.trandate) = year($P{fechainicialnew})
+                    	and gltrans.trandate <= $P{fechafinalnew}
+                    	AND CASE WHEN $P{ur} = '' THEN 1 = 1 ELSE gltrans.tag IN ('$P!{ur}') END
+                    	AND CASE WHEN $P{ue} = '' THEN 1 = 1 ELSE gltrans.ln_ue IN ('$P!{ue}') END
+                        AND gltrans.account != ''
+                        AND gltrans.posted = 1
+                        AND gltrans.periodno not like '%.5'
+                    group by SUBSTRING_INDEX(account, '.', 3)) AS dtSaldoFinal
+              ON chartmaster.accountcode = dtSaldoFinal.account
+	WHERE   tb_c.id_nu_reportes_conac = '8'
+			AND tb_c.ind_activo=1
+	GROUP BY
+			tb_c.id_nu_reportes_conac,
+			tb_c.ln_reporte,
+			config_reportes_.valor,
+			chartmaster1.accountname,
+			chartmaster.accountcode,
+			chartmaster.accountname;]]>
+	</queryString>
+	<field name="nu_clave" class="java.lang.String"/>
+	<field name="txt_descripcion" class="java.lang.String"/>
+	<field name="accountcode" class="java.lang.String"/>
+	<field name="cuenta_mayor" class="java.lang.String"/>
+	<field name="PERIODO1" class="java.math.BigDecimal"/>
+	<field name="PERIODO2" class="java.math.BigDecimal"/>
+	<field name="PERIODO3" class="java.math.BigDecimal"/>
+	<field name="saldofinal" class="java.math.BigDecimal"/>
+	<field name="variacion" class="java.math.BigDecimal"/>
+	<variable name="Tperiodo1" class="java.math.BigDecimal" resetType="Group" resetGroup="Header_1" calculation="Sum">
+		<variableExpression><![CDATA[$F{PERIODO1}]]></variableExpression>
+	</variable>
+	<variable name="Tperiodo2" class="java.math.BigDecimal" resetType="Group" resetGroup="Header_1" calculation="Sum">
+		<variableExpression><![CDATA[$F{PERIODO2}]]></variableExpression>
+	</variable>
+	<variable name="Tperiodo3" class="java.math.BigDecimal" resetType="Group" resetGroup="Header_1" calculation="Sum">
+		<variableExpression><![CDATA[$F{PERIODO3}]]></variableExpression>
+	</variable>
+	<variable name="saldoFinal" class="java.math.BigDecimal" resetType="Group" resetGroup="Header_1" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldofinal}]]></variableExpression>
+	</variable>
+	<variable name="V_variacion" class="java.math.BigDecimal" resetType="Group" resetGroup="Header_1" calculation="Sum">
+		<variableExpression><![CDATA[$F{variacion}]]></variableExpression>
+	</variable>
+	<variable name="TOTALPERIODO1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{PERIODO1}]]></variableExpression>
+	</variable>
+	<variable name="TOTALPERIODO2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{PERIODO2}]]></variableExpression>
+	</variable>
+	<variable name="TOTALPERIODO3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{PERIODO3}]]></variableExpression>
+	</variable>
+	<variable name="TOTALSALDOFINAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldofinal}]]></variableExpression>
+	</variable>
+	<variable name="TOTALVARIACION" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{variacion}]]></variableExpression>
+	</variable>
+	<group name="Header_1">
+		<groupExpression><![CDATA[$F{txt_descripcion}]]></groupExpression>
+		<groupHeader>
+			<band height="18">
+				<textField>
+					<reportElement x="2" y="5" width="188" height="11" uuid="7f9a3a03-cc48-4fb1-bca7-605229fee852"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true" isItalic="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{txt_descripcion}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="2" y="16" width="569" height="1" forecolor="#CCCCCC" uuid="e3c22c0a-6f0a-4e6a-b36e-2abd30897a1b"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="24">
+				<line>
+					<reportElement x="2" y="3" width="569" height="1" forecolor="#CCCCCC" uuid="7e23e0c3-3a5a-497c-9ad9-fef67f68555e"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="2" y="21" width="569" height="1" forecolor="#CCCCCC" uuid="683d9c8f-9100-4a12-8607-9a6e844f28ce"/>
+					<graphicElement>
+						<pen lineWidth="0.5"/>
+					</graphicElement>
+				</line>
+				<textField pattern=" #,##0.00">
+					<reportElement x="266" y="6" width="77" height="15" uuid="358ec98c-ce42-4235-acb1-836ad9c2ec38"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Tperiodo2}]]></textFieldExpression>
+				</textField>
+				<textField pattern=" #,##0.00">
+					<reportElement x="342" y="6" width="75" height="15" uuid="1709aeaa-f9dd-4d3f-8689-2984b460855a"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[Math.abs($V{Tperiodo3})]]></textFieldExpression>
+				</textField>
+				<textField pattern=" #,##0.00">
+					<reportElement x="417" y="6" width="76" height="15" uuid="3d056689-52b3-4d4c-bf07-a58b76f720af"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{saldoFinal}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="494" y="6" width="77" height="15" uuid="13ca16ae-47fc-43a8-9d2b-ddc3f6b6f836"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{V_variacion}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="190" y="6" width="77" height="15" uuid="722520b4-511d-47eb-b009-750a84038367"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{Tperiodo1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="2" y="6" width="33" height="15" uuid="ce650a52-f6ab-4fd3-98cc-a5284f709707"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[TOTAL ]]></text>
+				</staticText>
+				<textField evaluationTime="Group" evaluationGroup="Header_1">
+					<reportElement x="35" y="6" width="155" height="15" uuid="99ba762e-25bc-44ea-a0c1-02828b2f240b"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{txt_descripcion}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="106" splitType="Stretch">
+			<staticText>
+				<reportElement x="104" y="30" width="364" height="18" uuid="1f706010-9884-40bb-addb-16d8aa6214e3"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Estado Analítico del Activo]]></text>
+			</staticText>
+			<image>
+				<reportElement x="14" y="2" width="89" height="52" uuid="87099d5c-f62f-4eb0-bbc4-317e3cdb3f60"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="103" y="14" width="366" height="16" uuid="f7cf54b4-6526-41ef-abcc-68fb1b013082"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{EntePublico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="469" y="66" width="102" height="10" uuid="f8e4089e-2785-4496-9149-47ef5e6318ef"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(PESOS)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="44" y="86" width="59" height="10" uuid="6cc792d8-5dd9-4a33-bf0a-a9f3c4156af4"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ente Público: ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="104" y="97" width="467" height="1" uuid="317bc918-4ea6-45f9-8f26-1a0b5c170381"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="104" y="76" width="467" height="20" uuid="7410556e-d87d-47ac-8ad3-dca5a9e4ec05"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Poder Ejecutivo]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="103" y="48" width="365" height="14" uuid="74789002-9fb9-4919-b0eb-f6b7f3179e77"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{descripcionUE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="104" y="62" width="365" height="14" uuid="20430145-9358-46a1-98f0-50b4e6ca2487"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaReporteNew}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="469" y="2" width="90" height="52" uuid="5e405649-99c7-4a58-a9ed-0b9f894ac8fe"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="104" y="1" width="365" height="13" uuid="1e3039fe-3e89-4c65-894c-f748c1b4487f"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MUNICIPIO DE TAMPICO, TAMAULIPAS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="28" width="188" height="24" uuid="37f9259b-ffeb-45fb-84e3-44dfdb9e48af"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACTIVO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="th" x="2" y="0" width="188" height="28" uuid="b349d3e4-7ede-4ee7-92f9-36fd5fb37826"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Concepto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="th" x="190" y="0" width="77" height="28" uuid="d6f0cc1e-bb20-4e34-8b49-f4511be24aac"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Saldo Inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="th" x="267" y="0" width="76" height="28" uuid="624d161f-8e5d-4238-8345-b0a728bd90e2"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Cargo del    Periodo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="th" x="343" y="0" width="74" height="28" uuid="593450a4-ddaa-484f-810b-76715fab2ea7"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Abonos del Periodo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="th" x="417" y="0" width="77" height="28" uuid="879785df-d140-461a-9c5c-ae820a133ca2"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Saldo Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="th" x="494" y="0" width="77" height="28" uuid="14192e63-96ff-4e14-8040-1ba39acd3bca"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Variación del Periodo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="2" y="2" width="188" height="13" uuid="3892df59-4989-4afe-9c8f-031014108a5b"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta_mayor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###,##0.00;-###,###,##" isBlankWhenNull="true">
+				<reportElement x="190" y="2" width="77" height="13" uuid="b1634d14-e767-416a-8650-5696525ae837"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤###,###,##0.00;-###,###,##0.00">
+				<reportElement x="266" y="2" width="77" height="13" uuid="1771c8f1-dc27-44e1-b897-88bbd8b1e350"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###,##0.00;###,###,##0.00">
+				<reportElement x="342" y="2" width="75" height="13" uuid="883f9799-3c32-4ffc-b042-5b5f58237ab8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.abs($F{PERIODO3})]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###,##0.00;-###,###,##0.00">
+				<reportElement x="417" y="2" width="76" height="13" uuid="0cc8b22a-f756-4072-bc9f-5adde4ff4a66"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldofinal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###,##0.00;-###,###,##0.00">
+				<reportElement x="494" y="2" width="77" height="13" uuid="ba2413b6-5728-4da4-aa2e-d984e2b13afc"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{variacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="65" splitType="Stretch">
+			<textField pattern=" #,##0.00">
+				<reportElement x="190" y="2" width="77" height="15" uuid="193e82f0-e45d-40aa-9e3c-1e08b101d13b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTALPERIODO1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="2" width="188" height="15" uuid="bfe81f68-b9ca-4cda-8763-6af5278dd6a4"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL DEL ACTIVO]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="266" y="2" width="77" height="15" uuid="1d4c35cb-b536-41b4-85ea-b640b8a0c945"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTALPERIODO2}]]></textFieldExpression>
+			</textField>
+			<textField pattern=" #,##0.00">
+				<reportElement x="342" y="2" width="75" height="15" uuid="6ce8ccb5-ce6b-4266-be6e-6ba180df8401"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Math.abs($V{TOTALPERIODO3})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="417" y="2" width="76" height="15" uuid="ee3c6ca4-643d-4ed0-8ab8-521729d40458"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTALSALDOFINAL}]]></textFieldExpression>
+			</textField>
+			<textField pattern=" #,##0.00">
+				<reportElement x="494" y="2" width="77" height="15" uuid="ff8783ad-545e-49db-8311-a4621a2daa34"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTALVARIACION}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="34" width="569" height="10" uuid="deb4636f-8c3d-454b-917d-47288fa1cc14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Bajo protesta de decir verdad declaramos que los Estados Financieros y sus Notas son razonablemente correctos y responsabilidad del emisor.]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

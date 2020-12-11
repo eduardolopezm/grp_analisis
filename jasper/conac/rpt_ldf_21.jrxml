@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptAnaliticoDeudaPasivo" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fc46fd7a-f4ce-46b0-85c2-7a76b9668c4f">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="448"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<template><![CDATA[$P{SUBREPORT_DIR} + "../estiloTablaJasper.jrtx"]]></template>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/eloypm/ap_grp_desarrollo/ap_grp_de/jasper/conac/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anioreporte" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2017"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="parEntePublico" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["esdsdsdf"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="parRangoDeFechas" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["sf"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tagref" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["I6L"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="fechainicial" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2017-1-1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafinal" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2018-06-30"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ue" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["09"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="descripcionUE" class="java.lang.String"/>
+	<parameter name="fechaReporteNew" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2018-01-01"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechainicialnew" class="java.lang.String"/>
+	<parameter name="fechafinalnew" class="java.lang.String"/>
+	<parameter name="usuario" class="java.lang.String">
+		<defaultValueExpression><![CDATA[desarrollo]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagenEstado" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT tb_c.ln_reporte,
+		tb_cl.id_nu_reporte_conac_label,
+		tb_cl.ln_label as cuenta_mayor,
+		tb_cl.ind_tipo,
+		0 AS accountcode ,
+		'0.00' AS PERIODO1,
+		'0.00' AS PERIODO2,
+		'0.00' AS PERIODO3
+FROM tb_cat_reportes_conac tb_c
+INNER JOIN tb_cat_reporte_conac_label tb_cl ON tb_c.ln_reporte = tb_cl.ln_reporte
+WHERE tb_c.id_nu_reportes_conac = '9' AND tb_cl.ind_activo=1
+GROUP BY tb_c.ln_reporte,
+		tb_cl.id_nu_reporte_conac_label,
+		tb_cl.ln_label,
+		tb_cl.ind_tipo
+ORDER BY tb_cl.ind_orden ASC;]]>
+	</queryString>
+	<field name="accountcode" class="java.lang.String"/>
+	<field name="cuenta_mayor" class="java.lang.String"/>
+	<field name="PERIODO1" class="java.lang.String"/>
+	<field name="PERIODO2" class="java.lang.String"/>
+	<field name="PERIODO3" class="java.lang.String"/>
+	<field name="ind_tipo" class="java.lang.String"/>
+	<variable name="totalperiodo1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[Double.parseDouble($F{PERIODO1})]]></variableExpression>
+	</variable>
+	<variable name="totalperiodo2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[Double.parseDouble($F{PERIODO2})]]></variableExpression>
+	</variable>
+	<variable name="subtotalperiodo1" class="java.lang.Double"/>
+	<variable name="subtotalperiodo2" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="100" splitType="Stretch">
+			<textField>
+				<reportElement x="140" y="24" width="298" height="15" uuid="ee52c0af-f3bf-4d09-894b-be72c1ec6d07"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{parEntePublico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="140" y="39" width="298" height="20" uuid="f75fef84-1a20-4ed9-8ddd-169093829169"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Informe Analítico de la Deuda Pública y Otros Pasivos - LDF]]></text>
+			</staticText>
+			<image>
+				<reportElement x="10" y="4" width="130" height="70" uuid="27da0e52-0102-41f3-a4b7-87c2839f6fa7"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="140" y="60" width="298" height="20" uuid="5fda1181-be26-406a-8f22-4e4a2e0c03f9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{descripcionUE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="81" width="298" height="19" uuid="8b66bf2d-4437-43bb-b63f-2458d2493747"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaReporteNew}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="438" y="4" width="121" height="70" uuid="7bb2d167-6c80-4311-9db7-bd2b8f4042c2"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="140" y="4" width="298" height="20" uuid="c3bbab28-4dbd-4be1-a7c9-1e3751b7dacc"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MUNICIPIO DE TAMPICO, TAMAULIPAS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="47" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="27" width="100" height="20" backcolor="#006633" uuid="67b0758f-33d1-430f-9ae4-4d02996bcd79"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEUDA PÚBLICA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="th" x="0" y="1" width="227" height="26" uuid="287e4274-910a-41a8-9cc8-dd192790c4f9"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Denominación de la Deuda Pública y Otros Pasivos ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="th" x="227" y="1" width="92" height="26" uuid="56add691-b073-487c-b931-56a9fbe37b7e"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Saldo al 31 de diciembre de 2018 ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="th" x="319" y="1" width="84" height="26" uuid="d0a81006-10aa-4d8d-a942-ee847644791f"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Amortizaciones del Periodo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="th" x="403" y="1" width="116" height="26" uuid="94ff10c9-c4cf-4667-97aa-d991bee2813b"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Revaluaciones, Reclasificaciones y Otros Ajustes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="th" x="519" y="1" width="76" height="26" uuid="024ad89c-dcf4-4903-bbcb-f363810c51af"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Saldo Final del Período]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="th" x="595" y="1" width="85" height="26" uuid="70c6fdfe-fbb0-4e8a-9e3c-6bbcdc47cab3"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Pago de Intereses
+del Periodo ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="th" x="680" y="1" width="72" height="26" uuid="2fc5cdaf-38bb-4496-b008-701948e781ef"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Pago de Comisiones y
+demás costos
+asociados durante el
+Periodo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17">
+			<textField isStretchWithOverflow="true" pattern="###,##0.00" isBlankWhenNull="true">
+				<reportElement x="379" y="1" width="96" height="15" isRemoveLineWhenBlank="true" uuid="248cee1e-0e4e-43bf-a24e-cceb1d034d63">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="1" width="217" height="15" uuid="ed331bca-929e-4063-9da1-42feb48eae69">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "0" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta_mayor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="1" width="207" height="15" uuid="9d0711d2-7695-493d-8e50-36a21632648c">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta_mayor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="475" y="1" width="96" height="15" isRemoveLineWhenBlank="true" uuid="b81447f9-4b0d-4188-885a-451ae7ba9e40">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="1" width="227" height="15" uuid="e7e4ef48-c641-49e8-970d-70b34f9b278e">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "3" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="9" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta_mayor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,##0.00" isBlankWhenNull="true">
+				<reportElement x="379" y="1" width="96" height="15" isRemoveLineWhenBlank="true" uuid="c044c6c6-f60c-4b9e-b38b-a9f9fd621f8c">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "0" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Double.parseDouble($F{PERIODO1})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="475" y="1" width="96" height="15" isRemoveLineWhenBlank="true" uuid="7079e173-1dc6-42e5-a8f5-af7d730850cb">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "0" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Double.parseDouble($F{PERIODO2})]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,##0.00" isBlankWhenNull="true">
+				<reportElement x="379" y="1" width="96" height="15" isRemoveLineWhenBlank="true" uuid="eb89a063-4549-4238-b6a7-ab30437d680f">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "3" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="475" y="1" width="96" height="15" isRemoveLineWhenBlank="true" uuid="3c0be499-aa01-4cc0-ae8d-553d0a5b5e87">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "3" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="1" width="227" height="15" uuid="4c521c24-ffc3-4286-ae5e-ceca777a0760">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "4" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font isBold="true" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta_mayor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="74">
+			<subreport>
+				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="0" y="2" width="571" height="50" uuid="63859001-da36-4e56-abf7-79a1d3e9f76d"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechainicialnew">
+					<subreportParameterExpression><![CDATA[$P{fechainicialnew}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Anio">
+					<subreportParameterExpression><![CDATA[$P{anioreporte}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="TituloReporte">
+					<subreportParameterExpression><![CDATA["Otros Pasivos"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ue">
+					<subreportParameterExpression><![CDATA[$P{ue}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="usuario">
+					<subreportParameterExpression><![CDATA[$P{usuario}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechafinalnew">
+					<subreportParameterExpression><![CDATA[$P{fechafinalnew}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tagref">
+					<subreportParameterExpression><![CDATA[$P{tagref}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="totalperiodo1" toVariable="subtotalperiodo1" calculation="Sum"/>
+				<returnValue subreportVariable="totalperiodo2" toVariable="subtotalperiodo2" calculation="Sum"/>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "rpt_analitico_desudapasivos_subreport.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="0" y="58" width="571" height="16" uuid="98938b18-d329-49c1-83ac-81ec166f348f"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Bajo protesta de decir verdad declaramos que los Estados Financieros y sus Notas son razonablemente correctos y responsabilidad del emisor.							]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

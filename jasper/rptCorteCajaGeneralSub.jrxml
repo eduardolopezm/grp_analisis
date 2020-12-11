@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptCorteCajaGeneralSub" language="groovy" pageWidth="120" pageHeight="30" columnWidth="120" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ee6de2a2-c475-45fc-91ae-6777335353a5">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fechainicio" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 00:00:00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafin" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-31 23:59:59"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT COUNT(*) AS total
+FROM debtortrans
+LEFT JOIN DWH_Tiempo ON YEAR(debtortrans.trandate)= DWH_Tiempo.anio AND MONTH(debtortrans.trandate)= DWH_Tiempo.mes AND DAY(debtortrans.trandate)= DWH_Tiempo.dia
+LEFT JOIN cat_Days ON DAY(debtortrans.trandate)=cat_Days.DiaId
+LEFT JOIN cat_Months ON MONTH(debtortrans.trandate)= cat_Months.u_mes
+WHERE TYPE=12
+AND debtortrans.trandate BETWEEN $P{fechainicio} AND $P{fechafin}]]>
+	</queryString>
+	<field name="total" class="java.lang.String"/>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement uuid="5219733b-f54b-4411-9ec9-5b41e4b4be02" x="1" y="0" width="100" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptCorteCajaGeneral" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d531e0dc-a985-4664-906a-da63898bf529">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="bordesNegros" forecolor="#000000" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="1.0"/>
+			<topPen lineWidth="1.0"/>
+			<leftPen lineWidth="1.0"/>
+			<bottomPen lineWidth="1.0"/>
+			<rightPen lineWidth="1.0"/>
+		</box>
+	</style>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="imagen" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="fechainicio" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 00:00:00"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafin" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2020-01-02 23:59:59"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagenEstado" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/juan/Trabajo/ap_grp_de/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechalarga" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["02 DE ENERO DEL 2020"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="razonsocial" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["MUNICIPIO DE TAMPICO, TAM."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nombreMes" class="java.lang.String"/>
+	<parameter name="anioFinal" class="java.lang.String"/>
+	<parameter name="anioFinal2" class="java.lang.String"/>
+	<parameter name="diaFinal" class="java.lang.String"/>
+	<parameter name="mesFinal" class="java.lang.String"/>
+	<parameter name="mesInicio" class="java.lang.String"/>
+	<parameter name="anioInicio" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+locations.loccode as objprincipal,
+locations.locationname as objprincipalName,
+
+debtortransRecibo.trandate,
+YEAR(debtortransRecibo.trandate) as anio,
+MONTH(debtortransRecibo.trandate) as mes,
+DAY(debtortransRecibo.trandate) as dia,
+
+DWH_Tiempo.Semana,
+DWH_TiempoMM.diaMin,
+DWH_TiempoMM.diaMax,
+
+CONCAT(SUBSTRING(cat_Months.mes, 1, 3),' ',IF(LENGTH(DWH_TiempoMM.diaMin) = 1, CONCAT('0',DWH_TiempoMM.diaMin), DWH_TiempoMM.diaMin), ' al ', IF(LENGTH(DWH_TiempoMM.diaMax) = 1, CONCAT('0',DWH_TiempoMM.diaMax), DWH_TiempoMM.diaMax)) as nombreSemana,
+
+IFNULL(SUM((salesorderdetails.unitprice * salesorderdetails.quantity)) - SUM((salesorderdetails.unitprice * salesorderdetails.quantity ) * salesorderdetails.discountpercent ), 0) AS neto
+FROM locations
+JOIN salesorders ON salesorders.fromstkloc = locations.loccode
+JOIN salesorderdetails ON salesorderdetails.orderno = salesorders.orderno
+JOIN stockmaster ON stockmaster.stockid = salesorderdetails.stkcode
+JOIN debtortrans ON debtortrans.order_ = salesorders.orderno
+JOIN custallocns ON custallocns.transid_allocto = debtortrans.id
+JOIN debtortrans debtortransRecibo ON debtortransRecibo.id = custallocns.transid_allocfrom
+JOIN cat_Months ON cat_Months.u_mes = MONTH(debtortransRecibo.trandate)
+JOIN DWH_Tiempo ON DWH_Tiempo.Anio = YEAR(debtortransRecibo.trandate) AND DWH_Tiempo.Mes = MONTH(debtortransRecibo.trandate) AND DWH_Tiempo.Dia = DAY(debtortransRecibo.trandate)
+JOIN (
+SELECT
+MIN(DWH_Tiempo.Dia) as diaMin,
+MAX(DWH_Tiempo.Dia) as diaMax,
+DWH_Tiempo.Anio,
+DWH_Tiempo.Semana,
+DWH_Tiempo.Mes
+FROM DWH_Tiempo
+WHERE (DWH_Tiempo.Anio = $P{anioInicio} OR DWH_Tiempo.Anio = $P{anioFinal})
+AND (DWH_Tiempo.Mes = $P{mesInicio} OR DWH_Tiempo.Mes = $P{mesFinal})
+GROUP BY DWH_Tiempo.Anio, DWH_Tiempo.Semana, DWH_Tiempo.Mes
+) AS DWH_TiempoMM ON DWH_TiempoMM.Anio = DWH_Tiempo.Anio AND DWH_TiempoMM.Mes = DWH_Tiempo.Mes AND DWH_TiempoMM.Semana = DWH_Tiempo.Semana
+WHERE
+locations.tipo = 'ObjetoPrincipal'
+AND debtortransRecibo.trandate BETWEEN $P{fechainicio} AND $P{fechafin}
+GROUP BY locations.loccode, locations.locationname, DWH_Tiempo.Semana
+ORDER BY CAST(nombreSemana AS SIGNED) ASC]]>
+	</queryString>
+	<field name="objprincipal" class="java.lang.String"/>
+	<field name="objprincipalName" class="java.lang.String"/>
+	<field name="neto" class="java.lang.Double"/>
+	<field name="nombreSemana" class="java.lang.String"/>
+	<field name="diaMin" class="java.lang.String"/>
+	<variable name="totalneto" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{neto}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="65" splitType="Stretch">
+			<textField>
+				<reportElement uuid="7f97da52-92fc-4076-bf1c-4df6858b1ca9" x="143" y="0" width="285" height="25" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["REPORTE SEMANAL DE INGRESOS"]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="42c13a99-43cc-4205-a927-976659edde97" x="1" y="0" width="142" height="50"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="b67193c0-0f62-445e-8dbe-1aaecfb2b6df" x="428" y="0" width="142" height="50"/>
+				<imageExpression><![CDATA[$P{imagenEstado}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="ed3fe89b-be8c-41cb-8825-0f1e02e6a8a2" x="143" y="25" width="285" height="25" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<summary>
+		<band height="93" splitType="Immediate">
+			<crosstab>
+				<reportElement uuid="a0f1e024-b216-4a60-ac77-a7f9b1a1db95" x="1" y="0" width="569" height="90"/>
+				<crosstabHeaderCell>
+					<cellContents>
+						<staticText>
+							<reportElement uuid="6875991a-1924-410b-9956-6d3e7fce96fb" x="0" y="0" width="92" height="16"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+							</textElement>
+							<text><![CDATA[CONCEPTOS]]></text>
+						</staticText>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="objprincipalName" width="92" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{objprincipalName}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#FFFFFF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField isStretchWithOverflow="true">
+								<reportElement uuid="a6844e3d-b49f-4945-894c-d617476436ac" style="Crosstab Data Text" x="0" y="0" width="92" height="14" backcolor="#FFFFFF"/>
+								<textElement textAlignment="Left">
+									<font size="6"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{objprincipalName}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#FFFFFF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement uuid="2f3307e2-9db8-4bc5-818b-6f5225e44680" x="0" y="0" width="92" height="12"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[TOTAL]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="nombreSemana" height="16" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{nombreSemana}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#FFFFFF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement uuid="7eafafe0-5ca9-4ea1-9f46-447246187ece" style="Crosstab Data Text" x="0" y="0" width="78" height="16"/>
+								<textElement verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{nombreSemana}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#FFFFFF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement uuid="12d491b8-a7db-429c-a86f-ed65d0db6264" x="0" y="0" width="79" height="16"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[TOTAL]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="netoMeasure" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{neto}]]></measureExpression>
+				</measure>
+				<crosstabCell width="78" height="14">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField isStretchWithOverflow="true" pattern="#,##0.00">
+							<reportElement uuid="22dcce18-bdd6-4619-a95b-1b3d3aca8ce2" style="Crosstab Data Text" x="0" y="0" width="78" height="14"/>
+							<textElement textAlignment="Right">
+								<font size="7"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{netoMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="78" height="12" rowTotalGroup="objprincipalName">
+					<cellContents backcolor="#FFFFFF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField isStretchWithOverflow="true" pattern="#,##0.00">
+							<reportElement uuid="10bca22a-8bc1-49e0-a215-ec6983d892bd" style="Crosstab Data Text" x="0" y="0" width="78" height="12"/>
+							<textElement textAlignment="Right">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{netoMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="79" height="14" columnTotalGroup="nombreSemana">
+					<cellContents backcolor="#FFFFFF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField isStretchWithOverflow="true" pattern="#,##0.00">
+							<reportElement uuid="c23a1adc-ab97-488b-8303-1ff73b002756" style="Crosstab Data Text" x="0" y="0" width="79" height="14"/>
+							<textElement textAlignment="Right">
+								<font size="7"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{netoMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="79" height="12" rowTotalGroup="objprincipalName" columnTotalGroup="nombreSemana">
+					<cellContents backcolor="#FFFFFF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField isStretchWithOverflow="true" pattern="#,##0.00">
+							<reportElement uuid="c8007a6a-c96d-4e3a-8912-96a31eb5bdf9" style="Crosstab Data Text" x="0" y="0" width="79" height="12"/>
+							<textElement textAlignment="Right">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{netoMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

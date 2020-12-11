@@ -1,0 +1,19 @@
+/**
+ * @name        SeguimientoProcesos_V1_0.css
+ * @version     2.0
+ * @author      Uber Crisostomo Garcia
+ * Fecha creacion: 23-12-2016
+ * Ultima Modificacion: 25-01-2017
+ *
+ * Descripción: Archivo de stilos
+ */
+
+/*label {
+    display: inline-block;
+    width: 5em;
+}*/
+
+#estatusc .fa{
+	margin-left: 5px;
+	margin-right: 5px;
+} 

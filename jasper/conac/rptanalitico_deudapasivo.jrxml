@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptestadoanaliticodelactivo" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fc46fd7a-f4ce-46b0-85c2-7a76b9668c4f">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/alfredob/GitHub/grp//jasper/conac/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anioreporte" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2018"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="parEntePublico" class="java.lang.String">
+		<defaultValueExpression><![CDATA["esdsdsdf"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="parRangoDeFechas" class="java.lang.String">
+		<defaultValueExpression><![CDATA["sf"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tagref" class="java.lang.String">
+		<defaultValueExpression><![CDATA["I6L"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="fechainicial" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2017-1-1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechafinal" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2018-06-30"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ue" class="java.lang.String">
+		<defaultValueExpression><![CDATA["09"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT tb_c.ln_reporte,
+tb_cl.id_nu_reporte_conac_label,
+tb_cl.ln_label as cuenta_mayor,
+tb_cl.ind_tipo,
+COALESCE(config_reportes_.valor,0) AS accountcode ,
+truncate(COALESCE(SUM(CASE WHEN YEAR(gltrans.trandate) =2018 THEN gltrans.amount ELSE 0 END ),'0.00'),2) AS PERIODO1,
+truncate(COALESCE(SUM(CASE WHEN YEAR(gltrans.trandate) =(2018-1) THEN gltrans.amount ELSE 0 END ),'0.00'),2) AS PERIODO2,
+'0.00' AS PERIODO3
+FROM tb_cat_reportes_conac tb_c
+INNER JOIN tb_cat_reporte_conac_label tb_cl ON tb_c.ln_reporte = tb_cl.ln_reporte
+LEFT JOIN config_reportes_ ON tb_c.ln_reporte= config_reportes_.reporte AND tb_cl.ln_valor = config_reportes_.parametro
+LEFT JOIN gltrans ON gltrans.posted = 1 AND gltrans.tag = "I6L" AND  gltrans.ln_ue= "09" AND substr(gltrans.account, 1, 5) = config_reportes_.valor
+WHERE tb_c.id_nu_reportes_conac = '9' AND tb_cl.ind_activo=1
+GROUP BY tb_c.ln_reporte,tb_cl.id_nu_reporte_conac_label,tb_cl.ln_label,tb_cl.ind_tipo,COALESCE(config_reportes_.valor,0)
+ORDER BY tb_cl.ind_orden ASC;]]>
+	</queryString>
+	<field name="accountcode" class="java.lang.String"/>
+	<field name="cuenta_mayor" class="java.lang.String"/>
+	<field name="PERIODO1" class="java.lang.String"/>
+	<field name="PERIODO2" class="java.lang.String"/>
+	<field name="PERIODO3" class="java.lang.String"/>
+	<field name="ind_tipo" class="java.lang.String"/>
+	<variable name="totalper" class="java.lang.Double" calculation="Sum"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="73" splitType="Stretch">
+			<textField>
+				<reportElement uuid="ee52c0af-f3bf-4d09-894b-be72c1ec6d07" x="11" y="9" width="569" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{parEntePublico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="f75fef84-1a20-4ed9-8ddd-169093829169" x="11" y="29" width="565" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Estado Analítico de la Deuda y Otros Pasivos]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="d6bf3407-bda2-4167-baa9-2cc026fb937c" x="10" y="49" width="570" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[" DESDE " + $P{fechainicial}
++" HASTA "+ $P{fechafinal}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="27da0e52-0102-41f3-a4b7-87c2839f6fa7" x="0" y="0" width="140" height="70"/>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="7bd48272-fc79-43ae-85b9-33aa83cccf1d" x="332" y="6" width="80" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Institución o País Acreedor]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="df935d91-6cdb-4ece-9bcd-c8f47a23b506" x="1" y="6" width="572" height="30" forecolor="#003300" backcolor="#1B693F"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="9a9d2923-469e-4f89-9253-abc0d6013c49" x="412" y="10" width="80" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Saldo Inicial del Período]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c419cea9-98bc-4a4e-b4df-06c2ac640871" x="492" y="10" width="80" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Saldo Final del Período]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="72b93dd6-9340-4ded-90e1-5ef64c680d0e" x="4" y="13" width="124" height="13" forecolor="#FFFFFF"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Denominación de las Deudas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="88ae04a6-caae-4f5b-ac40-541cf2e62a23" x="239" y="13" width="101" height="13" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Moneda de Contratación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e69f3299-3b11-4489-b94e-aa5615acbecf" x="340" y="10" width="72" height="20" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Institución o País Acreedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="67b0758f-33d1-430f-9ae4-4d02996bcd79" x="2" y="39" width="100" height="20"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEUDA PÚBLICA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21">
+			<textField>
+				<reportElement uuid="248cee1e-0e4e-43bf-a24e-cceb1d034d63" x="411" y="1" width="79" height="20" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{PERIODO1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ed331bca-929e-4063-9da1-42feb48eae69" x="3" y="1" width="234" height="20">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "0" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta_mayor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9d0711d2-7695-493d-8e50-36a21632648c" x="16" y="1" width="222" height="20">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta_mayor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b81447f9-4b0d-4188-885a-451ae7ba9e40" x="492" y="1" width="79" height="20" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "1" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{PERIODO2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e7e4ef48-c641-49e8-970d-70b34f9b278e" x="16" y="1" width="222" height="20">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "3" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta_mayor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c044c6c6-f60c-4b9e-b38b-a9f9fd621f8c" x="411" y="1" width="79" height="20" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "0" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7079e173-1dc6-42e5-a8f5-af7d730850cb" x="492" y="1" width="79" height="20" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "0" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="eb89a063-4549-4238-b6a7-ab30437d680f" x="411" y="1" width="79" height="20" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "3" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3c0be499-aa01-4cc0-ae8d-553d0a5b5e87" x="492" y="1" width="79" height="20" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "3" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PERIODO2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4c521c24-ffc3-4286-ae5e-ceca777a0760" x="18" y="1" width="222" height="20">
+					<printWhenExpression><![CDATA[$F{ind_tipo} == "4" ? true : false]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font isBold="true" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta_mayor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="33">
+			<staticText>
+				<reportElement uuid="5eb41a3f-a32f-4b4d-8b61-2300d64edbe3" x="4" y="7" width="214" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Total Deuda y Otros Pasivos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c8f42b36-9a4d-4528-ac58-08ccc2a44e4b" x="491" y="7" width="80" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[0.00]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<summary>
+		<band height="38" splitType="Stretch">
+			<subreport>
+				<reportElement uuid="33364405-988c-490c-a52d-0f42232e3f8a" x="0" y="1" width="571" height="31"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "rpt_conac_footer.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>
